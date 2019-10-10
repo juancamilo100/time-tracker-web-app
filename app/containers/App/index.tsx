@@ -14,10 +14,11 @@ import { Switch, Route } from 'react-router-dom';
 import HomePage from 'containers/HomePage/Loadable';
 import FeaturePage from 'containers/FeaturePage/Loadable';
 import NotFoundPage from 'containers/NotFoundPage/Loadable';
-import Header from 'components/Header';
-import Footer from 'components/Footer';
+// import Header from 'components/Header';
+// import Footer from 'components/Footer';
 
 import GlobalStyle from '../../global-styles';
+import { routePath } from 'config';
 
 const AppWrapper = styled.div`
   max-width: calc(768px + 16px * 2);
@@ -31,19 +32,31 @@ const AppWrapper = styled.div`
 export default function App() {
   return (
     <AppWrapper>
-      <Helmet
-        titleTemplate="%s - React.js Boilerplate"
-        defaultTitle="React.js Boilerplate"
+       <Helmet
+        titleTemplate="%s - Time Tracker"
+        defaultTitle="Time Tracker"
       >
-        <meta name="description" content="A React.js Boilerplate application" />
-      </Helmet>
-      <Header />
+        <meta name="description" content="Time Tracker Application" />
+      </Helmet> 
+      {/* <Header /> */}
+      
+      {/* Partially works */}
+      {/* <HomePage></HomePage>
       <Switch>
         <Route exact path="/" component={HomePage} />
         <Route path="/features" component={FeaturePage} />
         <Route path="" component={NotFoundPage} />
-      </Switch>
-      <Footer />
+      </Switch> */}
+      {/* <Footer /> */}
+
+      {/* Does not work */}
+      <HomePage>
+        <Switch>
+          <Route exact path="/" component={HomePage} />
+          <Route path={routePath.featuresPath} component={FeaturePage} />
+          <Route path="" component={NotFoundPage} />
+        </Switch>
+      </HomePage>
       <GlobalStyle />
     </AppWrapper>
   );
