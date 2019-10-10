@@ -67,7 +67,7 @@
     "*.ts": "npm run lint:tslint",
     "*.tsx": "npm run lint:tslint"
   },
-  "pre-commit": "lint:staged",
+  // "pre-commit": "lint:staged",
   "resolutions": {
     "babel-core": "7.0.0-bridge.0"
   },
