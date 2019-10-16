@@ -41,22 +41,22 @@ export default function App() {
       {/* <Header /> */}
       
       {/* Partially works */}
-      {/* <HomePage></HomePage>
+      <HomePage></HomePage>
       <Switch>
         <Route exact path="/" component={HomePage} />
         <Route path="/features" component={FeaturePage} />
         <Route path="" component={NotFoundPage} />
-      </Switch> */}
+      </Switch>
       {/* <Footer /> */}
 
       {/* Does not work */}
-      <HomePage>
+      {/* <HomePage>
         <Switch>
           <Route exact path="/" component={HomePage} />
           <Route path={routePath.featuresPath} component={FeaturePage} />
           <Route path="" component={NotFoundPage} />
         </Switch>
-      </HomePage>
+      </HomePage> */}
       <GlobalStyle />
     </AppWrapper>
   );
