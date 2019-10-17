@@ -171,11 +171,11 @@ export default function PersistentDrawerLeft() {
           {/* component={Link}
         to={routePath.setupWizardPath} */}
 
-          <ListItem button className={classes.listItem} component={Link} to={routePath.mainPath}>
+          <ListItem button className={classes.listItem} component={Link} to={routePath.reportHistoryPath}>
             <ListItemIcon>
               <ReportsIcon className={classes.itemIcon} />
             </ListItemIcon>
-            <ListItemText className={classes.itemText} primary="View Reports" />
+            <ListItemText className={classes.itemText} primary="Report History" />
           </ListItem>
 
           <ListItem button className={classes.listItem} component={Link} to={routePath.profilePath}>

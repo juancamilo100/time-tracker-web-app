@@ -20,6 +20,7 @@ import NotFoundPage from 'containers/NotFoundPage/Loadable';
 
 import GlobalStyle from '../../global-styles';
 import { routePath } from 'config';
+import { HistoryPage } from 'containers/HistoryPage';
 
 
 const AppWrapper = styled.div`
@@ -47,6 +48,7 @@ export default function App() {
       <Switch>
         <Route exact path={routePath.mainPath} component={HomePage} />
         <Route path={routePath.featuresPath} component={FeaturePage} />
+        <Route path={routePath.reportHistoryPath} component={HistoryPage} />
         <Route path={routePath.profilePath} component={Profile} />
         <Route path="" component={NotFoundPage} />
       </Switch>

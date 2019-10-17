@@ -84,7 +84,7 @@ export function Profile(props: Props) {
         </Typography>
       </CardContent>
       <CardActions>
-        <Button size="small">Change Password</Button>
+        <Button color="primary" size="small">Change Password</Button>
       </CardActions>
     </Card>
       {/* <Paper className={classes.root}>
