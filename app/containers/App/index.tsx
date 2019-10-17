@@ -13,12 +13,14 @@ import { Switch, Route } from 'react-router-dom';
 
 import HomePage from 'containers/HomePage/Loadable';
 import FeaturePage from 'containers/FeaturePage/Loadable';
+import Profile from 'containers/Profile';
 import NotFoundPage from 'containers/NotFoundPage/Loadable';
 // import Header from 'components/Header';
 // import Footer from 'components/Footer';
 
 import GlobalStyle from '../../global-styles';
 import { routePath } from 'config';
+
 
 const AppWrapper = styled.div`
   max-width: calc(768px + 16px * 2);
@@ -43,8 +45,9 @@ export default function App() {
       {/* Partially works */}
       <HomePage></HomePage>
       <Switch>
-        <Route exact path="/" component={HomePage} />
-        <Route path="/features" component={FeaturePage} />
+        <Route exact path={routePath.mainPath} component={HomePage} />
+        <Route path={routePath.featuresPath} component={FeaturePage} />
+        <Route path={routePath.profilePath} component={Profile} />
         <Route path="" component={NotFoundPage} />
       </Switch>
       {/* <Footer /> */}

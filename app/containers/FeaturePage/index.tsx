@@ -23,7 +23,7 @@ import SaveIcon from '@material-ui/icons/Save';
 import CancelIcon from '@material-ui/icons/Cancel';
 import { withStyles } from '@material-ui/core/styles';
 
-import { ProgressBarCell } from './components/progress-bar-cell';
+// import { ProgressBarCell } from './components/progress-bar-cell';
 // import { HighlightedCell } from './components/highlighted-cell';
 import { CurrencyTypeProvider } from './components/currency-type-provider';
 import { PercentTypeProvider } from './components/percent-type-provider';

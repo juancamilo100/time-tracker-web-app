@@ -85,16 +85,16 @@ const generateDate = ({
 const generatePhone = () => Math.random().toString().slice(2, 12).replace(/(\d{3})(\d{3})(\d{4})$/, '($1) $2-$3');
 
 export const defaultColumnValues = {
-  gender: ['Male', 'Female'],
-  name: [
-    'gender',
-    {
-      Male: maleFirstNames,
-      Female: femaleFirstNames,
-    },
-  ],
-  city: cities,
-  car: cars,
+  // gender: ['Male', 'Female'],
+  // name: [
+  //   'gender',
+  //   {
+  //     Male: maleFirstNames,
+  //     Female: femaleFirstNames,
+  //   },
+  // ],
+  // city: cities,
+  // car: cars,
 };
 
 export const defaultNestedColumnValues = {
@@ -110,23 +110,23 @@ export const defaultNestedColumnValues = {
 };
 
 export const globalSalesValues = {
-  region: ['Asia', 'Europe', 'North America', 'South America', 'Australia', 'Africa'],
-  sector: ['Energy', 'Health', 'Manufacturing', 'Insurance', 'Banking', 'Telecom'],
-  channel: ['Resellers', 'Retail', 'VARs', 'Consultants', 'Direct', 'Telecom'],
-  units: ({ random }) => Math.floor(random() * 4) + 1,
-  customer: [
-    'Renewable Supplies', 'Energy Systems', 'Environment Solar', 'Beacon Systems', 'Apollo Inc',
-    'Gemini Stores', 'McCord Builders', 'Building M Inc', 'Global Services',
-    'Market Eco', 'Johnson & Assoc', 'Get Solar Inc', 'Supply Warehouse', 'Discovery Systems', 'Mercury Solar'],
-  product: ['SolarMax', 'SolarOne', 'EnviroCare', 'EnviroCare Max'],
+  // region: ['Asia', 'Europe', 'North America', 'South America', 'Australia', 'Africa'],
+  // sector: ['Energy', 'Health', 'Manufacturing', 'Insurance', 'Banking', 'Telecom'],
+  // channel: ['Resellers', 'Retail', 'VARs', 'Consultants', 'Direct', 'Telecom'],
+  // units: ({ random }) => Math.floor(random() * 4) + 1,
+  // customer: [
+  //   'Renewable Supplies', 'Energy Systems', 'Environment Solar', 'Beacon Systems', 'Apollo Inc',
+  //   'Gemini Stores', 'McCord Builders', 'Building M Inc', 'Global Services',
+  //   'Market Eco', 'Johnson & Assoc', 'Get Solar Inc', 'Supply Warehouse', 'Discovery Systems', 'Mercury Solar'],
+  // product: ['SolarMax', 'SolarOne', 'EnviroCare', 'EnviroCare Max'],
   amount: ({ random }) => Math.floor(random() * 10) + 5,
-  discount: ({ random }) => Math.round(random() * 0.5 * 1000) / 1000,
+  // discount: ({ random }) => Math.round(random() * 0.5 * 1000) / 1000,
   saleDate: ({ random }) => generateDate({
     random,
     year: 2016,
     month: () => Math.floor(random() * 3) + 1,
   }),
-  shipped: [true, false],
+  // shipped: [true, false],
 };
 
 export const employeeValues = {

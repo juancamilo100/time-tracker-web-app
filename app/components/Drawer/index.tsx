@@ -178,11 +178,11 @@ export default function PersistentDrawerLeft() {
             <ListItemText className={classes.itemText} primary="View Reports" />
           </ListItem>
 
-          <ListItem button>
+          <ListItem button className={classes.listItem} component={Link} to={routePath.profilePath}>
             <ListItemIcon>
-              <FaceIcon className={classes.itemIcon} />
+              <FaceIcon className={classes.itemIcon}  />
             </ListItemIcon>
-            <ListItemText className={classes.itemText} primary="Account" />
+            <ListItemText className={classes.itemText} primary="Profile" />
           </ListItem>
         </List>
       </Drawer>
