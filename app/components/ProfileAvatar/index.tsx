@@ -13,7 +13,7 @@ const useStyles = makeStyles({
     margin: 10,
   },
   bigAvatar: {
-    margin: 40,
+    margin: '30px auto 20px auto',
     width: 120,
     height: 120,
     alignItems: 'center',
