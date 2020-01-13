@@ -67,7 +67,7 @@ function LoginForm(props: Props) {
         <Button
           variant="outlined"
           color="primary"
-          component={Link} 
+          component={Link}
           to={routePath.mainPath}
         >
           Send

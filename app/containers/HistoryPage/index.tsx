@@ -6,22 +6,20 @@
 
 import React from 'react';
 import { connect } from 'react-redux';
-import { FormattedMessage } from 'react-intl';
 import { compose, Dispatch } from 'redux';
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
 import { createStructuredSelector } from 'reselect';
 import makeSelectHistoryPage from './selectors';
 import reducer from './reducer';
-import { RootState } from './types';
+// import { RootState } from './types';
 import saga from './saga';
-import messages from './messages';
 import { Theme, createStyles, makeStyles } from '@material-ui/core/styles';
 import ReportHistoryList from 'components/ReportHistoryList';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    center:{
+    center: {
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
@@ -47,8 +45,7 @@ export function HistoryPage(props: Props) {
 
   return (
     <div className={classes.center}>
-      {/* <FormattedMessage {...messages.header} /> */}
-      <ReportHistoryList></ReportHistoryList>
+      <ReportHistoryList />
     </div>
   );
 }

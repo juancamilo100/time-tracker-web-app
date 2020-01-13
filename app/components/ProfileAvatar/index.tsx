@@ -6,7 +6,7 @@
 import * as React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Avatar from '@material-ui/core/Avatar';
-import img from './avatarPic.png'
+import img from './avatarPic.png';
 
 const useStyles = makeStyles({
   avatar: {

@@ -5,8 +5,6 @@
  */
 
 import React, { useEffect, memo } from 'react';
-// import { Helmet } from 'react-helmet';
-// import { FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 import { compose, Dispatch } from 'redux';
 import { createStructuredSelector } from 'reselect';
@@ -18,14 +16,6 @@ import {
   makeSelectLoading,
   makeSelectError,
 } from 'containers/App/selectors';
-// import H2 from 'components/H2';
-// import ReposList from 'components/ReposList';
-// import AtPrefix from './AtPrefix';
-// import CenteredSection from './CenteredSection';
-// import Form from './Form';
-// import Input from './Input';
-// import Section from './Section';
-// import messages from './messages';
 import { loadRepos } from '../App/actions';
 import { changeUsername } from './actions';
 import { makeSelectUsername } from './selectors';
@@ -33,11 +23,7 @@ import reducer from './reducer';
 import saga from './saga';
 import { RootState } from './types';
 import Drawer from '../../components/Drawer';
-import { Switch, Route } from 'react-router-dom';
-import FeaturePage from 'containers/FeaturePage/Loadable';
-import Profile from 'containers/Profile';
-import { HistoryPage } from 'containers/HistoryPage';
-import { routePath } from 'config';
+
 // tslint:disable-next-line:no-empty-interface
 interface OwnProps {}
 
@@ -71,17 +57,10 @@ export function HomePage(props: Props) {
     }
   }, []);
 
-  // const reposListProps = {
-  //   loading: props.loading,
-  //   error: props.error,
-  //   repos: props.repos,
-  // };
-
   return (
-      <div>
-        <Drawer/>
-
-      </div> 
+    <div>
+      <Drawer />
+    </div>
   );
 }
 

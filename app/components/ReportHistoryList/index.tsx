@@ -4,9 +4,6 @@
  *
  */
 import * as React from 'react';
-
-// import styled from 'styles/styled-components';
-
 import { FormattedMessage } from 'react-intl';
 import messages from './messages';
 import { Theme, createStyles, makeStyles } from '@material-ui/core/styles';

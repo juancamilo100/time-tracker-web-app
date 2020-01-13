@@ -1,11 +1,3 @@
-// export const routePath = {
-//     mainPath: `/`,
-//     loginPath: `/login`,
-//     featuresPath: `/report`,
-//     reportHistoryPath: `/reportHistory`,
-//     profilePath: `/profileInfo`,
-//   };
-
 export const routePath = {
   mainPath: `/main`,
   loginPath: `/login`,

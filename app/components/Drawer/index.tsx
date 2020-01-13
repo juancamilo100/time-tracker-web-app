@@ -57,9 +57,7 @@ const useStyles = makeStyles(theme => ({
   },
   drawerPaper: {
     width: drawerWidth,
-    // backgroundColor: '#1d1d1d',
-    // backgroundColor:'#303030'
-    backgroundColor:'white'
+    backgroundColor: 'white',
   },
   drawerHeader: {
     display: 'flex',
@@ -91,18 +89,15 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1,
   },
   itemIcon: {
-    color: '#93d50f'
-    // color: '#7cb342',
+    color: '#93d50f',
   },
   itemText: {
-    // color: '#828584',
-    // color: 'white',
     color: 'black',
   },
   listItem: {
     paddingLeft: '20px',
     paddingTop: '20px',
-    paddingBottom: '20px'
+    paddingBottom: '20px',
   },
 }));
 
@@ -145,9 +140,14 @@ export default function PersistentDrawerLeft() {
           <Typography variant="h4" className={classes.title}>
             Time Tracker
           </Typography>
-          <Button color="inherit"
-          onClick={handleLogOut}
-          component={Link} to={routePath.loginPath}>Log Out</Button>
+          <Button
+            color="inherit"
+            onClick={handleLogOut}
+            component={Link}
+            to={routePath.loginPath}
+          >
+            Log Out
+          </Button>
         </Toolbar>
       </AppBar>
       <Drawer
@@ -170,7 +170,12 @@ export default function PersistentDrawerLeft() {
         </div>
         <Divider />
         <List>
-          <ListItem button className={classes.listItem} component={Link} to={routePath.featuresPath}>
+          <ListItem
+            button
+            className={classes.listItem}
+            component={Link}
+            to={routePath.featuresPath}
+          >
             <ListItemIcon>
               <TimeIcon className={classes.itemIcon} />
             </ListItemIcon>
@@ -180,16 +185,29 @@ export default function PersistentDrawerLeft() {
             />
           </ListItem>
 
-          <ListItem button className={classes.listItem} component={Link} to={routePath.reportHistoryPath}>
+          <ListItem
+            button
+            className={classes.listItem}
+            component={Link}
+            to={routePath.reportHistoryPath}
+          >
             <ListItemIcon>
               <ReportsIcon className={classes.itemIcon} />
             </ListItemIcon>
-            <ListItemText className={classes.itemText} primary="Report History" />
+            <ListItemText
+              className={classes.itemText}
+              primary="Report History"
+            />
           </ListItem>
 
-          <ListItem button className={classes.listItem} component={Link} to={routePath.profilePath}>
+          <ListItem
+            button
+            className={classes.listItem}
+            component={Link}
+            to={routePath.profilePath}
+          >
             <ListItemIcon>
-              <FaceIcon className={classes.itemIcon}  />
+              <FaceIcon className={classes.itemIcon} />
             </ListItemIcon>
             <ListItemText className={classes.itemText} primary="Profile" />
           </ListItem>
