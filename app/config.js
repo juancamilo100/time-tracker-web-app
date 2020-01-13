@@ -1,10 +1,15 @@
+// export const routePath = {
+//     mainPath: `/`,
+//     loginPath: `/login`,
+//     featuresPath: `/report`,
+//     reportHistoryPath: `/reportHistory`,
+//     profilePath: `/profileInfo`,
+//   };
+
 export const routePath = {
-    mainPath: `/`,
-    featuresPath: `/report`,
-    reportHistoryPath: `/reportHistory`,
-    profilePath: `/profileInfo`,
-    // setupWizardPath: `${APP_DEPLOYMENT_TARGET}setupWizard`,
-    // networkSetupPath: `${APP_DEPLOYMENT_TARGET}setupWizard/networkSetup`,
-    // dmaSetupPath: `${APP_DEPLOYMENT_TARGET}setupWizard/dmaSetup`,
-    // dmzSetupPath: `${APP_DEPLOYMENT_TARGET}setupWizard/dmzSetup`,
-  };
+  mainPath: `/main`,
+  loginPath: `/login`,
+  featuresPath: `/main/report`,
+  reportHistoryPath: `/main/reportHistory`,
+  profilePath: `/main/profileInfo`,
+};

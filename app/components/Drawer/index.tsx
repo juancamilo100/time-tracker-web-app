@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Route, Switch } from 'react-router-dom';
 import clsx from 'clsx';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
@@ -21,6 +21,9 @@ import FaceIcon from '@material-ui/icons/Face';
 import TimeIcon from '@material-ui/icons/AlarmOn';
 import ReportsIcon from '@material-ui/icons/Description';
 import { routePath } from 'config';
+import FeaturePage from 'containers/FeaturePage';
+import { HistoryPage } from 'containers/HistoryPage';
+import { Profile } from 'containers/Profile';
 
 const drawerWidth = 240;
 
@@ -55,7 +58,8 @@ const useStyles = makeStyles(theme => ({
   drawerPaper: {
     width: drawerWidth,
     // backgroundColor: '#1d1d1d',
-    backgroundColor:'#303030'
+    // backgroundColor:'#303030'
+    backgroundColor:'white'
   },
   drawerHeader: {
     display: 'flex',
@@ -81,18 +85,19 @@ const useStyles = makeStyles(theme => ({
     marginLeft: 0,
   },
   toolbar: {
-    backgroundColor: '#ee8134',
+    backgroundColor: '#ee8133',
   },
   title: {
     flexGrow: 1,
   },
   itemIcon: {
-    // color: '#93d50b',
-    color: '#7cb342',
+    color: '#93d50f'
+    // color: '#7cb342',
   },
   itemText: {
     // color: '#828584',
-    color: 'white',
+    // color: 'white',
+    color: 'black',
   },
   listItem: {
     paddingLeft: '20px',
@@ -111,6 +116,10 @@ export default function PersistentDrawerLeft() {
   };
 
   const handleDrawerClose = () => {
+    setOpen(false);
+  };
+
+  const handleLogOut = () => {
     setOpen(false);
   };
 
@@ -136,7 +145,9 @@ export default function PersistentDrawerLeft() {
           <Typography variant="h4" className={classes.title}>
             Time Tracker
           </Typography>
-          <Button color="inherit">Log Out</Button>
+          <Button color="inherit"
+          onClick={handleLogOut}
+          component={Link} to={routePath.loginPath}>Log Out</Button>
         </Toolbar>
       </AppBar>
       <Drawer
@@ -168,8 +179,6 @@ export default function PersistentDrawerLeft() {
               primary="Create Report"
             />
           </ListItem>
-          {/* component={Link}
-        to={routePath.setupWizardPath} */}
 
           <ListItem button className={classes.listItem} component={Link} to={routePath.reportHistoryPath}>
             <ListItemIcon>
@@ -192,6 +201,11 @@ export default function PersistentDrawerLeft() {
         })}
       >
         <div className={classes.drawerHeader} />
+        <Switch>
+          <Route path={routePath.featuresPath} component={FeaturePage} />
+          <Route path={routePath.reportHistoryPath} component={HistoryPage} />
+          <Route path={routePath.profilePath} component={Profile} />
+        </Switch>
       </main>
     </div>
   );

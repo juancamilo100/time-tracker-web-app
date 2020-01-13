@@ -33,7 +33,11 @@ import reducer from './reducer';
 import saga from './saga';
 import { RootState } from './types';
 import Drawer from '../../components/Drawer';
-
+import { Switch, Route } from 'react-router-dom';
+import FeaturePage from 'containers/FeaturePage/Loadable';
+import Profile from 'containers/Profile';
+import { HistoryPage } from 'containers/HistoryPage';
+import { routePath } from 'config';
 // tslint:disable-next-line:no-empty-interface
 interface OwnProps {}
 
@@ -74,48 +78,10 @@ export function HomePage(props: Props) {
   // };
 
   return (
-    // <article>
-      /* <Helmet>
-        <title>Home Page</title>
-        <meta
-          name="description"
-          content="A React.js Boilerplate application homepage"
-        />
-      </Helmet> */
       <div>
-      {/* //   <CenteredSection>
-      //     <H2>
-      //       <FormattedMessage {...messages.startProjectHeader} />
-      //     </H2>
-      //     <p>
-      //       <FormattedMessage {...messages.startProjectMessage} />
-      //     </p>
-      //   </CenteredSection>
-      //   <Section>
-      //     <H2>
-      //       <FormattedMessage {...messages.trymeHeader} />
-      //     </H2>
-      //     <Form onSubmit={props.onSubmitForm}>
-      //       <label htmlFor="username">
-      //         <FormattedMessage {...messages.trymeMessage} />
-      //         <AtPrefix>
-      //           <FormattedMessage {...messages.trymeAtPrefix} />
-      //         </AtPrefix>
-      //         <Input
-      //           id="username"
-      //           type="text"
-      //           placeholder="mxstbr"
-      //           value={props.username}
-      //           onChange={props.onChangeUsername}
-      //         />
-      //       </label>
-      //     </Form>
-      //     <ReposList {...reposListProps} />
-      //   </Section> */}
-      <Drawer/>
+        <Drawer/>
+
       </div> 
-      
-    // </article>
   );
 }
 
