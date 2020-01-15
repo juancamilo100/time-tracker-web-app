@@ -6,7 +6,6 @@
 
 import React from 'react';
 import { connect } from 'react-redux';
-import { FormattedMessage } from 'react-intl';
 import { compose, Dispatch } from 'redux';
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
@@ -15,8 +14,6 @@ import makeSelectProfile from './selectors';
 import reducer from './reducer';
 import { RootState } from './types';
 import saga from './saga';
-// import messages from './messages';
-// import { Avatar } from '@material-ui/core';
 import ProfileAvatar from '../../components/ProfileAvatar';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
@@ -57,7 +54,7 @@ interface DispatchProps {
 
 type Props = StateProps & DispatchProps & OwnProps;
 
-const key = 'profile';
+const key = 'home';
 
 export function Profile(props: Props) {
   useInjectReducer({ key: key, reducer: reducer });
@@ -87,19 +84,6 @@ export function Profile(props: Props) {
         <Button color="primary" size="small">Change Password</Button>
       </CardActions>
     </Card>
-      {/* <Paper className={classes.root}>
-        <ProfileAvatar></ProfileAvatar>
-        <Typography variant="h4" component="h5">
-          Laura Perea Artunduaga
-        </Typography>
-        <Typography component="p">
-          Employee Since: April 2016
-        </Typography>
-        <Typography component="p">
-          Project: Spectrio
-        </Typography>
-      </Paper> */}
-      {/* <ProfileAvatar></ProfileAvatar> */}
     </div>
   );
 }

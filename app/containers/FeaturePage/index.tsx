@@ -35,8 +35,8 @@ import CancelIcon from '@material-ui/icons/Cancel';
 import { withStyles } from '@material-ui/core/styles';
 import { CurrencyTypeProvider } from './components/currency-type-provider';
 import { PercentTypeProvider } from './components/percent-type-provider';
-
 import { generateRows, globalSalesValues } from './demo-data/generator';
+import { makeStyles } from '@material-ui/core/styles';
 
 const styles = theme => ({
   lookupEditCell: {
@@ -158,6 +158,17 @@ const EditCell = props => {
 
 const getRowId = row => row.id;
 
+const useStyles = makeStyles({
+  centerButton: {
+    margin: '5px',
+  },
+  center: {
+    paddingTop: '5%',
+    display: 'flex',
+    justifyContent: 'center',
+  },
+});
+
 export default () => {
   const [columns] = useState([
     { name: 'saleDate', title: 'Date' },
@@ -171,8 +182,11 @@ export default () => {
     }),
   );
   const [tableColumnExtensions] = useState([]);
-  const [sorting, getSorting] = useState([]);
-  const [editingRowIds, getEditingRowIds] = useState([]);
+
+  const [sorting] = useState([]);
+  const [editingRowIds] = useState([]);
+  // const [sorting, getSorting] = useState([]);
+  // const [editingRowIds, getEditingRowIds] = useState([]);
   const [addedRows, setAddedRows] = useState([]);
   const [rowChanges, setRowChanges] = useState({});
   const [currentPage, setCurrentPage] = useState(0);
@@ -236,54 +250,77 @@ export default () => {
     setRows(changedRows);
   };
 
+  const classes = useStyles();
+
   return (
-    <Paper>
-      <Grid rows={rows} columns={columns} getRowId={getRowId}>
-        <SortingState sorting={sorting} onSortingChange={getSorting} />
-        <PagingState
-          currentPage={currentPage}
-          onCurrentPageChange={setCurrentPage}
-          pageSize={pageSize}
-          onPageSizeChange={setPageSize}
-        />
-        <EditingState
-          editingRowIds={editingRowIds}
-          onEditingRowIdsChange={getEditingRowIds}
-          rowChanges={rowChanges}
-          onRowChangesChange={setRowChanges}
-          addedRows={addedRows}
-          onAddedRowsChange={changeAddedRows}
-          onCommitChanges={commitChanges}
-        />
-        <SummaryState totalItems={totalSummaryItems} />
+    <div>
+      <Paper>
+        <Grid rows={rows} columns={columns} getRowId={getRowId}>
+          <SortingState
+            sorting={sorting}
+            // onSortingChange={getSorting}
+          />
+          <PagingState
+            currentPage={currentPage}
+            onCurrentPageChange={setCurrentPage}
+            pageSize={pageSize}
+            onPageSizeChange={setPageSize}
+          />
+          <EditingState
+            editingRowIds={editingRowIds}
+            // onEditingRowIdsChange={getEditingRowIds}
+            rowChanges={rowChanges}
+            onRowChangesChange={setRowChanges}
+            addedRows={addedRows}
+            onAddedRowsChange={changeAddedRows}
+            onCommitChanges={commitChanges}
+          />
+          <SummaryState totalItems={totalSummaryItems} />
 
-        <IntegratedSorting />
-        <IntegratedPaging />
-        <IntegratedSummary />
+          <IntegratedSorting />
+          <IntegratedPaging />
+          <IntegratedSummary />
 
-        <CurrencyTypeProvider for={currencyColumns} />
-        <PercentTypeProvider for={percentColumns} />
+          <CurrencyTypeProvider for={currencyColumns} />
+          <PercentTypeProvider for={percentColumns} />
 
-        <DragDropProvider />
+          <DragDropProvider />
 
-        <Table columnExtensions={tableColumnExtensions} cellComponent={Cell} />
-        <TableColumnReordering
-          order={columnOrder}
-          onOrderChange={setColumnOrder}
-        />
-        <TableHeaderRow showSortingControls />
-        <TableEditRow cellComponent={EditCell} />
-        <TableEditColumn
-          width={170}
-          showAddCommand={!addedRows.length}
-          showEditCommand
-          showDeleteCommand
-          commandComponent={Command}
-        />
-        <TableSummaryRow />
-        <TableFixedColumns leftColumns={leftFixedColumns} />
-        <PagingPanel pageSizes={pageSizes} />
-      </Grid>
-    </Paper>
+          <Table
+            columnExtensions={tableColumnExtensions}
+            cellComponent={Cell}
+          />
+          <TableColumnReordering
+            order={columnOrder}
+            onOrderChange={setColumnOrder}
+          />
+          <TableHeaderRow showSortingControls />
+          <TableEditRow cellComponent={EditCell} />
+          <TableEditColumn
+            width={170}
+            showAddCommand={!addedRows.length}
+            showEditCommand
+            showDeleteCommand
+            commandComponent={Command}
+          />
+          <TableSummaryRow />
+          <TableFixedColumns leftColumns={leftFixedColumns} />
+          <PagingPanel pageSizes={pageSizes} />
+        </Grid>
+      </Paper>
+
+      <div className={classes.center}>
+        <div className={classes.centerButton}>
+          <Button variant="outlined" color="primary">
+            Save
+          </Button>
+        </div>
+        <div className={classes.centerButton}>
+          <Button variant="outlined" color="secondary">
+            Submit
+          </Button>
+        </div>
+      </div>
+    </div>
   );
 };

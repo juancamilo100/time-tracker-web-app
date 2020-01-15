@@ -12,7 +12,7 @@ import { useInjectReducer } from 'utils/injectReducer';
 import { createStructuredSelector } from 'reselect';
 import makeSelectHistoryPage from './selectors';
 import reducer from './reducer';
-// import { RootState } from './types';
+import { RootState } from './types';
 import saga from './saga';
 import { Theme, createStyles, makeStyles } from '@material-ui/core/styles';
 import ReportHistoryList from 'components/ReportHistoryList';
@@ -37,9 +37,11 @@ interface DispatchProps {
 
 type Props = StateProps & DispatchProps & OwnProps;
 
+const key = 'home';
+
 export function HistoryPage(props: Props) {
-  useInjectReducer({ key: 'historyPage', reducer: reducer });
-  useInjectSaga({ key: 'historyPage', saga: saga });
+  useInjectReducer({ key: key, reducer: reducer });
+  useInjectSaga({ key: key, saga: saga });
 
   const classes = useStyles();
 
