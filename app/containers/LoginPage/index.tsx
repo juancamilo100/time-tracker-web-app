@@ -60,7 +60,7 @@ const useStyles = makeStyles({
     backgroundColor: '#ee8133',
     borderRadius: '50%',
     display: 'inline-block',
-    boxShadow: '10px -10px #CCC'
+    boxShadow: '0px 0px 40px rgba(0,0,0,0.4)'
   },
   orangeDot: {
     marginTop: '35px',
@@ -80,7 +80,7 @@ const useStyles = makeStyles({
     backgroundColor: '#93d50f',
     borderRadius: '50%',
     display: 'inline-block',
-    boxShadow: '10px -10px #CCC'
+    boxShadow: '0px 0px 40px rgba(0,0,0,0.4)'
   },
   orangeColor: {
     fontWeight: 'bold',

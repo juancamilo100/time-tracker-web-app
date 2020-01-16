@@ -37,6 +37,12 @@ import { CurrencyTypeProvider } from './components/currency-type-provider';
 import { PercentTypeProvider } from './components/percent-type-provider';
 import { generateRows, globalSalesValues } from './demo-data/generator';
 import { makeStyles } from '@material-ui/core/styles';
+import DateFnsUtils from '@date-io/date-fns';
+import {
+  MuiPickersUtilsProvider,
+  KeyboardTimePicker,
+  KeyboardDatePicker,
+} from '@material-ui/pickers'
 
 const styles = theme => ({
   lookupEditCell: {
@@ -184,9 +190,9 @@ export default () => {
   const [tableColumnExtensions] = useState([]);
 
   const [sorting] = useState([]);
-  const [editingRowIds] = useState([]);
+  // const [editingRowIds] = useState([]);
   // const [sorting, getSorting] = useState([]);
-  // const [editingRowIds, getEditingRowIds] = useState([]);
+  const [editingRowIds, getEditingRowIds] = useState([]);
   const [addedRows, setAddedRows] = useState([]);
   const [rowChanges, setRowChanges] = useState({});
   const [currentPage, setCurrentPage] = useState(0);
@@ -251,6 +257,13 @@ export default () => {
   };
 
   const classes = useStyles();
+  const [selectedDate, setSelectedDate] = React.useState<Date | null>(
+    new Date('2014-08-18T21:11:54'),
+  );
+
+  const handleDateChange = (date: Date | null) => {
+    setSelectedDate(date);
+  };
 
   return (
     <div>
@@ -268,7 +281,7 @@ export default () => {
           />
           <EditingState
             editingRowIds={editingRowIds}
-            // onEditingRowIdsChange={getEditingRowIds}
+            onEditingRowIdsChange={getEditingRowIds}
             rowChanges={rowChanges}
             onRowChangesChange={setRowChanges}
             addedRows={addedRows}
@@ -303,6 +316,18 @@ export default () => {
             showDeleteCommand
             commandComponent={Command}
           />
+          <MuiPickersUtilsProvider utils={DateFnsUtils}>
+      <KeyboardDatePicker
+          disableToolbar
+          format="MM/dd/yyyy"
+          margin="normal"
+          value={selectedDate}
+          onChange={handleDateChange}
+          KeyboardButtonProps={{
+            'aria-label': 'change date',
+          }}
+        />
+        </MuiPickersUtilsProvider>
           <TableSummaryRow />
           <TableFixedColumns leftColumns={leftFixedColumns} />
           <PagingPanel pageSizes={pageSizes} />
