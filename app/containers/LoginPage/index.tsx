@@ -18,6 +18,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import img from './loginPic.jpg';
 import LoginForm from '../../components/LoginForm';
 import H1 from '../../components/H1';
+import MenuBar from '../../components/MenuBar';
+
 const useStyles = makeStyles({
   center: {
     alignItems: 'left',
@@ -109,7 +111,9 @@ export function LoginPage(props: Props) {
   useInjectSaga({ key: key, saga: saga });
   const classes = useStyles();
   return (
-    <div className={classes.container}>
+    <div>
+      <MenuBar></MenuBar>
+      <div className={classes.container}>
       <div className={classes.leftItem}>
         <H1>Welcome</H1>
         <H1>to Lulosoft <span className={classes.orangeColor}>.</span> </H1>
@@ -125,6 +129,8 @@ export function LoginPage(props: Props) {
         <span className={classes.greenColoredCircle}></span>
       </div>
     </div>
+    </div>
+    
   );
 }
 

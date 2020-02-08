@@ -56,6 +56,7 @@ const useStyles = makeStyles({
   },
   btn: {
     border: '1px solid',
+    borderRadius: '0',
     backgroundColor: 'white',
     color: 'black',
     padding: '10px 20px',
