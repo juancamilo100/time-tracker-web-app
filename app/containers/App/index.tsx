@@ -17,7 +17,7 @@ import NotFoundPage from 'containers/NotFoundPage/Loadable';
 import GlobalStyle from '../../global-styles';
 import { routePath } from 'config';
 import { HistoryPage } from 'containers/HistoryPage';
-import { LoginPage } from 'containers/LoginPage';
+import LoginPage from 'containers/LoginPage';
 
 const AppWrapper = styled.div`
   margin: 0 auto;

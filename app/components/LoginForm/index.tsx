@@ -3,76 +3,16 @@
  * LoginForm
  *
  */
-import * as React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
+// import { Link } from 'react-router-dom';
 import { Grid } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
-import { makeStyles } from '@material-ui/core/styles';
-import { routePath } from 'config';
+// import { routePath } from 'config';
 import Checkbox, { CheckboxProps } from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import { withStyles } from '@material-ui/core/styles';
-
-const useStyles = makeStyles({
-  center: {
-    display: 'flex',
-    alignItems: 'left',
-    justifyContent: 'left',
-  },
-  container: {
-    display: 'flex',
-  },
-  rightItem: {
-    position: 'absolute',
-    right: '0px',
-    paddingRight: '10%',
-  },
-  field: {
-    width: 250,
-  },
-  left: {
-    left: '0px',
-    width: '60%',
-    height: '60%',
-  },
-  orangeColor: {
-    color: '#ee8133',
-  },
-  coloredText: {
-    fontSize: 'small',
-    color: '#ee8133',
-  },
-  text: {
-    fontSize: 'small',
-  },
-  grid: {
-    paddingTop: '15px',
-    paddingBottom: '5px',
-  },
-  checkbox: {
-    paddingTop: '5px',
-    paddingBottom: '50px',
-  },
-  btn: {
-    border: '1px solid',
-    backgroundColor: 'white',
-    color: 'black',
-    padding: '10px 20px',
-    fontSize: '13px',
-    cursor: 'pointer',
-  },
-  orangeButton: {
-    background: '#ee8133',
-    color: 'white',
-
-    '&:hover': {
-      background: '#fafafa',
-      borderColor: '#ee8133',
-      color: '#ee8133',
-    },
-  },
-});
+import { useStyles } from './styles';
 
 const GreenCheckbox = withStyles({
   root: {
@@ -84,19 +24,31 @@ const GreenCheckbox = withStyles({
   checked: {},
 })((props: CheckboxProps) => <Checkbox color="default" {...props} />);
 
-interface Props {}
+interface StateProps {
+}
+
+interface OwnProps {
+    onAuthenticate(email: string, password: string): void;
+    username?: string;
+    password?: string;
+}
+
+type Props = OwnProps & StateProps;
 
 function LoginForm(props: Props) {
+    const [username, setUsername] = useState("");  
+    const [password, setPassword] = useState("");  
+
   const classes = useStyles();
   return (
     <div>
       <Grid>
         <TextField
           className={classes.field}
-          // autoFocus
           id="standard-required"
           type="email"
           label="Username"
+          onChange={(event) => { setUsername(event.target.value) }}
         />
       </Grid>
       <Grid>
@@ -106,24 +58,24 @@ function LoginForm(props: Props) {
           label="Password"
           type="password"
           autoComplete="current-password"
+          onChange={(event) => { setPassword(event.target.value) }}
         />
       </Grid>
       <Grid className={classes.grid}>
-        <text className={classes.coloredText}>Forgot your password? </text>
+        <span className={classes.coloredText}>Forgot your password? </span>
       </Grid>
 
       <Grid className={classes.checkbox}>
         <FormControlLabel
           control={<GreenCheckbox />}
-          label={<text className={classes.text}> Remember me </text>}
+          label={<span className={classes.text}> Remember me </span>}
         />
       </Grid>
 
       <div className={classes.center}>
         <Button
           className={[classes.btn, classes.orangeButton].join(' ')}
-          component={Link}
-          to={routePath.mainPath}
+          onClick={() => props.onAuthenticate(username, password)}
         >
           SING IN
         </Button>

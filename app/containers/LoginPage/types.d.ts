@@ -5,6 +5,7 @@ import { ApplicationRootState } from 'types';
 /* --- STATE --- */
 interface LoginPageState {
   readonly default: any;
+  readonly authenticated: any;
 }
 
 /* --- ACTIONS --- */

@@ -40,7 +40,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import DateFnsUtils from '@date-io/date-fns';
 import {
   MuiPickersUtilsProvider,
-  KeyboardTimePicker,
   KeyboardDatePicker,
 } from '@material-ui/pickers'
 
@@ -190,9 +189,7 @@ export default () => {
   const [tableColumnExtensions] = useState([]);
 
   const [sorting] = useState([]);
-  // const [editingRowIds] = useState([]);
-  // const [sorting, getSorting] = useState([]);
-  const [editingRowIds, getEditingRowIds] = useState([]);
+  const [editingRowIds] = useState([]);
   const [addedRows, setAddedRows] = useState([]);
   const [rowChanges, setRowChanges] = useState({});
   const [currentPage, setCurrentPage] = useState(0);
@@ -271,7 +268,6 @@ export default () => {
         <Grid rows={rows} columns={columns} getRowId={getRowId}>
           <SortingState
             sorting={sorting}
-            // onSortingChange={getSorting}
           />
           <PagingState
             currentPage={currentPage}
@@ -281,7 +277,6 @@ export default () => {
           />
           <EditingState
             editingRowIds={editingRowIds}
-            onEditingRowIdsChange={getEditingRowIds}
             rowChanges={rowChanges}
             onRowChangesChange={setRowChanges}
             addedRows={addedRows}

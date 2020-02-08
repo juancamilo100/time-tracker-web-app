@@ -9,6 +9,7 @@ import { ContainerState, ContainerActions } from './types';
 
 export const initialState: ContainerState = {
   default: null,
+  authenticated: false
 };
 
 function loginPageReducer(
@@ -18,6 +19,11 @@ function loginPageReducer(
   switch (action.type) {
     case ActionTypes.DEFAULT_ACTION:
       return state;
+    case ActionTypes.AUTH_ACTION:
+        console.log("Got auth action!");
+        console.log(action.payload);
+      return {
+          ...state, ...action.payload};
     default:
       return state;
   }
