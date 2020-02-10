@@ -7,6 +7,7 @@ interface AppState {
   readonly loading: boolean;
   readonly error: object | boolean;
   readonly authenticated: boolean;
+  readonly token: string;
   readonly currentUser: string;
   readonly userData: UserData;
 }

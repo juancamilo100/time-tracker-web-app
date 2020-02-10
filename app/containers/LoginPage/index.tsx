@@ -1,9 +1,3 @@
-/*
- *
- * LoginPage
- *
- */
-
 import React from 'react';
 import { connect } from 'react-redux';
 import { compose, Dispatch } from 'redux';
@@ -18,7 +12,7 @@ import img from './loginPic.jpg';
 import LoginForm from '../../components/LoginForm';
 import H1 from '../../components/H1';
 import { useStyles } from './styles';
-import { auth } from './actions';
+import { authActionStart } from './actions';
 
 interface OwnProps {}
 interface StateProps {}
@@ -35,7 +29,8 @@ export function LoginPage(props: Props) {
   useInjectReducer({ key: key, reducer: reducer });
   useInjectSaga({ key: key, saga: saga });
   const classes = useStyles();
-
+    console.log("Rendering Login Page");
+    
   return (
     <div className={classes.container}>
       <div className={classes.leftItem}>
@@ -66,7 +61,7 @@ function mapDispatchToProps(
   dispatch: Dispatch
 ): DispatchProps {
   return {
-    onAuthenticate: (email: string, password: string) => dispatch(auth(email, password)),
+    onAuthenticate: (email: string, password: string) => dispatch(authActionStart(email, password)),
     dispatch: dispatch
   };
 }
@@ -77,7 +72,3 @@ const withConnect = connect(
 );
 
 export default compose(withConnect)(LoginPage);
-// export default connect(
-//     mapStateToProps,
-//     mapDispatchToProps,
-//   )(LoginPage);

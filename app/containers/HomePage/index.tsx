@@ -15,7 +15,7 @@ import {
   makeSelectLoading,
   makeSelectError,
 } from 'containers/App/selectors';
-import { loadRepos } from '../App/actions';
+// import { loadRepos } from '../App/actions';
 import { changeUsername } from './actions';
 import { makeSelectUsername } from './selectors';
 import reducer from './reducer';
@@ -74,7 +74,7 @@ export function mapDispatchToProps(
       if (evt !== undefined && evt.preventDefault) {
         evt.preventDefault();
       }
-      dispatch(loadRepos());
+    //   dispatch(loadRepos());
     },
   };
 }

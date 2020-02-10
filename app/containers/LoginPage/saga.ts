@@ -1,26 +1,36 @@
-// import { take, call, put, select } from 'redux-saga/effects';
-import { takeLatest, put } from 'redux-saga/effects';
+import { call, put } from 'redux-saga/effects';
+import { takeLatest } from 'redux-saga/effects';
+import ActionTypes from './constants';
+import { postRequest } from 'utils/request';
+import { authActionSuccess, authActionError } from './actions';
+import { ContainerActions } from './types';
 
-
-export default function* authenticate() {
-  // See example in containers/HomePage/saga.js
-
-    const requestURL = `http://localhost:9000/api/employees`;
-    console.log(requestURL);
+export function* authenticate(action: ContainerActions) {
+    const requestURL = `http://localhost:9000/api/auth/login`;
+    // const requestBody = { 
+    //     email: "contact@lulosoft.com", 
+    //     password: "bXlMdSFvNW9mXiE=" 
+    // }
+    const requestBody = { 
+        email: action.payload.email, 
+        password: action.payload.password 
+    }
+    const requestHeaders = {
+        "content-type": "application/json"
+    }
+    console.log("Called auth saga!");
+    console.log(action.payload);
     
   try {
     // Call our request helper (see 'utils/request')
-    const repos = yield call(request, requestURL);
-    yield put(authAction(username, password));
+    const response = yield call(postRequest, requestURL, requestBody, requestHeaders);
+    console.log(response);
+    yield put(authActionSuccess(response));
   } catch (err) {
-    yield put(authError(err));
+    yield put(authActionError(err));
   }
+}
 
-  export default function* loginUser() {
-    // Watches for LOAD_REPOS actions and calls getRepos when one comes in.
-    // By using `takeLatest` only the result of the latest API call is applied.
-    // It returns task descriptor (just like fork) so we can continue execution
-    // It will be cancelled automatically on component unmount
-    yield takeLatest(ActionTypes.LOAD_REPOS, authenticate);
-  }
+export default function* loginUser() {
+    yield takeLatest(ActionTypes.AUTH_ACTION_START, authenticate);
 }
