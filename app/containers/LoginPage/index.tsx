@@ -5,7 +5,6 @@ import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
 import { createStructuredSelector } from 'reselect';
 import { RootState } from './types';
-import selectAuthenticated from './selectors';
 import reducer from './reducer';
 // import appReducer from '../App/reducer';
 import saga from './saga';
@@ -14,6 +13,8 @@ import LoginForm from '../../components/LoginForm';
 import H1 from '../../components/H1';
 import { useStyles } from './styles';
 import { authActionStart } from './actions';
+import { makeSelectAuthenticated } from 'containers/App/selectors';
+import { Redirect } from 'react-router-dom';
 
 interface OwnProps {}
 interface StateProps {
@@ -28,19 +29,19 @@ interface DispatchProps {
 type Props = StateProps & DispatchProps & OwnProps;
 
 const keyLoginPage = 'loginPage';
-// const keyGlobal = 'global';
 
 export function LoginPage(props: Props) {
   useInjectReducer({ key: keyLoginPage, reducer: reducer });
-//   useInjectReducer({ key: keyGlobal, reducer: appReducer });
   useInjectSaga({ key: keyLoginPage, saga: saga });
 
   const classes = useStyles();
-    console.log("Rendering LoginPage with props:");
-    console.log(props);
-    if(props.authenticated) {
-
-    }
+  console.log("Rendering LoginPage with props:");
+  console.log(props);
+  if(props.authenticated) {
+    return (
+        <Redirect to='/' />
+    )
+  } 
   return (
     <div className={classes.container}>
       <div className={classes.leftItem}>
@@ -63,7 +64,7 @@ export function LoginPage(props: Props) {
 
 // Map RootState to your StateProps
 const mapStateToProps = createStructuredSelector<RootState, StateProps>({
-  authenticated: selectAuthenticated(),
+  authenticated: makeSelectAuthenticated(),
 });
 
 // Map Disptach to your DispatchProps

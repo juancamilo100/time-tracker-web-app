@@ -115,6 +115,7 @@ export default function PersistentDrawerLeft() {
   };
 
   const handleLogOut = () => {
+         
     setOpen(false);
   };
 

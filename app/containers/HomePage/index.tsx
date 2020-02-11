@@ -4,33 +4,35 @@
  * This is the first thing users see of our App, at the '/' route
  */
 
-import React, { useEffect, memo } from 'react';
+import React, { memo } from 'react';
 import { connect } from 'react-redux';
 import { compose, Dispatch } from 'redux';
 import { createStructuredSelector } from 'reselect';
 import { useInjectReducer } from 'utils/injectReducer';
 import { useInjectSaga } from 'utils/injectSaga';
-import {
-  makeSelectRepos,
-  makeSelectLoading,
-  makeSelectError,
-} from 'containers/App/selectors';
+// import {
+//   makeSelectRepos,
+//   makeSelectLoading,
+//   makeSelectError,
+// } from 'containers/App/selectors';
 // import { loadRepos } from '../App/actions';
 import { changeUsername } from './actions';
-import { makeSelectUsername } from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 import { RootState } from './types';
 import Drawer from '../../components/Drawer';
+import { makeSelectAuthenticated } from 'containers/App/selectors';
+import { Redirect } from 'react-router-dom';
 
 // tslint:disable-next-line:no-empty-interface
 interface OwnProps {}
 
 interface StateProps {
-  loading: boolean;
-  error: object | boolean;
-  repos: object[] | boolean;
-  username: string;
+//   loading: boolean;
+//   error: object | boolean;
+//   repos: object[] | boolean;
+//   username: string;
+    authenticated: boolean;
 }
 
 interface DispatchProps {
@@ -49,16 +51,22 @@ export function HomePage(props: Props) {
   /**
    * when initial state username is not null, submit the form to load repos
    */
-  useEffect(() => {
-    // When initial state username is not null, submit the form to load repos
-    if (props.username && props.username.trim().length > 0) {
-      props.onSubmitForm();
-    }
-  }, []);
+//   useEffect(() => {
+//     // When initial state username is not null, submit the form to load repos
+//     if (props.username && props.username.trim().length > 0) {
+//       props.onSubmitForm();
+//     }
+//   }, []);
+
+  const content = ( 
+      props.authenticated ? 
+      <Drawer /> :
+      <Redirect to='/login' />
+  )
 
   return (
     <div>
-      <Drawer />
+      {content}
     </div>
   );
 }
@@ -81,10 +89,11 @@ export function mapDispatchToProps(
 
 // Map RootState to your StateProps
 const mapStateToProps = createStructuredSelector<RootState, StateProps>({
-  repos: makeSelectRepos(),
-  username: makeSelectUsername(),
-  loading: makeSelectLoading(),
-  error: makeSelectError(),
+//   repos: makeSelectRepos(),
+//   username: makeSelectUsername(),
+//   loading: makeSelectLoading(),
+//   error: makeSelectError(),
+    authenticated: makeSelectAuthenticated()
 });
 
 const withConnect = connect(

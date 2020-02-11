@@ -41,8 +41,6 @@ export default function App() {
           <Route path={routePath.reportHistoryPath} component={HistoryPage} />
           <Route path={routePath.profilePath} component={Profile} />
         </HomePage>
-        <Route exact path={routePath.mainPath} component={HomePage} />
-
         <Route path="" component={NotFoundPage} />
       </Switch>
       <GlobalStyle />
