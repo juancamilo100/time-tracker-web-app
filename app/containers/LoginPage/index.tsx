@@ -5,8 +5,9 @@ import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
 import { createStructuredSelector } from 'reselect';
 import { RootState } from './types';
-import makeSelectLoginPage from './selectors';
+import selectAuthenticated from './selectors';
 import reducer from './reducer';
+// import appReducer from '../App/reducer';
 import saga from './saga';
 import img from './loginPic.jpg';
 import LoginForm from '../../components/LoginForm';
@@ -15,7 +16,10 @@ import { useStyles } from './styles';
 import { authActionStart } from './actions';
 
 interface OwnProps {}
-interface StateProps {}
+interface StateProps {
+    authenticated: boolean;
+}
+
 interface DispatchProps {
     onAuthenticate: (email: string, password: string) => void;
     dispatch: Dispatch;
@@ -23,14 +27,20 @@ interface DispatchProps {
 
 type Props = StateProps & DispatchProps & OwnProps;
 
-const key = 'home';
+const keyLoginPage = 'loginPage';
+// const keyGlobal = 'global';
 
 export function LoginPage(props: Props) {
-  useInjectReducer({ key: key, reducer: reducer });
-  useInjectSaga({ key: key, saga: saga });
+  useInjectReducer({ key: keyLoginPage, reducer: reducer });
+//   useInjectReducer({ key: keyGlobal, reducer: appReducer });
+  useInjectSaga({ key: keyLoginPage, saga: saga });
+
   const classes = useStyles();
-    console.log("Rendering Login Page");
-    
+    console.log("Rendering LoginPage with props:");
+    console.log(props);
+    if(props.authenticated) {
+
+    }
   return (
     <div className={classes.container}>
       <div className={classes.leftItem}>
@@ -53,7 +63,7 @@ export function LoginPage(props: Props) {
 
 // Map RootState to your StateProps
 const mapStateToProps = createStructuredSelector<RootState, StateProps>({
-  loginPage: makeSelectLoginPage(),
+  authenticated: selectAuthenticated(),
 });
 
 // Map Disptach to your DispatchProps

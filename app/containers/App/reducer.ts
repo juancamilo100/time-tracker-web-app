@@ -1,5 +1,5 @@
 import { ContainerState, ContainerActions } from './types';
-// import ActionTypes from './constants';
+import ActionTypes from './constants';
 
 // The initial state of the App
 export const initialState: ContainerState = {
@@ -19,14 +19,14 @@ function appReducer(
   action: ContainerActions,
 ): ContainerState {
   switch (action.type) {
-    // case ActionTypes.AUTH_ACTION_SUCCESS:
-    //     console.log("Successfully authenticated!");
-    //     console.log(action.payload);
-    //     return {
-    //         ...state, 
-    //         authenticated: action.payload.auth,
-    //         token: action.payload.token
-    //     };
+    case ActionTypes.AUTH_ACTION_SUCCESS:
+        console.log("Successfully authenticated!");
+        console.log(action.payload);
+        return {
+            ...state, 
+            authenticated: action.payload.auth,
+            token: action.payload.token
+        };
     default:
       return state;
   }

@@ -6,12 +6,9 @@
 
 // import ActionTypes from './constants';
 import { ContainerState, ContainerActions } from './types';
-import ActionTypes from './constants';
+// import ActionTypes from './constants';
 
 export const initialState: ContainerState = {
-  default: null,
-  authenticated: false,
-  token: ""
 };
 
 function loginPageReducer(
@@ -19,14 +16,14 @@ function loginPageReducer(
   action: ContainerActions,
 ): ContainerState {
   switch (action.type) {
-    case ActionTypes.AUTH_ACTION_SUCCESS:
-        console.log("Successfully authenticated!");
-        console.log(action.payload);
-        return {
-            ...state, 
-            authenticated: action.payload.auth,
-            token: action.payload.token
-        };
+    // case ActionTypes.AUTH_ACTION_SUCCESS:
+    //     console.log("Successfully authenticated!");
+    //     console.log(action.payload);
+    //     return {
+    //         ...state, 
+    //         authenticated: action.payload.auth,
+    //         token: action.payload.token
+    //     };
     default:
       return state;
   }

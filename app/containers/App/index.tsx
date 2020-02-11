@@ -27,6 +27,8 @@ const AppWrapper = styled.div`
 `;
 
 export default function App() {
+    console.log("Rendering App");
+    
   return (
     <AppWrapper>
       <Helmet titleTemplate="%s - Time Tracker" defaultTitle="Time Tracker">

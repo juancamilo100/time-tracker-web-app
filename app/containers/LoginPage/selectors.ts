@@ -18,13 +18,21 @@ const selectLoginPageDomain = (state: ApplicationRootState) => {
  * Default selector used by LoginPage
  */
 
-const selectLoginPage = () =>
-  createSelector(
-    selectLoginPageDomain,
-    substate => {
-      return substate;
-    },
-  );
+const selectAuthenticated = () =>
+createSelector(
+  selectLoginPageDomain,
+  substate => {
+    return substate.global.authenticated;
+  },
+);
 
-export default selectLoginPage;
+// const selectLoginPage = () =>
+//   createSelector(
+//     selectLoginPageDomain,
+//     substate => {
+//       return substate;
+//     },
+//   );
+
+export default selectAuthenticated;
 export { selectLoginPageDomain };

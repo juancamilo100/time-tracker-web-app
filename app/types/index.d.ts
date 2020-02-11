@@ -3,6 +3,7 @@ import { RouterState } from 'connected-react-router';
 import { ILanguageProviderProps } from 'containers/LanguageProvider';
 import { ContainerState as AppState } from 'containers/App/types';
 import { ContainerState as HomeState } from 'containers/HomePage/types';
+import { ContainerState as LoginPageState } from 'containers/LoginPage/types';
 
 export interface LifeStore extends Store {
   injectedReducers: any;
@@ -27,6 +28,7 @@ export interface ApplicationRootState {
   readonly global: AppState;
   readonly language: ILanguageProviderProps;
   readonly home: HomeState;
+  readonly loginPage: LoginPageState;
   // for testing purposes
   readonly test: any;
 }
