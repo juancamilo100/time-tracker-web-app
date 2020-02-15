@@ -6,7 +6,6 @@ import { useInjectReducer } from 'utils/injectReducer';
 import { createStructuredSelector } from 'reselect';
 import { RootState } from './types';
 import reducer from './reducer';
-// import appReducer from '../App/reducer';
 import saga from './saga';
 import img from './loginPic.jpg';
 import LoginForm from '../../components/LoginForm';

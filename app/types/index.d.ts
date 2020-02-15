@@ -29,6 +29,4 @@ export interface ApplicationRootState {
   readonly language: ILanguageProviderProps;
   readonly home: HomeState;
   readonly loginPage: LoginPageState;
-  // for testing purposes
-  readonly test: any;
 }
