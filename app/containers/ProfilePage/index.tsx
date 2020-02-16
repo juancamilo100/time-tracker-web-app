@@ -5,14 +5,14 @@
  */
 
 import React from 'react';
-// import { connect } from 'react-redux';
-// import { compose, Dispatch } from 'redux';
+import { connect } from 'react-redux';
+import { compose, Dispatch } from 'redux';
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
-// import { createStructuredSelector } from 'reselect';
-// import makeSelectProfile from './selectors';
+import { createStructuredSelector } from 'reselect';
+import makeSelectProfile from './selectors';
 import reducer from './reducer';
-// import { RootState } from './types';
+import { RootState } from './types';
 import saga from './saga';
 import ProfileAvatar from '../../components/ProfileAvatar';
 import { makeStyles } from '@material-ui/core/styles';
@@ -21,6 +21,7 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+import { memo } from 'react';
 
 const useStyles = makeStyles({
   center:{
@@ -44,19 +45,19 @@ const useStyles = makeStyles({
   },
 });
 
-// interface OwnProps {}
+interface OwnProps {}
 
-// interface StateProps {}
+interface StateProps {}
 
-// interface DispatchProps {
-//   dispatch: Dispatch;
-// }
+interface DispatchProps {
+  dispatch: Dispatch;
+}
 
-// type Props = StateProps & DispatchProps & OwnProps;
+type Props = StateProps & DispatchProps & OwnProps;
 
-const key = 'home';
+const key = 'profilePage';
 
-export function Profile() {
+export function ProfilePage(props: Props) {
   useInjectReducer({ key: key, reducer: reducer });
   useInjectSaga({ key: key, saga: saga });
 
@@ -89,23 +90,23 @@ export function Profile() {
 }
 
 // Map RootState to your StateProps
-// const mapStateToProps = createStructuredSelector<RootState, StateProps>({
-//   profile: makeSelectProfile(),
-// });
+const mapStateToProps = createStructuredSelector<RootState, StateProps>({
+  profile: makeSelectProfile(),
+});
 
 // Map Disptach to your DispatchProps
-// function mapDispatchToProps(
-//   dispatch: Dispatch,
-//   ownProps: OwnProps,
-// ): DispatchProps {
-//   return {
-//     dispatch: dispatch,
-//   };
-// }
+function mapDispatchToProps(
+  dispatch: Dispatch,
+  ownProps: OwnProps,
+): DispatchProps {
+  return {
+    dispatch: dispatch,
+  };
+}
 
-// const withConnect = connect(
-//   mapStateToProps,
-//   mapDispatchToProps,
-// );
+const withConnect = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+);
 
-export default  Profile;
+export default  compose(withConnect, memo)(ProfilePage);

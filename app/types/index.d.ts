@@ -4,6 +4,8 @@ import { ILanguageProviderProps } from 'containers/LanguageProvider';
 import { ContainerState as AppState } from 'containers/App/types';
 import { ContainerState as HomeState } from 'containers/HomePage/types';
 import { ContainerState as LoginPageState } from 'containers/LoginPage/types';
+import { ContainerState as HistoryPageState } from 'containers/HistoryPage/types';
+import { ContainerState as ProfilePageState } from 'containers/ProfilePage/types';
 
 export interface LifeStore extends Store {
   injectedReducers: any;
@@ -29,4 +31,6 @@ export interface ApplicationRootState {
   readonly language: ILanguageProviderProps;
   readonly home: HomeState;
   readonly loginPage: LoginPageState;
+  readonly historyPage: HistoryPageState;
+  readonly profilePage: ProfilePageState;
 }

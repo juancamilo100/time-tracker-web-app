@@ -25,15 +25,3 @@ function profileReducer(
 
 export default profileReducer;
 
-// import { combineReducers } from 'redux';
-
-// export default combineReducers<ContainerState, ContainerActions>({
-//   default: (state = initialState, action) => {
-//     switch (action.type) {
-//       case ActionTypes.DEFAULT_ACTION:
-//         return 'state';
-//       default:
-//         return state;
-//     }
-//   },
-// });

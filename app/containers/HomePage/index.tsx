@@ -24,7 +24,8 @@ import { makeSelectDrawerOpen } from './selectors';
 import { toggleDrawerState } from './actions';
 import FeaturePage from 'containers/FeaturePage';
 import { HistoryPage } from '../HistoryPage/index';
-import { Profile } from 'containers/Profile';
+import { ProfilePage } from 'containers/ProfilePage';
+import { logout } from 'containers/App/actions';
 
 // tslint:disable-next-line:no-empty-interface
 interface OwnProps {}
@@ -36,6 +37,7 @@ interface StateProps {
 
 interface DispatchProps {
   onToggleDrawerState(): void;
+  onLogout(): void;
 }
 
 type Props = StateProps & DispatchProps & OwnProps;
@@ -50,7 +52,11 @@ export function HomePage(props: Props) {
   useInjectReducer({ key: key, reducer: reducer });
   useInjectSaga({ key: key, saga: saga });
 
-  const layout = (
+  if(!props.authenticated) {
+      return <Redirect to="/login" />
+  }
+
+  return (
     <>
       <AppBar
         position="fixed"
@@ -76,7 +82,7 @@ export function HomePage(props: Props) {
           </Typography>
           <Button
             color="inherit"
-            onClick={() => {}}
+            onClick={props.onLogout}
             component={Link}
             to={routePath.loginPath}
           >
@@ -88,7 +94,7 @@ export function HomePage(props: Props) {
         toggleDrawerState={props.onToggleDrawerState}
         open={props.drawerOpen}
       />
-      <main
+      <div
         className={clsx(classes.content, {
           [classes.contentShift]: props.drawerOpen,
         })}
@@ -96,15 +102,11 @@ export function HomePage(props: Props) {
         <Switch>
           <Route path={routePath.featuresPath} component={FeaturePage} />
           <Route path={routePath.reportHistoryPath} component={HistoryPage} />
-          <Route path={routePath.profilePath} component={Profile} />
+          <Route path={routePath.profilePath} component={ProfilePage} />
         </Switch>
-      </main>
+      </div>
     </>
-  );
-
-  const content = props.authenticated ? layout : <Redirect to="/login" />;
-
-  return content;
+  );;
 }
 
 // Map Disptach to your DispatchProps
@@ -114,6 +116,7 @@ export function mapDispatchToProps(
 ): DispatchProps {
   return {
     onToggleDrawerState: () => dispatch(toggleDrawerState()),
+    onLogout: () => dispatch(logout()),
   };
 }
 

@@ -8,7 +8,8 @@
  */
 
 enum ActionTypes {
-  AUTH_ACTION_SUCCESS = 'boilerplate/App/AUTH_ACTION_SUCCESS'
+  AUTH_ACTION_SUCCESS = 'boilerplate/App/AUTH_ACTION_SUCCESS',
+  LOGOUT = 'boilerplate/App/LOGOUT'
 }
 
 export default ActionTypes;

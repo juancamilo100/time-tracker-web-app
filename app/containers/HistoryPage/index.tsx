@@ -37,7 +37,7 @@ interface DispatchProps {
 
 type Props = StateProps & DispatchProps & OwnProps;
 
-const key = 'home';
+const key = 'historyPage';
 
 export function HistoryPage(props: Props) {
   useInjectReducer({ key: key, reducer: reducer });

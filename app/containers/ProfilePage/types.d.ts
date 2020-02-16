@@ -3,7 +3,7 @@ import * as actions from './actions';
 import { ApplicationRootState } from 'types';
 
 /* --- STATE --- */
-interface ProfileState {
+interface ProfilePageState {
   readonly default: any;
 }
 
@@ -13,7 +13,7 @@ type ProfileActions = ActionType<typeof actions>;
 /* --- EXPORTS --- */
 
 type RootState = ApplicationRootState;
-type ContainerState = ProfileState;
+type ContainerState = ProfilePageState;
 type ContainerActions = ProfileActions;
 
 export { RootState, ContainerState, ContainerActions };

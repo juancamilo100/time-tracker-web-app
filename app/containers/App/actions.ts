@@ -5,3 +5,5 @@ import ActionTypes from './constants';
 
 export const authActionSuccess = (auth: boolean, token: string) =>
   action(ActionTypes.AUTH_ACTION_SUCCESS, { auth, token });
+export const logout = () =>
+  action(ActionTypes.LOGOUT);

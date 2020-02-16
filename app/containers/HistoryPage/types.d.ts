@@ -3,7 +3,7 @@ import * as actions from './actions';
 import { ApplicationRootState } from 'types';
 
 /* --- STATE --- */
-interface HistoryState {
+interface HistoryPageState {
   readonly default: any;
 }
 
@@ -13,7 +13,7 @@ type HistoryActions = ActionType<typeof actions>;
 /* --- EXPORTS --- */
 
 type RootState = ApplicationRootState;
-type ContainerState = HistoryState;
+type ContainerState = HistoryPageState;
 type ContainerActions = HistoryActions;
 
 export { RootState, ContainerState, ContainerActions };

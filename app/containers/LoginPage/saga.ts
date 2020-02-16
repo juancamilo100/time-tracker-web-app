@@ -24,7 +24,9 @@ export function* authenticate(action: ContainerActions) {
     
   try {
     const response = yield call(postRequest, requestURL, requestBody, requestHeaders);
-    console.log(response);
+    // console.log(response);
+    console.log("Calling AuthActionSuccess action!");
+    
     yield put(authActionSuccess(response.auth, response.token));
   } catch (err) {
     yield put(authActionError(err));
