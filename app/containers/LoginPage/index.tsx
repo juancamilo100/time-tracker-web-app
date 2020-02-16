@@ -38,7 +38,7 @@ export function LoginPage(props: Props) {
   console.log(props);
   if(props.authenticated) {
     return (
-        <Redirect to='/' />
+        <Redirect to='/main' />
     )
   } 
   return (

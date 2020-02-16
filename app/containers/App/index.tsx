@@ -11,13 +11,14 @@ import { Helmet } from 'react-helmet';
 import styled from 'styles/styled-components';
 import { Switch, Route } from 'react-router-dom';
 import HomePage from 'containers/HomePage/Loadable';
-import FeaturePage from 'containers/FeaturePage/Loadable';
-import Profile from 'containers/Profile';
+// import FeaturePage from 'containers/FeaturePage/Loadable';
+// import Profile from 'containers/Profile/Loadable';
 import NotFoundPage from 'containers/NotFoundPage/Loadable';
 import GlobalStyle from '../../global-styles';
 import { routePath } from 'config';
-import { HistoryPage } from 'containers/HistoryPage';
+// import  HistoryPage from 'containers/HistoryPage/Loadable';
 import LoginPage from 'containers/LoginPage';
+// import { Redirect } from 'react-router-dom';
 
 const AppWrapper = styled.div`
   margin: 0 auto;
@@ -35,12 +36,8 @@ export default function App() {
         <meta name="description" content="Time Tracker Application" />
       </Helmet>
       <Switch>
+        <Route path={routePath.mainPath} component={HomePage} />
         <Route path={routePath.loginPath} component={LoginPage} />
-        <HomePage>
-          <Route path={routePath.featuresPath} component={FeaturePage} />
-          <Route path={routePath.reportHistoryPath} component={HistoryPage} />
-          <Route path={routePath.profilePath} component={Profile} />
-        </HomePage>
         <Route path="" component={NotFoundPage} />
       </Switch>
       <GlobalStyle />

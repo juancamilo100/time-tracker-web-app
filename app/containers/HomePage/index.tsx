@@ -9,7 +9,7 @@ import saga from './saga';
 import { RootState } from './types';
 import Drawer from '../../components/Drawer';
 import { makeSelectAuthenticated } from 'containers/App/selectors';
-import { Redirect } from 'react-router-dom';
+import { Redirect, Switch, Route } from 'react-router-dom';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
@@ -22,6 +22,9 @@ import { routePath } from 'config';
 import clsx from 'clsx';
 import { makeSelectDrawerOpen } from './selectors';
 import { toggleDrawerState } from './actions';
+import FeaturePage from 'containers/FeaturePage';
+import { HistoryPage } from '../HistoryPage/index';
+import { Profile } from 'containers/Profile';
 
 // tslint:disable-next-line:no-empty-interface
 interface OwnProps {}
@@ -40,10 +43,9 @@ type Props = StateProps & DispatchProps & OwnProps;
 const key = 'home';
 
 export function HomePage(props: Props) {
-    console.log("Rendering home page!");
-    console.log(props);
-    
-    
+  console.log('Rendering home page!');
+  console.log(props);
+
   const classes = useStyles();
   useInjectReducer({ key: key, reducer: reducer });
   useInjectSaga({ key: key, saga: saga });
@@ -53,7 +55,7 @@ export function HomePage(props: Props) {
       <AppBar
         position="fixed"
         className={clsx(classes.appBar, {
-        [classes.appBarShift]: props.drawerOpen,
+          [classes.appBarShift]: props.drawerOpen,
         })}
       >
         <Toolbar className={classes.toolbar}>
@@ -62,7 +64,10 @@ export function HomePage(props: Props) {
             aria-label="open drawer"
             onClick={props.onToggleDrawerState}
             edge="start"
-            className={clsx(classes.menuButton, props.drawerOpen && classes.hide)}
+            className={clsx(
+              classes.menuButton,
+              props.drawerOpen && classes.hide,
+            )}
           >
             <MenuIcon />
           </IconButton>
@@ -79,7 +84,21 @@ export function HomePage(props: Props) {
           </Button>
         </Toolbar>
       </AppBar>
-      <Drawer toggleDrawerState={props.onToggleDrawerState} open={props.drawerOpen} />
+      <Drawer
+        toggleDrawerState={props.onToggleDrawerState}
+        open={props.drawerOpen}
+      />
+      <main
+        className={clsx(classes.content, {
+          [classes.contentShift]: props.drawerOpen,
+        })}
+      >
+        <Switch>
+          <Route path={routePath.featuresPath} component={FeaturePage} />
+          <Route path={routePath.reportHistoryPath} component={HistoryPage} />
+          <Route path={routePath.profilePath} component={Profile} />
+        </Switch>
+      </main>
     </>
   );
 

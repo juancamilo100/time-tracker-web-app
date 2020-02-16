@@ -1,6 +1,6 @@
 import React from 'react';
-import { Link, Route, Switch } from 'react-router-dom';
-import clsx from 'clsx';
+import { Link  } from 'react-router-dom';
+// import clsx from 'clsx';
 import { useTheme } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -16,9 +16,9 @@ import FaceIcon from '@material-ui/icons/Face';
 import TimeIcon from '@material-ui/icons/AlarmOn';
 import ReportsIcon from '@material-ui/icons/Description';
 import { routePath } from 'config';
-import FeaturePage from 'containers/FeaturePage';
-import { HistoryPage } from 'containers/HistoryPage';
-import { Profile } from 'containers/Profile';
+// import FeaturePage from 'containers/FeaturePage';
+// import { HistoryPage } from 'containers/HistoryPage';
+// import { Profile } from 'containers/Profile';
 import { useStyles } from './styles';
 
 interface OwnProps {
@@ -98,7 +98,7 @@ export default function PersistentDrawerLeft(props: Props) {
           </ListItem>
         </List>
       </Drawer>
-      <main
+      {/* <main
         className={clsx(classes.content, {
           [classes.contentShift]: open,
         })}
@@ -109,7 +109,7 @@ export default function PersistentDrawerLeft(props: Props) {
           <Route path={routePath.reportHistoryPath} component={HistoryPage} />
           <Route path={routePath.profilePath} component={Profile} />
         </Switch>
-      </main>
+      </main> */}
     </div>
   );
 }
