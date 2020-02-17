@@ -45,9 +45,6 @@ type Props = StateProps & DispatchProps & OwnProps;
 const key = 'home';
 
 export function HomePage(props: Props) {
-  console.log('Rendering home page!');
-  console.log(props);
-
   const classes = useStyles();
   useInjectReducer({ key: key, reducer: reducer });
   useInjectSaga({ key: key, saga: saga });

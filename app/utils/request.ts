@@ -51,10 +51,6 @@ export default function request(url: string, options?: RequestInit): Promise<{ }
 }
 
 export function postRequest(url, requestBody, requestHeaders = {}) {
-    console.log(`Headers:`);
-    console.log(requestHeaders);
-    
-    
     return fetch(url, {
       method: 'POST',
       body: JSON.stringify(requestBody),

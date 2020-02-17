@@ -1,5 +1,5 @@
 import { ContainerState, ContainerActions } from './types';
-import ActionTypes from './constants';
+import ActionTypes, { JWT_SESSION_STORAGE_NAME } from './constants';
 
 // The initial state of the App
 export const initialState: ContainerState = {
@@ -10,24 +10,20 @@ export const initialState: ContainerState = {
   token: '',
 };
 
-// Take this container's state (as a slice of root state), this container's actions and return new state
 function appReducer(
   state: ContainerState = initialState,
   action: ContainerActions,
 ): ContainerState {
-    console.log("Calling APP reducer with action: ");
-    console.log(action);
   switch (action.type) {
-      
     case ActionTypes.AUTH_ACTION_SUCCESS:
-        console.log("Successfully authenticated!");
-        console.log(action.payload);
+        sessionStorage.setItem(JWT_SESSION_STORAGE_NAME, action.payload.token);
         return {
             ...state, 
             authenticated: action.payload.auth,
             token: action.payload.token
         };
     case ActionTypes.LOGOUT:
+        sessionStorage.setItem(JWT_SESSION_STORAGE_NAME, '');
         return {
             ...state, 
             authenticated: false,

@@ -262,8 +262,6 @@ export default () => {
     setSelectedDate(date);
   };
 
-  console.log("Rendering Feature Page!");
-  
   return (
     <div>
       <Paper>

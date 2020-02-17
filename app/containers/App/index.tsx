@@ -1,24 +1,19 @@
-/**
- *
- * App
- *
- * This component is the skeleton around the actual pages, and should only
- * contain code that should be seen on all pages. (e.g. navigation bar)
- */
-
 import * as React from 'react';
 import { Helmet } from 'react-helmet';
 import styled from 'styles/styled-components';
 import { Switch, Route } from 'react-router-dom';
 import HomePage from 'containers/HomePage/Loadable';
-// import FeaturePage from 'containers/FeaturePage/Loadable';
-// import Profile from 'containers/Profile/Loadable';
 import NotFoundPage from 'containers/NotFoundPage/Loadable';
 import GlobalStyle from '../../global-styles';
 import { routePath } from 'config';
-// import  HistoryPage from 'containers/HistoryPage/Loadable';
 import LoginPage from 'containers/LoginPage';
-// import { Redirect } from 'react-router-dom';
+import { JWT_SESSION_STORAGE_NAME } from './constants';
+import { Dispatch, compose } from 'redux';
+import { logout } from 'containers/App/actions';
+import { createStructuredSelector } from 'reselect';
+import { RootState } from 'containers/App/types';
+import { connect } from 'react-redux';
+import { authActionSuccess } from './actions';
 
 const AppWrapper = styled.div`
   margin: 0 auto;
@@ -27,9 +22,25 @@ const AppWrapper = styled.div`
   flex-direction: column;
 `;
 
-export default function App() {
-    console.log("Rendering App");
-    
+interface OwnProps {}
+interface StateProps {}
+
+interface DispatchProps {
+    onTokenMissing(): void;
+    onTokenPresent(auth: boolean, token: string): void;
+}
+
+type Props = StateProps & DispatchProps & OwnProps;
+
+function App(props: Props) {
+  let token = sessionStorage.getItem(JWT_SESSION_STORAGE_NAME);
+  
+  if (!token) {
+    props.onTokenMissing();
+  } else {
+    props.onTokenPresent(true, token);
+  }
+
   return (
     <AppWrapper>
       <Helmet titleTemplate="%s - Time Tracker" defaultTitle="Time Tracker">
@@ -44,3 +55,22 @@ export default function App() {
     </AppWrapper>
   );
 }
+
+export function mapDispatchToProps(
+  dispatch: Dispatch,
+  ownProps: OwnProps,
+): DispatchProps {
+  return {
+    onTokenMissing: () => dispatch(logout()),
+    onTokenPresent: (auth: boolean, token: string) => dispatch(authActionSuccess(auth, token)),
+  };
+}
+
+const mapStateToProps = createStructuredSelector<RootState, StateProps>({});
+
+const withConnect = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+);
+
+export default compose(withConnect)(App);

@@ -19,13 +19,8 @@ export function* authenticate(action: ContainerActions) {
     const requestHeaders = {
         "content-type": "application/json"
     }
-    console.log("Called auth saga!");
-    console.log(action.payload);
-    
   try {
     const response = yield call(postRequest, requestURL, requestBody, requestHeaders);
-    // console.log(response);
-    console.log("Calling AuthActionSuccess action!");
     
     yield put(authActionSuccess(response.auth, response.token));
   } catch (err) {

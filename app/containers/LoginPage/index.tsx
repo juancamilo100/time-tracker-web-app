@@ -34,8 +34,6 @@ export function LoginPage(props: Props) {
   useInjectSaga({ key: keyLoginPage, saga: saga });
 
   const classes = useStyles();
-  console.log("Rendering LoginPage with props:");
-  console.log(props);
   if(props.authenticated) {
     return (
         <Redirect to='/main' />

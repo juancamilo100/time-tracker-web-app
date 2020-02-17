@@ -12,4 +12,6 @@ enum ActionTypes {
   LOGOUT = 'boilerplate/App/LOGOUT'
 }
 
+export const JWT_SESSION_STORAGE_NAME = 'jwtToken';
+
 export default ActionTypes;

@@ -13,9 +13,6 @@ function homeReducer(
 ): ContainerState {
   switch (action.type) {
     case ActionTypes.TOGGLE_DRAWER_STATE:
-        console.log("Toggling drawer!!");
-        console.log(state.drawerOpen);
-        
         return {
             ...state,
             drawerOpen: !state.drawerOpen
