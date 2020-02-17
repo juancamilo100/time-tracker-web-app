@@ -14,6 +14,7 @@ import { useStyles } from './styles';
 import { authActionStart } from './actions';
 import { makeSelectAuthenticated, makeSelectAuthFailed } from 'containers/App/selectors';
 import { Redirect } from 'react-router-dom';
+import MenuBar from '../../components/MenuBar';
 
 interface OwnProps {}
 interface StateProps {
@@ -42,7 +43,9 @@ export function LoginPage(props: Props) {
     return <Redirect to="/main" />;
   }
   return (
-    <div className={classes.container}>
+    <div>
+      <MenuBar></MenuBar>
+      <div className={classes.container}>
       <div className={classes.leftItem}>
         <H1>Welcome</H1>
         <H1>
@@ -60,6 +63,7 @@ export function LoginPage(props: Props) {
         <img src={img} className={classes.circleImage} />
         <span className={classes.greenColoredCircle} />
       </div>
+    </div>
     </div>
   );
 }
