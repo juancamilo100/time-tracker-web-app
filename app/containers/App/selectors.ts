@@ -13,9 +13,6 @@ const selectRoute = (state: ApplicationRootState) => {
   return state.router;
 };
 
-const makeSelectCurrentUser = () =>
-  createSelector(selectGlobal, globalState => globalState.currentUser);
-
 const makeSelectLoading = () =>
   createSelector(selectGlobal, globalState => globalState.loading);
 
@@ -25,14 +22,17 @@ const makeSelectError = () =>
 const makeSelectAuthenticated = () =>
   createSelector(selectGlobal, globalState => globalState.authenticated);
 
+const makeSelectAuthFailed = () =>
+  createSelector(selectGlobal, globalState => globalState.authFailed);
+
 const makeSelectLocation = () =>
   createSelector(selectRoute, routeState => routeState.location);
 
 export {
   selectGlobal,
-  makeSelectCurrentUser,
   makeSelectLoading,
   makeSelectError,
   makeSelectAuthenticated,
+  makeSelectAuthFailed,
   makeSelectLocation,
 };

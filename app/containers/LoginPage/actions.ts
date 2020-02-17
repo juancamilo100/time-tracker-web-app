@@ -19,10 +19,3 @@ export const authActionStart = (email: string, password: string) => {
     )
 }
 
-export const authActionError = (payload: any) => {
-    return action(
-        ActionTypes.AUTH_ACTION_ERROR,
-        payload
-    )
-}
-

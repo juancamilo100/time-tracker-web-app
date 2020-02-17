@@ -9,6 +9,7 @@
 
 enum ActionTypes {
   AUTH_ACTION_SUCCESS = 'boilerplate/App/AUTH_ACTION_SUCCESS',
+  AUTH_ACTION_ERROR = 'boilerplate/App/AUTH_ACTION_ERROR',
   LOGOUT = 'boilerplate/App/LOGOUT'
 }
 

@@ -5,8 +5,8 @@ import ActionTypes, { JWT_SESSION_STORAGE_NAME } from './constants';
 export const initialState: ContainerState = {
   loading: false,
   error: false,
-  currentUser: '',
   authenticated: false,
+  authFailed: false,
   token: '',
 };
 
@@ -16,19 +16,26 @@ function appReducer(
 ): ContainerState {
   switch (action.type) {
     case ActionTypes.AUTH_ACTION_SUCCESS:
-        sessionStorage.setItem(JWT_SESSION_STORAGE_NAME, action.payload.token);
-        return {
-            ...state, 
-            authenticated: action.payload.auth,
-            token: action.payload.token
-        };
+      sessionStorage.setItem(JWT_SESSION_STORAGE_NAME, action.payload.token);
+      return {
+        ...state,
+        authenticated: action.payload.auth,
+        authFailed: false,
+        token: action.payload.token,
+      };
+    case ActionTypes.AUTH_ACTION_ERROR:
+      return {
+        ...state,
+        authFailed: true,
+      };
     case ActionTypes.LOGOUT:
-        sessionStorage.setItem(JWT_SESSION_STORAGE_NAME, '');
-        return {
-            ...state, 
-            authenticated: false,
-            token: ""
-        };
+      sessionStorage.setItem(JWT_SESSION_STORAGE_NAME, '');
+      return {
+        ...state,
+        authenticated: false,
+        authFailed: false,
+        token: '',
+      };
     default:
       return state;
   }

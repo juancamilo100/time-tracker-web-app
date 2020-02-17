@@ -4,6 +4,7 @@ import { ApplicationRootState } from 'types';
 
 /* --- STATE --- */
 interface LoginPageState {
+    authFailed: boolean
 }
 
 /* --- ACTIONS --- */

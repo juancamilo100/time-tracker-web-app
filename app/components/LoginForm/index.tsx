@@ -1,14 +1,7 @@
-/**
- *
- * LoginForm
- *
- */
 import React, { useState } from 'react';
-// import { Link } from 'react-router-dom';
 import { Grid } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
-// import { routePath } from 'config';
 import Checkbox, { CheckboxProps } from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import { withStyles } from '@material-ui/core/styles';
@@ -31,6 +24,7 @@ interface OwnProps {
     onAuthenticate(email: string, password: string): void;
     username?: string;
     password?: string;
+    authFailed: boolean;
 }
 
 type Props = OwnProps & StateProps;
@@ -60,6 +54,7 @@ function LoginForm(props: Props) {
           autoComplete="current-password"
           onChange={(event) => { setPassword(event.target.value) }}
         />
+        {props.authFailed ? <div className={classes.authError}>Invalid username and/or password</div> : null}
       </Grid>
       <Grid className={classes.grid}>
         <span className={classes.coloredText}>Forgot your password? </span>

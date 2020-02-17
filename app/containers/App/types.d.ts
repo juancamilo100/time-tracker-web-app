@@ -7,8 +7,8 @@ interface AppState {
   readonly loading: boolean;
   readonly error: object | boolean;
   readonly authenticated: boolean;
+  readonly authFailed: boolean;
   readonly token: string;
-  readonly currentUser: string;
 }
 
 /* --- ACTIONS --- */

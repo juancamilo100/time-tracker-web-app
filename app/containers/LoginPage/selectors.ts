@@ -1,5 +1,6 @@
 import { ApplicationRootState } from 'types';
 import { initialState } from './reducer';
+import { createSelector } from 'reselect';
 
 /**
  * Direct selector to the loginPage state domain
@@ -16,4 +17,4 @@ const selectLoginPage = (state: ApplicationRootState) => {
 /**
  * Default selector used by LoginPage
  */
-export default selectLoginPage;
+export { selectLoginPage };

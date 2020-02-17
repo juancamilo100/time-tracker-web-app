@@ -12,17 +12,18 @@ import LoginForm from '../../components/LoginForm';
 import H1 from '../../components/H1';
 import { useStyles } from './styles';
 import { authActionStart } from './actions';
-import { makeSelectAuthenticated } from 'containers/App/selectors';
+import { makeSelectAuthenticated, makeSelectAuthFailed } from 'containers/App/selectors';
 import { Redirect } from 'react-router-dom';
 
 interface OwnProps {}
 interface StateProps {
-    authenticated: boolean;
+  authFailed: boolean;
+  authenticated: boolean;
 }
 
 interface DispatchProps {
-    onAuthenticate: (email: string, password: string) => void;
-    dispatch: Dispatch;
+  onAuthenticate: (email: string, password: string) => void;
+  dispatch: Dispatch;
 }
 
 type Props = StateProps & DispatchProps & OwnProps;
@@ -30,47 +31,49 @@ type Props = StateProps & DispatchProps & OwnProps;
 const keyLoginPage = 'loginPage';
 
 export function LoginPage(props: Props) {
+  console.log('Rendering Login Page:');
+  console.log(props);
+
   useInjectReducer({ key: keyLoginPage, reducer: reducer });
   useInjectSaga({ key: keyLoginPage, saga: saga });
 
   const classes = useStyles();
-  if(props.authenticated) {
-    return (
-        <Redirect to='/main' />
-    )
-  } 
+  if (props.authenticated) {
+    return <Redirect to="/main" />;
+  }
   return (
     <div className={classes.container}>
       <div className={classes.leftItem}>
         <H1>Welcome</H1>
-        <H1>to Lulosoft <span className={classes.orangeColor}>.</span> </H1>
+        <H1>
+          to Lulosoft <span className={classes.orangeColor}>.</span>{' '}
+        </H1>
         <div className={classes.text}>
-            <span className={classes.orangeColor}>Hi There!</span> Sing In below to continue
+          <span className={classes.orangeColor}>Hi There!</span> Sing In below
+          to continue
         </div>
-        
-        <LoginForm onAuthenticate={props.onAuthenticate} />
+
+        <LoginForm onAuthenticate={props.onAuthenticate} authFailed={props.authFailed}/>
       </div>
       <div>
-        <span className={classes.orangeColoredCircle}></span>
+        <span className={classes.orangeColoredCircle} />
         <img src={img} className={classes.circleImage} />
-        <span className={classes.greenColoredCircle}></span>
+        <span className={classes.greenColoredCircle} />
       </div>
-    </div>  
+    </div>
   );
 }
 
-// Map RootState to your StateProps
 const mapStateToProps = createStructuredSelector<RootState, StateProps>({
   authenticated: makeSelectAuthenticated(),
+  authFailed: makeSelectAuthFailed(),
 });
 
-// Map Disptach to your DispatchProps
-function mapDispatchToProps(
-  dispatch: Dispatch
-): DispatchProps {
+function mapDispatchToProps(dispatch: Dispatch): DispatchProps {
   return {
-    onAuthenticate: (email: string, password: string) => dispatch(authActionStart(email, password)),
-    dispatch: dispatch
+    onAuthenticate: (email: string, password: string) =>
+      dispatch(authActionStart(email, password)),
+    dispatch: dispatch,
   };
 }
 

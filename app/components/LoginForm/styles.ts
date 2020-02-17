@@ -58,4 +58,8 @@ export const useStyles = makeStyles({
         color: '#ee8133',
       },
     },
+    authError: {
+        color: '#cc0000',
+        paddingTop: '5px'
+    }
   });
