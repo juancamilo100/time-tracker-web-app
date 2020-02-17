@@ -1,6 +1,4 @@
-// import ActionTypes from './constants';
 import { ContainerState, ContainerActions } from './types';
-import ActionTypes from './constants';
 
 export const initialState: ContainerState = {
     authFailed: false

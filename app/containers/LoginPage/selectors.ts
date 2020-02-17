@@ -1,6 +1,5 @@
 import { ApplicationRootState } from 'types';
 import { initialState } from './reducer';
-import { createSelector } from 'reselect';
 
 /**
  * Direct selector to the loginPage state domain
