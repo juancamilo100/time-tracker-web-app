@@ -1,7 +1,6 @@
 import { ContainerState, ContainerActions } from './types';
 import ActionTypes, { JWT_SESSION_STORAGE_NAME } from './constants';
 
-// The initial state of the App
 export const initialState: ContainerState = {
   loading: false,
   error: false,

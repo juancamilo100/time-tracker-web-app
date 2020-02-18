@@ -72,7 +72,7 @@ function LoginForm(props: Props) {
           className={[classes.btn, classes.orangeButton].join(' ')}
           onClick={() => props.onAuthenticate(username, password)}
         >
-          SING IN
+          SIGN IN
         </Button>
       </div>
     </div>

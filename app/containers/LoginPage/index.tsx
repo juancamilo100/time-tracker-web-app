@@ -52,7 +52,7 @@ export function LoginPage(props: Props) {
           to Lulosoft <span className={classes.orangeColor}>.</span>{' '}
         </H1>
         <div className={classes.text}>
-          <span className={classes.orangeColor}>Hi There!</span> Sing In below
+          <span className={classes.orangeColor}>Hi There!</span> Sign In below
           to continue
         </div>
 
