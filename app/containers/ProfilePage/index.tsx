@@ -45,6 +45,7 @@ const useStyles = makeStyles({
 });
 
 interface StateProps {}
+interface OwnProps {}
 
 interface DispatchProps {
   dispatch: Dispatch;

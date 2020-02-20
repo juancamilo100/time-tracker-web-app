@@ -18,10 +18,10 @@ const GreenCheckbox = withStyles({
 })((props: CheckboxProps) => <Checkbox color="default" {...props} />);
 
 interface OwnProps {
-    onAuthenticate(email: string, password: string): void;
-    username?: string;
-    password?: string;
-    authFailed: boolean;
+  onAuthenticate(email: string, password: string): void;
+  username?: string;
+  password?: string;
+  authFailed: boolean;
 }
 
 type Props = OwnProps;
@@ -51,7 +51,11 @@ function LoginForm(props: Props) {
           autoComplete="current-password"
           onChange={useCallback((event) => { setPassword(event.target.value); }, [])}
         />
-        {props.authFailed ? <div className={classes.authError}>Invalid username and/or password</div> : null}
+        {props.authFailed ? (
+          <div className={classes.authError}>
+            Invalid username and/or password
+          </div>
+        ) : null}
       </Grid>
       <Grid className={classes.grid}>
         <span className={classes.coloredText}>Forgot your password? </span>
@@ -67,7 +71,10 @@ function LoginForm(props: Props) {
       <div className={classes.center}>
         <Button
           className={[classes.btn, classes.orangeButton].join(' ')}
-          onClick={useCallback(() => props.onAuthenticate(username, password), [])}
+          onClick={useCallback(
+            () => props.onAuthenticate(username, password),
+            [],
+          )}
         >
           SIGN IN
         </Button>
