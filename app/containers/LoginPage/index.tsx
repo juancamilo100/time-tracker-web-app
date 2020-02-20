@@ -44,7 +44,7 @@ export function LoginPage(props: Props) {
   }
   return (
     <div>
-      <MenuBar></MenuBar>
+      <MenuBar/>
       <div className={classes.container}>
       <div className={classes.leftItem}>
         <H1>Welcome</H1>

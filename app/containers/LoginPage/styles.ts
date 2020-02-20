@@ -12,7 +12,7 @@ export const useStyles = makeStyles({
       justifyContent: 'center',
       alignItems: 'center',
       marginLeft: '20px',
-      marginRight: '80px'
+      marginRight: '80px',
     },
     leftItem: {
       paddingRight: '70px',
@@ -22,7 +22,7 @@ export const useStyles = makeStyles({
       width: 200,
       fontSize: 12,
     },
-    circleImage:{
+    circleImage: {
       objectFit: 'cover',
       borderRadius: '50%',
       width: '450px',
@@ -30,18 +30,18 @@ export const useStyles = makeStyles({
     },
     orangeColoredCircle: {
       marginLeft: '50px',
-      position:'absolute',
+      position: 'absolute',
       width: '70px',
       height: '70px',
       backgroundColor: '#ee8133',
       borderRadius: '50%',
       display: 'inline-block',
-      boxShadow: '0px 0px 40px rgba(0,0,0,0.4)'
+      boxShadow: '0px 0px 40px rgba(0,0,0,0.4)',
     },
     orangeDot: {
       marginTop: '35px',
       marginLeft: '3px',
-      position:'absolute',
+      position: 'absolute',
       width: '13px',
       height: '13px',
       backgroundColor: '#ee8133',
@@ -49,21 +49,21 @@ export const useStyles = makeStyles({
     },
     greenColoredCircle: {
       marginLeft: '-90px',
-      marginBottom:'-200px',
+      marginBottom: '-200px',
       position: 'relative',
       width: '95px',
       height: '95px',
       backgroundColor: '#93d50f',
       borderRadius: '50%',
       display: 'inline-block',
-      boxShadow: '0px 0px 40px rgba(0,0,0,0.4)'
+      boxShadow: '0px 0px 40px rgba(0,0,0,0.4)',
     },
     orangeColor: {
       fontWeight: 'bold',
       color: '#ee8133',
     },
-    text:{
-      paddingTop:'20px',
-      paddingBottom:'30px'
-    }
+    text: {
+      paddingTop: '20px',
+      paddingBottom: '30px',
+    },
   });

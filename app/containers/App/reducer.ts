@@ -28,7 +28,7 @@ function appReducer(
         authFailed: true,
       };
     case ActionTypes.LOGOUT:
-      sessionStorage.setItem(JWT_SESSION_STORAGE_NAME, '');
+      sessionStorage.removeItem(JWT_SESSION_STORAGE_NAME);
       return {
         ...state,
         authenticated: false,

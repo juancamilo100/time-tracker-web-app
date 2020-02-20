@@ -13,9 +13,9 @@ export const authActionStart = (email: string, password: string) => {
     return action(
         ActionTypes.AUTH_ACTION_START,
         {
-            email,
-            password
-        }
-    )
-}
+            email: email,
+            password: password,
+        },
+    );
+};
 

@@ -49,9 +49,9 @@ export const useStyles = makeStyles({
       cursor: 'pointer',
     },
     orangeButton: {
-      background: '#ee8133',
-      color: 'white',
-  
+      'background': '#ee8133',
+      'color': 'white',
+
       '&:hover': {
         background: '#fafafa',
         borderColor: '#ee8133',
@@ -60,6 +60,6 @@ export const useStyles = makeStyles({
     },
     authError: {
         color: '#cc0000',
-        paddingTop: '5px'
-    }
+        paddingTop: '5px',
+    },
   });

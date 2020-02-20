@@ -4,7 +4,7 @@
  *
  */
 
-import React from 'react';
+import React, { memo } from 'react';
 import { connect } from 'react-redux';
 import { compose, Dispatch } from 'redux';
 import { useInjectSaga } from 'utils/injectSaga';
@@ -21,10 +21,9 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
-import { memo } from 'react';
 
 const useStyles = makeStyles({
-  center:{
+  center: {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -44,8 +43,6 @@ const useStyles = makeStyles({
     marginBottom: 12,
   },
 });
-
-interface OwnProps {}
 
 interface StateProps {}
 
@@ -68,7 +65,7 @@ export function ProfilePage(props: Props) {
       {/* <FormattedMessage {...messages.header} /> */}
       <Card className={classes.card}>
       <CardContent >
-        <ProfileAvatar></ProfileAvatar>
+        <ProfileAvatar/>
         <Typography variant="h4" component="h5">
           Laura Perea
         </Typography>

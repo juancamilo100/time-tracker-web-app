@@ -1,7 +1,7 @@
 import { ContainerState, ContainerActions } from './types';
 
 export const initialState: ContainerState = {
-    authFailed: false
+    authFailed: false,
 };
 
 function loginPageReducer(

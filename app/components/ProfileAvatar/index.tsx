@@ -22,9 +22,7 @@ const useStyles = makeStyles({
   },
 });
 
-interface Props {}
-
-function ProfileAvatar(props: Props) {
+function ProfileAvatar() {
   const classes = useStyles();
 
   return (

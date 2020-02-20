@@ -1,24 +1,24 @@
 import { makeStyles } from '@material-ui/core/styles';
 
 export const useStyles = makeStyles({
-    navBarContainer:{
+    navBarContainer: {
       paddingTop: '40px',
       alignItems: 'center',
       justifyContent: 'space-around',
       display: 'flex',
       margin: '0 auto',
-      height: '70px'
+      height: '70px',
     },
     navBar: {
       backgroundColor: '#fafafa',
       textAlign: 'center',
       height: '70px',
-      width:'100%'
+      width: '100%',
     },
     navBarImg: {
-      float:'left',
+      float: 'left',
     },
-    logo:{
+    logo: {
       height: '35px',
       width: 'auto',
     },
@@ -26,8 +26,8 @@ export const useStyles = makeStyles({
       padding: '0px',
       margin: '0px',
       textAlign: 'center',
-      display:'inline-block',
-      verticalAlign:'top'
+      display: 'inline-block',
+      verticalAlign: 'top',
     },
     navBarli: {
       listStyleType: 'none',
@@ -35,7 +35,7 @@ export const useStyles = makeStyles({
       height: '24px',
       marginTop: '4px',
       marginBottom: '4px',
-      display: 'inline'
+      display: 'inline',
     },
     navBarA: {
       color: 'black',
@@ -47,7 +47,7 @@ export const useStyles = makeStyles({
       fontWeight: 'bold',
     },
     navButton: {
-      float:'right',
+      float: 'right',
     },
     contactBtn: {
     },

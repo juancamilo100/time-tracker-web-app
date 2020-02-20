@@ -28,7 +28,7 @@ export const useStyles = makeStyles(theme => ({
       duration: theme.transitions.duration.leavingScreen,
     }),
     marginLeft: 0,
-    marginTop: `${toolBarHeight}px`
+    marginTop: `${toolBarHeight}px`,
   },
   contentShift: {
     transition: theme.transitions.create('margin', {

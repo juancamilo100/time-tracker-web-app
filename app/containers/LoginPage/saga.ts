@@ -1,5 +1,4 @@
-import { call, put } from 'redux-saga/effects';
-import { takeLatest } from 'redux-saga/effects';
+import { call, put, takeLatest } from 'redux-saga/effects';
 import ActionTypes from './constants';
 import { postRequest } from 'utils/request';
 import { ContainerActions } from './types';

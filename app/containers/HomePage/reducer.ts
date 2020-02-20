@@ -15,9 +15,9 @@ function homeReducer(
     case ActionTypes.TOGGLE_DRAWER_STATE:
         return {
             ...state,
-            drawerOpen: !state.drawerOpen
+            drawerOpen: !state.drawerOpen,
         };
-        
+
     default:
       return state;
   }

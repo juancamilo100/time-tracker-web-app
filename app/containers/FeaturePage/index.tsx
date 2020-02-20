@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import {
   SortingState,
   EditingState,
@@ -32,16 +32,15 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import SaveIcon from '@material-ui/icons/Save';
 import CancelIcon from '@material-ui/icons/Cancel';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, makeStyles } from '@material-ui/core/styles';
 import { CurrencyTypeProvider } from './components/currency-type-provider';
 import { PercentTypeProvider } from './components/percent-type-provider';
 import { generateRows, globalSalesValues } from './demo-data/generator';
-import { makeStyles } from '@material-ui/core/styles';
 import DateFnsUtils from '@date-io/date-fns';
 import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
-} from '@material-ui/pickers'
+} from '@material-ui/pickers';
 
 const styles = theme => ({
   lookupEditCell: {
@@ -71,12 +70,12 @@ const EditButton = ({ onExecute }) => (
 
 const DeleteButton = ({ onExecute }) => (
   <IconButton
-    onClick={() => {
+    onClick={useCallback(() => {
       // eslint-disable-next-line
       if (window.confirm('Are you sure you want to delete this row?')) {
         onExecute();
       }
-    }}
+    }, [])}
     title="Delete row"
   >
     <DeleteIcon />
@@ -123,7 +122,7 @@ const LookupEditCellBase = ({
   <TableCell className={classes.lookupEditCell}>
     <Select
       value={value}
-      onChange={event => onValueChange(event.target.value)}
+      onChange={useCallback(event => onValueChange(event.target.value), [])}
       input={<Input classes={{ root: classes.inputRoot }} />}
     >
       {availableColumnValues.map(item => (

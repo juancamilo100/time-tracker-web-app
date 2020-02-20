@@ -7,9 +7,7 @@ import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 import messages from './messages';
 
-interface Props {}
-
-function NavData(props: Props) {
+function NavData() {
   return (
     <div>
       <FormattedMessage {...messages.header} />

@@ -9,7 +9,7 @@ import saga from './saga';
 import { RootState } from './types';
 import Drawer from '../../components/Drawer';
 import { makeSelectAuthenticated } from 'containers/App/selectors';
-import { Redirect, Switch, Route } from 'react-router-dom';
+import { Redirect, Switch, Route, Link } from 'react-router-dom';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
@@ -17,7 +17,6 @@ import MenuIcon from '@material-ui/icons/Menu';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import { useStyles } from './styles';
-import { Link } from 'react-router-dom';
 import { routePath } from 'config';
 import clsx from 'clsx';
 import { makeSelectDrawerOpen } from './selectors';
@@ -49,8 +48,8 @@ export function HomePage(props: Props) {
   useInjectReducer({ key: key, reducer: reducer });
   useInjectSaga({ key: key, saga: saga });
 
-  if(!props.authenticated) {
-      return <Redirect to="/login" />
+  if (!props.authenticated) {
+      return <Redirect to="/login" />;
   }
 
   return (
@@ -103,7 +102,7 @@ export function HomePage(props: Props) {
         </Switch>
       </div>
     </>
-  );;
+  );
 }
 
 // Map Disptach to your DispatchProps

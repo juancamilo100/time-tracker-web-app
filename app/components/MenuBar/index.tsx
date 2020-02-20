@@ -3,19 +3,17 @@ import Button from '@material-ui/core/Button';
 import img from './logoOnlyTransparent.png';
 import { useStyles } from './styles';
 
-interface Props {}
-
-function MenuBar(props: Props) {
+function MenuBar() {
   const classes = useStyles();
 
   return (
     <div className={classes.navBar}>
       <div className={classes.navBarContainer}>
-        
+
         <div className={classes.navBarImg}>
           <img className={classes.logo} src={img}/>
         </div>
-        
+
         <div>
           <ul className={classes.navBarUl}>
             <li className={classes.navBarli}><a className={classes.navBarA} href="#">ABOUT</a></li>

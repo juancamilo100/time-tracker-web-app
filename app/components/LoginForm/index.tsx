@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { Grid } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
@@ -9,16 +9,13 @@ import { useStyles } from './styles';
 
 const GreenCheckbox = withStyles({
   root: {
-    color: '#a8acb1',
+    'color': '#a8acb1',
     '&$checked': {
       color: '#ee8133',
     },
   },
   checked: {},
 })((props: CheckboxProps) => <Checkbox color="default" {...props} />);
-
-interface StateProps {
-}
 
 interface OwnProps {
     onAuthenticate(email: string, password: string): void;
@@ -27,14 +24,14 @@ interface OwnProps {
     authFailed: boolean;
 }
 
-type Props = OwnProps & StateProps;
+type Props = OwnProps;
 
 function LoginForm(props: Props) {
-    const [username, setUsername] = useState("");  
-    const [password, setPassword] = useState("");  
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
 
-  const classes = useStyles();
-  return (
+    const classes = useStyles();
+    return (
     <div>
       <Grid>
         <TextField
@@ -42,7 +39,7 @@ function LoginForm(props: Props) {
           id="standard-required"
           type="email"
           label="Username"
-          onChange={(event) => { setUsername(event.target.value) }}
+          onChange={useCallback((event) => { setUsername(event.target.value); }, [])}
         />
       </Grid>
       <Grid>
@@ -52,7 +49,7 @@ function LoginForm(props: Props) {
           label="Password"
           type="password"
           autoComplete="current-password"
-          onChange={(event) => { setPassword(event.target.value) }}
+          onChange={useCallback((event) => { setPassword(event.target.value); }, [])}
         />
         {props.authFailed ? <div className={classes.authError}>Invalid username and/or password</div> : null}
       </Grid>
@@ -70,7 +67,7 @@ function LoginForm(props: Props) {
       <div className={classes.center}>
         <Button
           className={[classes.btn, classes.orangeButton].join(' ')}
-          onClick={() => props.onAuthenticate(username, password)}
+          onClick={useCallback(() => props.onAuthenticate(username, password), [])}
         >
           SIGN IN
         </Button>

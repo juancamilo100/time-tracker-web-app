@@ -22,19 +22,16 @@ const AppWrapper = styled.div`
   flex-direction: column;
 `;
 
-interface OwnProps {}
-interface StateProps {}
-
 interface DispatchProps {
     onTokenMissing(): void;
     onTokenPresent(auth: boolean, token: string): void;
 }
 
-type Props = StateProps & DispatchProps & OwnProps;
+type Props = DispatchProps;
 
 function App(props: Props) {
-  let token = sessionStorage.getItem(JWT_SESSION_STORAGE_NAME);
-  
+  const token = sessionStorage.getItem(JWT_SESSION_STORAGE_NAME);
+
   if (!token) {
     props.onTokenMissing();
   } else {
