@@ -9,7 +9,7 @@ import { useStyles } from './styles';
 
 const GreenCheckbox = withStyles({
   root: {
-    color: '#a8acb1',
+    'color': '#a8acb1',
     '&$checked': {
       color: '#ee8133',
     },

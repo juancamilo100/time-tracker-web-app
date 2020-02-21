@@ -28,8 +28,5 @@
   "jsRules": {
     "no-bitwise": ["error", { "allow": ["<<", ">>", "&"] }],
     "object-literal-sort-keys": false
-  },
-  "linterOptions": {
-    // "exclude": ["**/*.js"]
   }
 }
