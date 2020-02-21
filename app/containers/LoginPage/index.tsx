@@ -7,14 +7,17 @@ import { createStructuredSelector } from 'reselect';
 import { RootState } from './types';
 import reducer from './reducer';
 import saga from './saga';
-import img from './loginPic.jpg';
+import sideImage from './assets/loginPic.jpg';
+import logo from './assets/LogoLettersOnlyTransparent.png';
 import LoginForm from '../../components/LoginForm';
 import H1 from '../../components/H1';
 import { useStyles } from './styles';
 import { authActionStart } from './actions';
-import { makeSelectAuthenticated, makeSelectAuthFailed } from 'containers/App/selectors';
+import {
+  makeSelectAuthenticated,
+  makeSelectAuthFailed,
+} from 'containers/App/selectors';
 import { Redirect } from 'react-router-dom';
-import MenuBar from '../../components/MenuBar';
 
 interface OwnProps {}
 interface StateProps {
@@ -44,26 +47,31 @@ export function LoginPage(props: Props) {
   }
   return (
     <div>
-      <MenuBar/>
+      <div className={classes.logoContainer}>
+        <img className={classes.logo} src={logo} />
+      </div>
       <div className={classes.container}>
-      <div className={classes.leftItem}>
-        <H1>Welcome</H1>
-        <H1>
-          to Lulosoft <span className={classes.orangeColor}>.</span>{' '}
-        </H1>
-        <div className={classes.text}>
-          <span className={classes.orangeColor}>Hi There!</span> Sign In below
-          to continue
-        </div>
+        <div className={classes.leftItem}>
+          <H1>Welcome</H1>
+          <H1>
+            to Lulosoft <span className={classes.orangeColor}>.</span>{' '}
+          </H1>
+          <div className={classes.text}>
+            <span className={classes.orangeColor}>Hi There!</span> Sign In below
+            to continue
+          </div>
 
-        <LoginForm onAuthenticate={props.onAuthenticate} authFailed={props.authFailed}/>
+          <LoginForm
+            onAuthenticate={props.onAuthenticate}
+            authFailed={props.authFailed}
+          />
+        </div>
+        <div>
+          <span className={classes.orangeColoredCircle} />
+          <img src={sideImage} className={classes.circleImage} />
+          <span className={classes.greenColoredCircle} />
+        </div>
       </div>
-      <div>
-        <span className={classes.orangeColoredCircle} />
-        <img src={img} className={classes.circleImage} />
-        <span className={classes.greenColoredCircle} />
-      </div>
-    </div>
     </div>
   );
 }

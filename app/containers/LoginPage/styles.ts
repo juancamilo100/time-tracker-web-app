@@ -14,6 +14,14 @@ export const useStyles = makeStyles({
       marginLeft: '20px',
       marginRight: '80px',
     },
+    logoContainer: {
+        paddingTop: '50px',
+        paddingLeft: '70px',
+    },
+    logo: {
+        height: '40px',
+        width: 'auto',
+    },
     leftItem: {
       paddingRight: '70px',
     },

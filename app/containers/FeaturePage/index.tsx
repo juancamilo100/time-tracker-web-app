@@ -38,8 +38,7 @@ import { PercentTypeProvider } from './components/percent-type-provider';
 import { generateRows, globalSalesValues } from './demo-data/generator';
 import DateFnsUtils from '@date-io/date-fns';
 import {
-  MuiPickersUtilsProvider,
-  KeyboardDatePicker,
+  MuiPickersUtilsProvider
 } from '@material-ui/pickers';
 
 const styles = theme => ({
@@ -188,7 +187,7 @@ export default () => {
   const [tableColumnExtensions] = useState([]);
 
   const [sorting] = useState([]);
-  const [editingRowIds] = useState([]);
+  const [editingRowIds, setEditingRowIds] = useState<(string | number)[]>([]);
   const [addedRows, setAddedRows] = useState([]);
   const [rowChanges, setRowChanges] = useState({});
   const [currentPage, setCurrentPage] = useState(0);
@@ -253,13 +252,6 @@ export default () => {
   };
 
   const classes = useStyles();
-  const [selectedDate, setSelectedDate] = React.useState<Date | null>(
-    new Date('2014-08-18T21:11:54'),
-  );
-
-  const handleDateChange = (date: Date | null) => {
-    setSelectedDate(date);
-  };
 
   return (
     <div>
@@ -276,6 +268,7 @@ export default () => {
           />
           <EditingState
             editingRowIds={editingRowIds}
+            onEditingRowIdsChange={(rowIds) => setEditingRowIds(rowIds)}
             rowChanges={rowChanges}
             onRowChangesChange={setRowChanges}
             addedRows={addedRows}
@@ -311,16 +304,6 @@ export default () => {
             commandComponent={Command}
           />
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
-      <KeyboardDatePicker
-          disableToolbar
-          format="MM/dd/yyyy"
-          margin="normal"
-          value={selectedDate}
-          onChange={handleDateChange}
-          KeyboardButtonProps={{
-            'aria-label': 'change date',
-          }}
-        />
         </MuiPickersUtilsProvider>
           <TableSummaryRow />
           <TableFixedColumns leftColumns={leftFixedColumns} />

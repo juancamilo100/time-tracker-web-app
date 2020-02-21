@@ -62,13 +62,13 @@ function LoginForm(props: Props) {
         ) : null}
       </Grid>
       <Grid className={classes.grid}>
-        <span className={classes.coloredText}>Forgot your password? </span>
+        <div className={classes.coloredText}>Forgot your password? </div>
       </Grid>
 
       <Grid className={classes.checkbox}>
         <FormControlLabel
           control={<GreenCheckbox />}
-          label={<span className={classes.text}> Remember me </span>}
+          label={<div className={classes.text}> Remember me </div>}
         />
       </Grid>
 
