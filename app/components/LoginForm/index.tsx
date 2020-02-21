@@ -9,7 +9,7 @@ import { useStyles } from './styles';
 
 const GreenCheckbox = withStyles({
   root: {
-    'color': '#a8acb1',
+    color: '#a8acb1',
     '&$checked': {
       color: '#ee8133',
     },
@@ -27,11 +27,11 @@ interface OwnProps {
 type Props = OwnProps;
 
 function LoginForm(props: Props) {
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
 
-    const classes = useStyles();
-    return (
+  const classes = useStyles();
+  return (
     <div>
       <Grid>
         <TextField
@@ -39,7 +39,9 @@ function LoginForm(props: Props) {
           id="standard-required"
           type="email"
           label="Username"
-          onChange={useCallback((event) => { setUsername(event.target.value); }, [])}
+          onChange={useCallback(event => {
+            setUsername(event.target.value);
+          }, [])}
         />
       </Grid>
       <Grid>
@@ -49,7 +51,9 @@ function LoginForm(props: Props) {
           label="Password"
           type="password"
           autoComplete="current-password"
-          onChange={useCallback((event) => { setPassword(event.target.value); }, [])}
+          onChange={useCallback(event => {
+            setPassword(event.target.value);
+          }, [])}
         />
         {props.authFailed ? (
           <div className={classes.authError}>
@@ -73,7 +77,7 @@ function LoginForm(props: Props) {
           className={[classes.btn, classes.orangeButton].join(' ')}
           onClick={useCallback(
             () => props.onAuthenticate(username, password),
-            [],
+            [username, password],
           )}
         >
           SIGN IN
