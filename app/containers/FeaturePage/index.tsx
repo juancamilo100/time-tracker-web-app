@@ -37,9 +37,7 @@ import { CurrencyTypeProvider } from './components/currency-type-provider';
 import { PercentTypeProvider } from './components/percent-type-provider';
 import { generateRows, globalSalesValues } from './demo-data/generator';
 import DateFnsUtils from '@date-io/date-fns';
-import {
-  MuiPickersUtilsProvider
-} from '@material-ui/pickers';
+import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 
 const styles = theme => ({
   lookupEditCell: {
@@ -187,7 +185,7 @@ export default () => {
   const [tableColumnExtensions] = useState([]);
 
   const [sorting] = useState([]);
-  const [editingRowIds, setEditingRowIds] = useState<(string | number)[]>([]);
+  const [editingRowIds, setEditingRowIds] = useState<Array<string | number>>([]);
   const [addedRows, setAddedRows] = useState([]);
   const [rowChanges, setRowChanges] = useState({});
   const [currentPage, setCurrentPage] = useState(0);
@@ -268,7 +266,7 @@ export default () => {
           />
           <EditingState
             editingRowIds={editingRowIds}
-            onEditingRowIdsChange={(rowIds) => setEditingRowIds(rowIds)}
+            onEditingRowIdsChange={useCallback((rowIds) => setEditingRowIds(rowIds), [])}
             rowChanges={rowChanges}
             onRowChangesChange={setRowChanges}
             addedRows={addedRows}
@@ -303,8 +301,7 @@ export default () => {
             showDeleteCommand
             commandComponent={Command}
           />
-          <MuiPickersUtilsProvider utils={DateFnsUtils}>
-        </MuiPickersUtilsProvider>
+          <MuiPickersUtilsProvider utils={DateFnsUtils} children={null}/>
           <TableSummaryRow />
           <TableFixedColumns leftColumns={leftFixedColumns} />
           <PagingPanel pageSizes={pageSizes} />

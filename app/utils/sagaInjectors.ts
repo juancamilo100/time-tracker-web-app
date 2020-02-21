@@ -7,6 +7,7 @@ import isString from 'lodash/isString';
 import checkStore from './checkStore';
 import { DAEMON, ONCE_TILL_UNMOUNT, RESTART_ON_REMOUNT } from './constants';
 import { LifeStore } from 'types';
+import { SagaIterator } from 'redux-saga';
 
 const allowedModes = [RESTART_ON_REMOUNT, DAEMON, ONCE_TILL_UNMOUNT];
 
@@ -17,7 +18,7 @@ const checkKey = (key: string) =>
   );
 
 interface SagaDescriptor {
-  saga?: () => IterableIterator<any>;
+  saga?: () => SagaIterator<any>;
   mode?: string | undefined;
 }
 const checkDescriptor = (descriptor: SagaDescriptor) => {
