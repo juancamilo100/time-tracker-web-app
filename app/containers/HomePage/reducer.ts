@@ -3,9 +3,8 @@ import { ContainerState, ContainerActions } from './types';
 
 // The initial state of the App
 export const initialState: ContainerState = {
-  username: '',
+  drawerOpen: true,
 };
-
 
 // Take this container's state (as a slice of root state), this container's actions and return new state
 function homeReducer(
@@ -13,11 +12,12 @@ function homeReducer(
   action: ContainerActions,
 ): ContainerState {
   switch (action.type) {
-    case ActionTypes.CHANGE_USERNAME:
-      return {
-        // Delete prefixed '@' from the github username
-        username: action.payload.replace(/@/gi, ''),
-      };
+    case ActionTypes.TOGGLE_DRAWER_STATE:
+        return {
+            ...state,
+            drawerOpen: !state.drawerOpen,
+        };
+
     default:
       return state;
   }

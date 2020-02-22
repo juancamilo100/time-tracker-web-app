@@ -7,7 +7,7 @@ import { initialState } from './reducer';
  */
 
 const selectHistoryPageDomain = (state: ApplicationRootState) => {
-  return state || initialState;
+  return state.historyPage || initialState;
 };
 
 /**

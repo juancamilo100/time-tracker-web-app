@@ -9,4 +9,13 @@ import {} from './types';
 
 import ActionTypes from './constants';
 
-export const defaultAction = () => action(ActionTypes.DEFAULT_ACTION);
+export const authActionStart = (email: string, password: string) => {
+    return action(
+        ActionTypes.AUTH_ACTION_START,
+        {
+            email: email,
+            password: password,
+        },
+    );
+};
+

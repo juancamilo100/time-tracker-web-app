@@ -5,7 +5,7 @@ import { ApplicationRootState } from 'types';
 /* --- STATE --- */
 
 interface HomeState {
-  readonly username: string;
+  readonly drawerOpen: boolean;
 }
 
 /* --- ACTIONS --- */

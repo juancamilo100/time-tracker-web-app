@@ -1,10 +1,10 @@
 /* eslint no-bitwise: ["error", { "allow": ["<<", ">>", "&"] }] */
 
-export default function (seed = 123456789) {
+export default function(seed = 123456789) {
     let mW = seed;
     let mZ = 987654321;
     const mask = 0xffffffff;
-  
+
     return () => {
       mZ = ((36969 * (mZ & 65535)) + (mZ >> 16)) & mask;
       mW = ((18000 * (mW & 65535)) + (mW >> 16)) & mask;

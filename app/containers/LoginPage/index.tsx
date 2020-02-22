@@ -1,9 +1,3 @@
-/*
- *
- * LoginPage
- *
- */
-
 import React from 'react';
 import { connect } from 'react-redux';
 import { compose, Dispatch } from 'redux';
@@ -11,140 +5,86 @@ import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
 import { createStructuredSelector } from 'reselect';
 import { RootState } from './types';
-import makeSelectLoginPage from './selectors';
 import reducer from './reducer';
 import saga from './saga';
-import { makeStyles } from '@material-ui/core/styles';
-import img from './loginPic.jpg';
+import sideImage from './assets/loginPic.jpg';
+import logo from './assets/LogoLettersOnlyTransparent.png';
 import LoginForm from '../../components/LoginForm';
 import H1 from '../../components/H1';
-import MenuBar from '../../components/MenuBar';
-
-const useStyles = makeStyles({
-  center: {
-    alignItems: 'left',
-    justifyContent: 'left',
-  },
-  container: {
-    display: 'flex',
-    width: '100%',
-    height: '100vh',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginLeft: '20px',
-    marginRight: '80px'
-  },
-  leftItem: {
-    paddingRight: '70px',
-  },
-  field: {
-    padding: '2px',
-    width: 200,
-    fontSize: 12,
-  },
-  left: {
-    // position: "relative",
-    // left: '0px',
-    // width: '50%',
-    // height: 'auto',
-  },
-  circleImage:{
-    objectFit: 'cover',
-    borderRadius: '50%',
-    width: '450px',
-    height: '450px',
-  },
-  orangeColoredCircle: {
-    marginLeft: '50px',
-    position:'absolute',
-    width: '70px',
-    height: '70px',
-    backgroundColor: '#ee8133',
-    borderRadius: '50%',
-    display: 'inline-block',
-    boxShadow: '0px 0px 40px rgba(0,0,0,0.4)'
-  },
-  orangeDot: {
-    marginTop: '35px',
-    marginLeft: '3px',
-    position:'absolute',
-    width: '13px',
-    height: '13px',
-    backgroundColor: '#ee8133',
-    borderRadius: '50%',
-  },
-  greenColoredCircle: {
-    marginLeft: '-90px',
-    marginBottom:'-200px',
-    position: 'relative',
-    width: '95px',
-    height: '95px',
-    backgroundColor: '#93d50f',
-    borderRadius: '50%',
-    display: 'inline-block',
-    boxShadow: '0px 0px 40px rgba(0,0,0,0.4)'
-  },
-  orangeColor: {
-    fontWeight: 'bold',
-    color: '#ee8133',
-  },
-  text:{
-    paddingTop:'20px',
-    paddingBottom:'30px'
-  }
-});
+import { useStyles } from './styles';
+import { authActionStart } from './actions';
+import {
+  makeSelectAuthenticated,
+  makeSelectAuthFailed,
+} from 'containers/App/selectors';
+import { Redirect } from 'react-router-dom';
 
 interface OwnProps {}
-
-interface StateProps {}
+interface StateProps {
+  authFailed: boolean;
+  authenticated: boolean;
+}
 
 interface DispatchProps {
+  onAuthenticate: (email: string, password: string) => void;
   dispatch: Dispatch;
 }
 
 type Props = StateProps & DispatchProps & OwnProps;
 
-const key = 'home';
+const keyLoginPage = 'loginPage';
 
 export function LoginPage(props: Props) {
-  useInjectReducer({ key: key, reducer: reducer });
-  useInjectSaga({ key: key, saga: saga });
+  console.log('Rendering Login Page:');
+  console.log(props);
+
+  useInjectReducer({ key: keyLoginPage, reducer: reducer });
+  useInjectSaga({ key: keyLoginPage, saga: saga });
+
   const classes = useStyles();
+  if (props.authenticated) {
+    return <Redirect to="/main" />;
+  }
   return (
-    <div>
-      <MenuBar></MenuBar>
+    <>
+      <div className={classes.logoContainer}>
+        <img className={classes.logo} src={logo} />
+      </div>
       <div className={classes.container}>
-      <div className={classes.leftItem}>
-        <H1>Welcome</H1>
-        <H1>to Lulosoft <span className={classes.orangeColor}>.</span> </H1>
-        <div className={classes.text}>
-        <text ><span className={classes.orangeColor}>Hi There!</span> Sing In below to continue</text>
+        <div className={classes.leftItem}>
+          <H1>Welcome</H1>
+          <H1>
+            to Lulosoft<span className={classes.orangeDot}>.</span>
+          </H1>
+          <div className={classes.text}>
+            <span className={classes.orangeColor}>Hi There!</span> Sign In below
+            to continue
+          </div>
+
+          <LoginForm
+            onAuthenticate={props.onAuthenticate}
+            authFailed={props.authFailed}
+          />
         </div>
-        
-        <LoginForm />
+        <div>
+          <span className={classes.orangeColoredCircle} />
+          <img src={sideImage} className={classes.circleImage} />
+          <span className={classes.greenColoredCircle} />
+        </div>
       </div>
-      <div className={classes.left}>
-        <span className={classes.orangeColoredCircle}></span>
-        <img src={img} className={classes.circleImage} />
-        <span className={classes.greenColoredCircle}></span>
-      </div>
-    </div>
-    </div>
-    
+    </>
   );
 }
 
-// Map RootState to your StateProps
 const mapStateToProps = createStructuredSelector<RootState, StateProps>({
-  loginPage: makeSelectLoginPage(),
+  authenticated: makeSelectAuthenticated(),
+  authFailed: makeSelectAuthFailed(),
 });
 
-// Map Disptach to your DispatchProps
-function mapDispatchToProps(
-  dispatch: Dispatch,
-  ownProps: OwnProps,
-): DispatchProps {
+function mapDispatchToProps(dispatch: Dispatch): DispatchProps {
   return {
+    onAuthenticate: (email: string, password: string) =>
+      dispatch(authActionStart(email, password)),
     dispatch: dispatch,
   };
 }

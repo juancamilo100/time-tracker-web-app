@@ -49,3 +49,35 @@ export default function request(url: string, options?: RequestInit): Promise<{ }
     .then((data) => (data))
     .catch((err) => (err));
 }
+
+export function postRequest(url, requestBody, requestHeaders = {}) {
+    return fetch(url, {
+      method: 'POST',
+      body: JSON.stringify(requestBody),
+      headers: new Headers(requestHeaders),
+    })
+      .then(checkStatus)
+      .then(parseJSON)
+      .then(json => json);
+  }
+
+export function putRequest(url, requestBody) {
+    return fetch(url, {
+      method: 'PUT',
+      body: requestBody,
+    })
+      .then(checkStatus)
+      .then(parseJSON)
+      .then(json => json);
+  }
+
+export function getRequest(url) {
+    return fetch(url, {
+       method: 'GET',
+     })
+     .then(checkStatus)
+     .then(parseJSON)
+     .then((json) => {
+       return json;
+     });
+  }

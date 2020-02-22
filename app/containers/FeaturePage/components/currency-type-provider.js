@@ -1,22 +1,22 @@
-import * as React from 'react';
-import * as PropTypes from 'prop-types';
-import Input from '@material-ui/core/Input';
-import { withStyles } from '@material-ui/core/styles';
-import { DataTypeProvider } from '@devexpress/dx-react-grid';
+import * as React from "react";
+import * as PropTypes from "prop-types";
+import Input from "@material-ui/core/Input";
+import { withStyles } from "@material-ui/core/styles";
+import { DataTypeProvider } from "@devexpress/dx-react-grid";
 
 const styles = {
   numericInput: {
-    textAlign: 'right',
-    width: '100%',
+    textAlign: "right",
+    width: "100%",
   },
 };
 
-const getInputValue = value => (value === undefined ? '' : value);
+const getInputValue = value => (value === undefined ? "" : value);
 
 const EditorBase = ({ value, onValueChange, classes }) => {
-  const handleChange = (event) => {
+  const handleChange = event => {
     const { value: targetValue } = event.target;
-    if (targetValue.trim() === '') {
+    if (targetValue.trim() === "") {
       onValueChange();
       return;
     }
@@ -32,7 +32,7 @@ const EditorBase = ({ value, onValueChange, classes }) => {
       value={getInputValue(value)}
       inputProps={{
         min: 0,
-        placeholder: 'Filter...',
+        placeholder: "Filter...",
       }}
       onChange={handleChange}
     />
@@ -40,9 +40,9 @@ const EditorBase = ({ value, onValueChange, classes }) => {
 };
 
 EditorBase.propTypes = {
-  value: PropTypes.number,
-  onValueChange: PropTypes.func.isRequired,
   classes: PropTypes.object.isRequired,
+  onValueChange: PropTypes.func.isRequired,
+  value: PropTypes.number,
 };
 
 EditorBase.defaultProps = {
@@ -54,9 +54,12 @@ const Editor = withStyles(styles)(EditorBase);
 const Formatter = ({ value }) => `${value}`;
 
 const availableFilterOperations = [
-  'equal', 'notEqual',
-  'greaterThan', 'greaterThanOrEqual',
-  'lessThan', 'lessThanOrEqual',
+  "equal",
+  "notEqual",
+  "greaterThan",
+  "greaterThanOrEqual",
+  "lessThan",
+  "lessThanOrEqual",
 ];
 
 export const CurrencyTypeProvider = props => (

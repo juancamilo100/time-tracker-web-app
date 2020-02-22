@@ -3,8 +3,13 @@ import { action } from 'typesafe-actions';
 
 import ActionTypes from './constants';
 
-export const loadRepos = () => action(ActionTypes.LOAD_REPOS);
-export const reposLoaded = (repos: object[], username: string) =>
-  action(ActionTypes.LOAD_REPOS_SUCCESS, { repos: repos, username: username });
-export const repoLoadingError = (error: object) =>
-  action(ActionTypes.LOAD_REPOS_ERROR, error);
+export const authActionSuccess = (auth: boolean, token: string) =>
+  action(ActionTypes.AUTH_ACTION_SUCCESS, { auth: auth, token: token });
+
+export const authActionError = () => {
+    return action(
+        ActionTypes.AUTH_ACTION_ERROR,
+    );
+};
+export const logout = () =>
+  action(ActionTypes.LOGOUT);

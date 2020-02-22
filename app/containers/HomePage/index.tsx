@@ -1,41 +1,42 @@
-/*
- * HomePage
- *
- * This is the first thing users see of our App, at the '/' route
- */
-
-import React, { useEffect, memo } from 'react';
+import React, { memo } from 'react';
 import { connect } from 'react-redux';
 import { compose, Dispatch } from 'redux';
 import { createStructuredSelector } from 'reselect';
 import { useInjectReducer } from 'utils/injectReducer';
 import { useInjectSaga } from 'utils/injectSaga';
-import {
-  makeSelectRepos,
-  makeSelectLoading,
-  makeSelectError,
-} from 'containers/App/selectors';
-import { loadRepos } from '../App/actions';
-import { changeUsername } from './actions';
-import { makeSelectUsername } from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 import { RootState } from './types';
 import Drawer from '../../components/Drawer';
+import { makeSelectAuthenticated } from 'containers/App/selectors';
+import { Redirect, Switch, Route, Link } from 'react-router-dom';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import IconButton from '@material-ui/core/IconButton';
+import MenuIcon from '@material-ui/icons/Menu';
+import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
+import { useStyles } from './styles';
+import { routePath } from 'config';
+import clsx from 'clsx';
+import { makeSelectDrawerOpen } from './selectors';
+import { toggleDrawerState } from './actions';
+import FeaturePage from 'containers/FeaturePage';
+import { HistoryPage } from '../HistoryPage/index';
+import { ProfilePage } from 'containers/ProfilePage';
+import { logout } from 'containers/App/actions';
 
 // tslint:disable-next-line:no-empty-interface
 interface OwnProps {}
 
 interface StateProps {
-  loading: boolean;
-  error: object | boolean;
-  repos: object[] | boolean;
-  username: string;
+  authenticated: boolean;
+  drawerOpen: boolean;
 }
 
 interface DispatchProps {
-  onChangeUsername(evt: any): void; // Not gonna declare event types here. No need. any is fine
-  onSubmitForm(evt?: any): void; // Not gonna declare event types here. No need. any is fine
+  onToggleDrawerState(): void;
+  onLogout(): void;
 }
 
 type Props = StateProps & DispatchProps & OwnProps;
@@ -43,23 +44,64 @@ type Props = StateProps & DispatchProps & OwnProps;
 const key = 'home';
 
 export function HomePage(props: Props) {
+  const classes = useStyles();
   useInjectReducer({ key: key, reducer: reducer });
   useInjectSaga({ key: key, saga: saga });
 
-  /**
-   * when initial state username is not null, submit the form to load repos
-   */
-  useEffect(() => {
-    // When initial state username is not null, submit the form to load repos
-    if (props.username && props.username.trim().length > 0) {
-      props.onSubmitForm();
-    }
-  }, []);
+  if (!props.authenticated) {
+      return <Redirect to="/login" />;
+  }
 
   return (
-    <div>
-      <Drawer />
-    </div>
+    <>
+      <AppBar
+        position="fixed"
+        className={clsx(classes.appBar, {
+          [classes.appBarShift]: props.drawerOpen,
+        })}
+      >
+        <Toolbar className={classes.toolbar}>
+          <IconButton
+            color="inherit"
+            aria-label="open drawer"
+            onClick={props.onToggleDrawerState}
+            edge="start"
+            className={clsx(
+              classes.menuButton,
+              props.drawerOpen && classes.hide,
+            )}
+          >
+            <MenuIcon />
+          </IconButton>
+          <Typography variant="h4" className={classes.title}>
+            Time Tracker
+          </Typography>
+          <Button
+            color="inherit"
+            onClick={props.onLogout}
+            component={Link}
+            to={routePath.loginPath}
+          >
+            Log Out
+          </Button>
+        </Toolbar>
+      </AppBar>
+      <Drawer
+        toggleDrawerState={props.onToggleDrawerState}
+        open={props.drawerOpen}
+      />
+      <div
+        className={clsx(classes.content, {
+          [classes.contentShift]: props.drawerOpen,
+        })}
+      >
+        <Switch>
+          <Route path={routePath.featuresPath} component={FeaturePage} />
+          <Route path={routePath.reportHistoryPath} component={HistoryPage} />
+          <Route path={routePath.profilePath} component={ProfilePage} />
+        </Switch>
+      </div>
+    </>
   );
 }
 
@@ -69,22 +111,15 @@ export function mapDispatchToProps(
   ownProps: OwnProps,
 ): DispatchProps {
   return {
-    onChangeUsername: evt => dispatch(changeUsername(evt.target.value)),
-    onSubmitForm: evt => {
-      if (evt !== undefined && evt.preventDefault) {
-        evt.preventDefault();
-      }
-      dispatch(loadRepos());
-    },
+    onToggleDrawerState: () => dispatch(toggleDrawerState()),
+    onLogout: () => dispatch(logout()),
   };
 }
 
 // Map RootState to your StateProps
 const mapStateToProps = createStructuredSelector<RootState, StateProps>({
-  repos: makeSelectRepos(),
-  username: makeSelectUsername(),
-  loading: makeSelectLoading(),
-  error: makeSelectError(),
+  drawerOpen: makeSelectDrawerOpen(),
+  authenticated: makeSelectAuthenticated(),
 });
 
 const withConnect = connect(

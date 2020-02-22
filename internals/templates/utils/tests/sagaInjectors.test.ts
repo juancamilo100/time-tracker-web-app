@@ -36,15 +36,6 @@ describe('injectors', () => {
         }),
       );
     });
-
-    // not possible to test in ts because... ts checks shapes already.....
-    /*
-    it('should throw if passed invalid store shape', () => {
-      Reflect.deleteProperty(store, 'dispatch');
-
-      expect(() => getInjectors(store)).toThrow();
-    });
-    */
   });
 
   describe('ejectSaga helper', () => {
@@ -53,15 +44,6 @@ describe('injectors', () => {
       injectSaga = injectSagaFactory(store, true);
       ejectSaga = ejectSagaFactory(store, true);
     });
-
-    // not possible to test in ts because... ts checks shapes already.....
-    /*
-    it('should check a store if the second argument is falsy', () => {
-      const eject = ejectSagaFactory(store, false);
-
-      expect(() => eject('test')).toThrow();
-    });
-    */
 
     it('should not check a store if the second argument is true', () => {
       Reflect.deleteProperty(store, 'dispatch');
@@ -73,14 +55,6 @@ describe('injectors', () => {
     it('should validate saga\'s key', () => {
       expect(() => ejectSaga('')).toThrow();
       expect(() => ejectSaga(1)).toThrow();
-    });
-
-    it('should cancel a saga in a default mode', () => {
-      const cancel = jest.fn();
-      store.injectedSagas.test = { task: { cancel: cancel } };
-      ejectSaga('test');
-
-      expect(cancel).toHaveBeenCalled();
     });
 
     it('should not cancel a daemon saga', () => {

@@ -1,11 +1,5 @@
-/*
- *
- * LoginPage constants
- *
- */
-
 enum ActionTypes {
-  DEFAULT_ACTION = 'app/LoginPage/DEFAULT_ACTION',
+  AUTH_ACTION_START = 'app/LoginPage/AUTH_ACTION_START',
 }
 
 export default ActionTypes;

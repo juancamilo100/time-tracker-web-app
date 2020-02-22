@@ -13,8 +13,6 @@ import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import IconButton from '@material-ui/core/IconButton';
 import GetAppOutlinedIcon from '@material-ui/icons/GetAppOutlined';
 
-interface Props {}
-
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
@@ -25,7 +23,7 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 );
 
-function ReportHistoryList(props: Props) {
+function ReportHistoryList() {
   const classes = useStyles();
 
   return (

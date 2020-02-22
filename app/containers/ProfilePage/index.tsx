@@ -4,7 +4,7 @@
  *
  */
 
-import React from 'react';
+import React, { memo } from 'react';
 import { connect } from 'react-redux';
 import { compose, Dispatch } from 'redux';
 import { useInjectSaga } from 'utils/injectSaga';
@@ -23,7 +23,7 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 
 const useStyles = makeStyles({
-  center:{
+  center: {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -44,9 +44,8 @@ const useStyles = makeStyles({
   },
 });
 
-interface OwnProps {}
-
 interface StateProps {}
+interface OwnProps {}
 
 interface DispatchProps {
   dispatch: Dispatch;
@@ -54,9 +53,9 @@ interface DispatchProps {
 
 type Props = StateProps & DispatchProps & OwnProps;
 
-const key = 'home';
+const key = 'profilePage';
 
-export function Profile(props: Props) {
+export function ProfilePage(props: Props) {
   useInjectReducer({ key: key, reducer: reducer });
   useInjectSaga({ key: key, saga: saga });
 
@@ -67,7 +66,7 @@ export function Profile(props: Props) {
       {/* <FormattedMessage {...messages.header} /> */}
       <Card className={classes.card}>
       <CardContent >
-        <ProfileAvatar></ProfileAvatar>
+        <ProfileAvatar/>
         <Typography variant="h4" component="h5">
           Laura Perea
         </Typography>
@@ -108,4 +107,4 @@ const withConnect = connect(
   mapDispatchToProps,
 );
 
-export default compose(withConnect)(Profile);
+export default  compose(withConnect, memo)(ProfilePage);

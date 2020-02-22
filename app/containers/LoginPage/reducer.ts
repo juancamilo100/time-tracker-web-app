@@ -1,14 +1,7 @@
-/*
- *
- * LoginPage reducer
- *
- */
-
-import ActionTypes from './constants';
 import { ContainerState, ContainerActions } from './types';
 
 export const initialState: ContainerState = {
-  default: null,
+    authFailed: false,
 };
 
 function loginPageReducer(
@@ -16,8 +9,6 @@ function loginPageReducer(
   action: ContainerActions,
 ): ContainerState {
   switch (action.type) {
-    case ActionTypes.DEFAULT_ACTION:
-      return state;
     default:
       return state;
   }
@@ -25,15 +16,3 @@ function loginPageReducer(
 
 export default loginPageReducer;
 
-// import { combineReducers } from 'redux';
-
-// export default combineReducers<ContainerState, ContainerActions>({
-//   default: (state = initialState, action) => {
-//     switch (action.type) {
-//       case ActionTypes.DEFAULT_ACTION:
-//         return 'state';
-//       default:
-//         return state;
-//     }
-//   },
-// });

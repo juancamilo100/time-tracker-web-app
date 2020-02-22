@@ -1,9 +1,3 @@
-/**
- * app.js
- *
- * This is the entry file for the application, only setup and boilerplate
- * code.
- */
 
 // Needed for redux-saga es6 generator support
 import '@babel/polyfill';
@@ -18,12 +12,8 @@ import FontFaceObserver from 'fontfaceobserver';
 import history from 'utils/history';
 import 'sanitize.css/sanitize.css';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
-// import lightGreen from '@material-ui/core/colors/blue';
-// import orange from '@material-ui/core/colors/orange';
-// Import root app
 import App from 'containers/App';
 
-// Import Language Provider
 import LanguageProvider from 'containers/LanguageProvider';
 
 // Load the favicon and the .htaccess file
@@ -32,9 +22,7 @@ import 'file-loader?name=.htaccess!./.htaccess'; // eslint-disable-line import/e
 
 import configureStore from './configureStore';
 
-// Import i18n messages
 import { translationMessages } from 'i18n';
-// import { lightGreen } from '@material-ui/core/colors';
 
 // Observe loading of Open Sans (to remove open sans, remove the <link> tag in
 // the index.html file and this observer)
@@ -52,26 +40,9 @@ const MOUNT_NODE = document.getElementById('app') as HTMLElement;
 
 const theme = createMuiTheme({
   direction: 'ltr',
-
-  // palette: {
-  //   primary1Color: '#f57c00',
-  //   primary2Color: '#ff9100',
-  //   primary3Color: '#ff7043',
-  //   accent1Color: '#689f38',
-  //   accent2Color: '#7cb342',
-  //   accent3Color: '#7cb342',
-  //   textColor: '#ffffff',
-  // },
-
   palette: {
-    // primary: orange,
-    // secondary: lightGreen,
     type: 'light',
   },
-  // navDrawerWidth: 240,
-  // typography: {
-  //   useNextVariants: true,
-  // },
 });
 
 const render = (messages: any, Component = App) => {

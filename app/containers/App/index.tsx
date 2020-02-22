@@ -1,23 +1,19 @@
-/**
- *
- * App
- *
- * This component is the skeleton around the actual pages, and should only
- * contain code that should be seen on all pages. (e.g. navigation bar)
- */
-
 import * as React from 'react';
 import { Helmet } from 'react-helmet';
 import styled from 'styles/styled-components';
 import { Switch, Route } from 'react-router-dom';
 import HomePage from 'containers/HomePage/Loadable';
-import FeaturePage from 'containers/FeaturePage/Loadable';
-import Profile from 'containers/Profile';
 import NotFoundPage from 'containers/NotFoundPage/Loadable';
 import GlobalStyle from '../../global-styles';
 import { routePath } from 'config';
-import { HistoryPage } from 'containers/HistoryPage';
-import { LoginPage } from 'containers/LoginPage';
+import LoginPage from 'containers/LoginPage';
+import { JWT_SESSION_STORAGE_NAME } from './constants';
+import { Dispatch, compose } from 'redux';
+import { logout } from 'containers/App/actions';
+import { createStructuredSelector } from 'reselect';
+import { RootState } from 'containers/App/types';
+import { connect } from 'react-redux';
+import { authActionSuccess } from './actions';
 
 const AppWrapper = styled.div`
   margin: 0 auto;
@@ -26,24 +22,56 @@ const AppWrapper = styled.div`
   flex-direction: column;
 `;
 
-export default function App() {
+interface OwnProps {}
+interface StateProps {}
+
+interface DispatchProps {
+    onTokenMissing(): void;
+    onTokenPresent(auth: boolean, token: string): void;
+}
+
+type Props = DispatchProps & OwnProps & StateProps;
+
+function App(props: Props) {
+  const token = sessionStorage.getItem(JWT_SESSION_STORAGE_NAME);
+
+  if (!token) {
+    props.onTokenMissing();
+  } else {
+    props.onTokenPresent(true, token);
+  }
+
   return (
     <AppWrapper>
       <Helmet titleTemplate="%s - Time Tracker" defaultTitle="Time Tracker">
         <meta name="description" content="Time Tracker Application" />
       </Helmet>
       <Switch>
+        <Route path={routePath.mainPath} component={HomePage} />
         <Route path={routePath.loginPath} component={LoginPage} />
-        <HomePage>
-          <Route path={routePath.featuresPath} component={FeaturePage} />
-          <Route path={routePath.reportHistoryPath} component={HistoryPage} />
-          <Route path={routePath.profilePath} component={Profile} />
-        </HomePage>
-        <Route exact path={routePath.mainPath} component={HomePage} />
-
+        <Route path="/" component={HomePage} />
         <Route path="" component={NotFoundPage} />
       </Switch>
       <GlobalStyle />
     </AppWrapper>
   );
 }
+
+export function mapDispatchToProps(
+  dispatch: Dispatch,
+  ownProps: OwnProps,
+): DispatchProps {
+  return {
+    onTokenMissing: () => dispatch(logout()),
+    onTokenPresent: (auth: boolean, token: string) => dispatch(authActionSuccess(auth, token)),
+  };
+}
+
+const mapStateToProps = createStructuredSelector<RootState, StateProps>({});
+
+const withConnect = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+);
+
+export default compose(withConnect)(App);

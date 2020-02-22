@@ -18,6 +18,7 @@ interface Props {
   onClick();
   children: ReactNode;
 }
+
 function Button(props: Props) {
   // Render an anchor tag
   let button = (

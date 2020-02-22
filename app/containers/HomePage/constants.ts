@@ -10,7 +10,7 @@
  */
 
 enum ActionTypes {
-  CHANGE_USERNAME = 'boilerplate/Home/CHANGE_USERNAME',
+  TOGGLE_DRAWER_STATE = 'boilerplate/Home/TOGGLE_DRAWER_STATE',
 }
 
 export default ActionTypes;

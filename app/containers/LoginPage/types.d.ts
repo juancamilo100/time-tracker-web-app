@@ -4,7 +4,7 @@ import { ApplicationRootState } from 'types';
 
 /* --- STATE --- */
 interface LoginPageState {
-  readonly default: any;
+    authFailed: boolean
 }
 
 /* --- ACTIONS --- */

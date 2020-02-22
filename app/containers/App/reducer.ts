@@ -1,46 +1,39 @@
 import { ContainerState, ContainerActions } from './types';
-import ActionTypes from './constants';
+import ActionTypes, { JWT_SESSION_STORAGE_NAME } from './constants';
 
-// The initial state of the App
 export const initialState: ContainerState = {
   loading: false,
   error: false,
-  currentUser: '',
-  userData: {
-    repositories: [],
-  },
+  authenticated: false,
+  authFailed: false,
+  token: '',
 };
 
-// Take this container's state (as a slice of root state), this container's actions and return new state
 function appReducer(
   state: ContainerState = initialState,
   action: ContainerActions,
 ): ContainerState {
   switch (action.type) {
-    case ActionTypes.LOAD_REPOS:
+    case ActionTypes.AUTH_ACTION_SUCCESS:
+      sessionStorage.setItem(JWT_SESSION_STORAGE_NAME, action.payload.token);
       return {
-        currentUser: state.currentUser,
-        loading: true,
-        error: false,
-        userData: {
-          repositories: [],
-        },
+        ...state,
+        authenticated: action.payload.auth,
+        authFailed: false,
+        token: action.payload.token,
       };
-    case ActionTypes.LOAD_REPOS_SUCCESS:
+    case ActionTypes.AUTH_ACTION_ERROR:
       return {
-        currentUser: action.payload.username,
-        loading: false,
-        error: state.error,
-        userData: {
-          repositories: action.payload.repos,
-        },
+        ...state,
+        authFailed: true,
       };
-    case ActionTypes.LOAD_REPOS_ERROR:
-      const { error, loading, ...rest } = state;
+    case ActionTypes.LOGOUT:
+      sessionStorage.removeItem(JWT_SESSION_STORAGE_NAME);
       return {
-        error: action.payload,
-        loading: false,
-        ...rest,
+        ...state,
+        authenticated: false,
+        authFailed: false,
+        token: '',
       };
     default:
       return state;

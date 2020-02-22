@@ -1,7 +1,7 @@
 export const routePath = {
-  mainPath: `/main`,
-  loginPath: `/login`,
   featuresPath: `/main/report`,
-  reportHistoryPath: `/main/reportHistory`,
+  loginPath: `/login`,
+  mainPath: `/main`,
   profilePath: `/main/profileInfo`,
+  reportHistoryPath: `/main/reportHistory`,
 };
