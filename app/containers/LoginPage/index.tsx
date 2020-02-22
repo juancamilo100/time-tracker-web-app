@@ -35,9 +35,6 @@ type Props = StateProps & DispatchProps & OwnProps;
 const keyLoginPage = 'loginPage';
 
 export function LoginPage(props: Props) {
-  console.log('Rendering Login Page:');
-  console.log(props);
-
   useInjectReducer({ key: keyLoginPage, reducer: reducer });
   useInjectSaga({ key: keyLoginPage, saga: saga });
 
