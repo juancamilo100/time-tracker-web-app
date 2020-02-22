@@ -46,7 +46,7 @@ export function LoginPage(props: Props) {
     return <Redirect to="/main" />;
   }
   return (
-    <div>
+    <>
       <div className={classes.logoContainer}>
         <img className={classes.logo} src={logo} />
       </div>
@@ -54,7 +54,7 @@ export function LoginPage(props: Props) {
         <div className={classes.leftItem}>
           <H1>Welcome</H1>
           <H1>
-            to Lulosoft <span className={classes.orangeColor}>.</span>{' '}
+            to Lulosoft<span className={classes.orangeDot}>.</span>
           </H1>
           <div className={classes.text}>
             <span className={classes.orangeColor}>Hi There!</span> Sign In below
@@ -72,7 +72,7 @@ export function LoginPage(props: Props) {
           <span className={classes.greenColoredCircle} />
         </div>
       </div>
-    </div>
+    </>
   );
 }
 

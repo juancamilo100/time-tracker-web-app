@@ -1,18 +1,14 @@
 import { makeStyles } from '@material-ui/core/styles';
 
 export const useStyles = makeStyles({
-    center: {
-      alignItems: 'left',
-      justifyContent: 'left',
-    },
     container: {
       display: 'flex',
+      position: 'relative',
       width: '100%',
-      height: '100vh',
+      height: '100%',
       justifyContent: 'center',
       alignItems: 'center',
-      marginLeft: '20px',
-      marginRight: '80px',
+      marginTop: '70px',
     },
     logoContainer: {
         paddingTop: '50px',
@@ -47,13 +43,8 @@ export const useStyles = makeStyles({
       boxShadow: '0px 0px 40px rgba(0,0,0,0.4)',
     },
     orangeDot: {
-      marginTop: '35px',
       marginLeft: '3px',
-      position: 'absolute',
-      width: '13px',
-      height: '13px',
-      backgroundColor: '#ee8133',
-      borderRadius: '50%',
+      color: '#ee8133',
     },
     greenColoredCircle: {
       marginLeft: '-90px',
