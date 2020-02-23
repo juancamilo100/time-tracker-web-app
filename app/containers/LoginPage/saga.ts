@@ -7,6 +7,8 @@ import { TIME_TRACKER_API_BASE_URL, TIME_TRACKER_API_PORT } from 'config';
 
 export function* authenticate(action: ContainerActions) {
   const requestURL = `http://${TIME_TRACKER_API_BASE_URL}:${TIME_TRACKER_API_PORT}/api/auth/login`;
+  console.log(requestURL);
+
   const requestBody = {
     email: action.payload.email,
     password: Buffer.from(action.payload.password).toString('base64'),
