@@ -4,6 +4,7 @@
 
 const path = require('path');
 const webpack = require('webpack');
+const Dotenv = require('dotenv-webpack');
 
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 
@@ -118,10 +119,18 @@ module.exports = options => ({
     // Always expose NODE_ENV to webpack, in order to use `process.env.NODE_ENV`
     // inside your code for any environment checks; Terser will automatically
     // drop any unreachable code.
-    new webpack.EnvironmentPlugin({
-      NODE_ENV: 'development',
-    }),
-    new ForkTsCheckerWebpackPlugin({ checkSyntacticErrors: true }),
+    // new webpack.EnvironmentPlugin({
+    //   NODE_ENV: 'development',
+    //   TIME_TRACKER_API_BASE_URL: 'localhost',
+    //   TIME_TRACKER_API_PORT: '9000',
+    // }),
+    new Dotenv(),
+    new webpack.EnvironmentPlugin([
+      "NODE_ENV",
+      "TIME_TRACKER_API_BASE_URL",
+      "TIME_TRACKER_API_PORT"
+    ]),
+    new ForkTsCheckerWebpackPlugin({ checkSyntacticErrors: true })
   ]),
   resolve: {
     modules: ['node_modules', 'app'],
@@ -129,6 +138,6 @@ module.exports = options => ({
     mainFields: ['browser', 'jsnext:main', 'main'],
   },
   devtool: options.devtool,
-  target: 'node', // Make web variables accessible to webpack, e.g. window
+  target: 'web', // Make web variables accessible to webpack, e.g. window
   performance: options.performance || {},
 });
