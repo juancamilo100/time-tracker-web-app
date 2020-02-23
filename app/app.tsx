@@ -13,6 +13,7 @@ import history from 'utils/history';
 import 'sanitize.css/sanitize.css';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import App from 'containers/App';
+import dotenv from 'dotenv';
 
 import LanguageProvider from 'containers/LanguageProvider';
 
@@ -23,6 +24,8 @@ import 'file-loader?name=.htaccess!./.htaccess'; // eslint-disable-line import/e
 import configureStore from './configureStore';
 
 import { translationMessages } from 'i18n';
+
+dotenv.config();
 
 // Observe loading of Open Sans (to remove open sans, remove the <link> tag in
 // the index.html file and this observer)
