@@ -3,9 +3,10 @@ import ActionTypes from './constants';
 import { postRequest } from 'utils/request';
 import { ContainerActions } from './types';
 import { authActionSuccess, authActionError } from '../App/actions';
+import { TIME_TRACKER_API_BASE_URL, TIME_TRACKER_API_PORT } from 'config';
 
 export function* authenticate(action: ContainerActions) {
-  const requestURL = `http://localhost:9000/api/auth/login`;
+  const requestURL = `http://${TIME_TRACKER_API_BASE_URL}:${TIME_TRACKER_API_PORT}/api/auth/login`;
   const requestBody = {
     email: action.payload.email,
     password: Buffer.from(action.payload.password).toString('base64'),
