@@ -14,6 +14,8 @@ import { createStructuredSelector } from 'reselect';
 import { RootState } from 'containers/App/types';
 import { connect } from 'react-redux';
 import { authActionSuccess } from './actions';
+import jwt from 'jsonwebtoken';
+import moment from 'moment';
 
 const AppWrapper = styled.div`
   margin: 0 auto;
@@ -26,19 +28,19 @@ interface OwnProps {}
 interface StateProps {}
 
 interface DispatchProps {
-    onTokenMissing(): void;
-    onTokenPresent(auth: boolean, token: string): void;
+  onTokenInvalid(): void;
+  onTokenValid(auth: boolean, token: string): void;
 }
 
 type Props = DispatchProps & OwnProps & StateProps;
 
 function App(props: Props) {
-  const token = sessionStorage.getItem(JWT_SESSION_STORAGE_NAME);
+  const { token, tokenIsExpired } = validateToken();
 
-  if (!token) {
-    props.onTokenMissing();
+  if (!token || tokenIsExpired) {
+    props.onTokenInvalid();
   } else {
-    props.onTokenPresent(true, token);
+    props.onTokenValid(true, token);
   }
 
   return (
@@ -55,6 +57,24 @@ function App(props: Props) {
       <GlobalStyle />
     </AppWrapper>
   );
+
+  function validateToken() {
+    let token = sessionStorage.getItem(JWT_SESSION_STORAGE_NAME);
+    let tokenIsExpired = false;
+
+    try {
+      const decodedToken = jwt.decode(token!);
+      const tokenExpirationDateTimeEpoch = Number.parseInt(decodedToken!['exp'], 10);
+      const currentDateTimeEpoch = moment().unix();
+
+      tokenIsExpired = currentDateTimeEpoch > tokenExpirationDateTimeEpoch;
+    } catch (error) {
+      token = null;
+      tokenIsExpired = true;
+    }
+
+    return { token, tokenIsExpired };
+  }
 }
 
 export function mapDispatchToProps(
@@ -62,8 +82,9 @@ export function mapDispatchToProps(
   ownProps: OwnProps,
 ): DispatchProps {
   return {
-    onTokenMissing: () => dispatch(logout()),
-    onTokenPresent: (auth: boolean, token: string) => dispatch(authActionSuccess(auth, token)),
+    onTokenInvalid: () => dispatch(logout()),
+    onTokenValid: (auth: boolean, token: string) =>
+      dispatch(authActionSuccess(auth, token)),
   };
 }
 

@@ -4,7 +4,7 @@
     "semicolon": [true, "always", "ignore-bound-class-methods"],
     "interface-name": false,
     "no-empty-interface": false,
-    "object-literal-shorthand": [true, "never"],
+    "object-literal-shorthand": false,
     "indent": [true, "spaces"],
     "quotemark": [true, "single", "jsx-double"],
     "no-var-requires": false,
