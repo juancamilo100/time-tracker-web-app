@@ -1,9 +1,3 @@
-/*
- *
- * HistoryPage reducer
- *
- */
-
 import ActionTypes from './constants';
 import { ContainerState, ContainerActions } from './types';
 
@@ -24,16 +18,3 @@ function historyPageReducer(
 }
 
 export default historyPageReducer;
-
-// import { combineReducers } from 'redux';
-
-// export default combineReducers<ContainerState, ContainerActions>({
-//   default: (state = initialState, action) => {
-//     switch (action.type) {
-//       case ActionTypes.DEFAULT_ACTION:
-//         return 'state';
-//       default:
-//         return state;
-//     }
-//   },
-// });

@@ -1,9 +1,3 @@
-/*
- *
- * HistoryPage actions
- *
- */
-
 import { action } from 'typesafe-actions';
 import {} from './types';
 

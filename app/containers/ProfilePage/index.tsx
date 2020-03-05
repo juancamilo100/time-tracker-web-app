@@ -56,6 +56,8 @@ type Props = StateProps & DispatchProps & OwnProps;
 const key = 'profilePage';
 
 export function ProfilePage(props: Props) {
+    console.log("Profile Page with props: ");
+    console.log(props);
   useInjectReducer({ key: key, reducer: reducer });
   useInjectSaga({ key: key, saga: saga });
 

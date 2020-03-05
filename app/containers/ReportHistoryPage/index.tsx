@@ -1,45 +1,39 @@
-/*
- *
- * HistoryPage
- *
- */
-
 import React from 'react';
 import { connect } from 'react-redux';
 import { compose, Dispatch } from 'redux';
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
 import { createStructuredSelector } from 'reselect';
-import makeSelectHistoryPage from './selectors';
 import reducer from './reducer';
 import { RootState } from './types';
 import saga from './saga';
 import { Theme, createStyles, makeStyles } from '@material-ui/core/styles';
 import ReportHistoryList from 'components/ReportHistoryList';
+import { Report } from 'containers/HomePage/types';
+import { Customer } from '../HomePage/types.d';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     center: {
       display: 'flex',
       alignItems: 'center',
-      justifyContent: 'center',
-    },
-  }),
+      justifyContent: 'center'
+    }
+  })
 );
 
-interface OwnProps {}
-
-interface StateProps {}
-
-interface DispatchProps {
-  dispatch: Dispatch;
+interface OwnProps {
+    reports: Report[];
+    customer: Customer;
 }
+interface StateProps {}
+interface DispatchProps {}
 
 type Props = StateProps & DispatchProps & OwnProps;
 
-const key = 'historyPage';
+const key = 'reportHistoryPage';
 
-export function HistoryPage(props: Props) {
+export function ReportHistoryPage(props: Props) {
   useInjectReducer({ key: key, reducer: reducer });
   useInjectSaga({ key: key, saga: saga });
 
@@ -47,29 +41,23 @@ export function HistoryPage(props: Props) {
 
   return (
     <div className={classes.center}>
-      <ReportHistoryList />
+      <ReportHistoryList customer={props.customer} reports={props.reports} />
     </div>
   );
 }
 
-// Map RootState to your StateProps
-const mapStateToProps = createStructuredSelector<RootState, StateProps>({
-  historyPage: makeSelectHistoryPage(),
-});
+const mapStateToProps = createStructuredSelector<RootState, StateProps>({});
 
-// Map Disptach to your DispatchProps
 function mapDispatchToProps(
   dispatch: Dispatch,
-  ownProps: OwnProps,
+  ownProps: OwnProps
 ): DispatchProps {
-  return {
-    dispatch: dispatch,
-  };
+  return {};
 }
 
 const withConnect = connect(
   mapStateToProps,
-  mapDispatchToProps,
+  mapDispatchToProps
 );
 
-export default compose(withConnect)(HistoryPage);
+export default compose(withConnect)(ReportHistoryPage);

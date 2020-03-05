@@ -5,34 +5,37 @@
 import { createSelector } from 'reselect';
 import { ApplicationRootState } from 'types';
 
-const selectGlobal = (state: ApplicationRootState) => {
+export const selectGlobal = (state: ApplicationRootState) => {
   return state.global;
 };
 
-const selectRoute = (state: ApplicationRootState) => {
+export const selectRoute = (state: ApplicationRootState) => {
   return state.router;
 };
 
-const makeSelectLoading = () =>
+export const makeSelectLoading = () =>
   createSelector(selectGlobal, globalState => globalState.loading);
 
-const makeSelectError = () =>
+export const makeSelectError = () =>
   createSelector(selectGlobal, globalState => globalState.error);
 
-const makeSelectAuthenticated = () =>
+export const makeSelectAuthenticated = () =>
   createSelector(selectGlobal, globalState => globalState.authenticated);
 
-const makeSelectAuthFailed = () =>
+export const makeSelectToken = () =>
+  createSelector(selectGlobal, globalState => globalState.token);
+
+export const makeSelectEmployee = () =>
+  createSelector(selectGlobal, globalState => globalState.employee);
+
+export const makeSelectReports = () =>
+  createSelector(selectGlobal, globalState => globalState.reports);
+
+export const makeSelectCustomer = () =>
+  createSelector(selectGlobal, globalState => globalState.customer);
+
+export const makeSelectAuthFailed = () =>
   createSelector(selectGlobal, globalState => globalState.authFailed);
 
-const makeSelectLocation = () =>
+export const makeSelectLocation = () =>
   createSelector(selectRoute, routeState => routeState.location);
-
-export {
-  selectGlobal,
-  makeSelectLoading,
-  makeSelectError,
-  makeSelectAuthenticated,
-  makeSelectAuthFailed,
-  makeSelectLocation,
-};

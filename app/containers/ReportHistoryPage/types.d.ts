@@ -4,7 +4,7 @@ import { ApplicationRootState } from 'types';
 
 /* --- STATE --- */
 interface HistoryPageState {
-  readonly default: any;
+    
 }
 
 /* --- ACTIONS --- */
