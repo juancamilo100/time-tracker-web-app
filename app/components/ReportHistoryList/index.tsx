@@ -39,14 +39,14 @@ interface OwnProps {
 
 type Props = OwnProps;
 
-function ReportsList(props: Props) {
+function ReportsList(customerName: string, submittedReports: Report[]) {
     return (
-        <List component="nav" aria-label="main mailbox folders">
-        {props.reports.map((report, index) => (
+        <List component="a" aria-label="main mailbox folders">
+        {submittedReports.map((report, index) => (
           <Fragment key={index}>
             <ListItem>
               <ListItemText
-                primary={`${props.customer.name}  #${report.id}`}
+                primary={`${customerName}  #${report.id}`}
                 secondary={moment(report.startDate).format('MM-DD-YYYY')}
               />
               <ListItemSecondaryAction>
@@ -72,10 +72,11 @@ function NoReports(classes) {
 
 function ReportHistoryList(props: Props) {
   const classes = useStyles();
+  const submittedReports = props.reports.filter((report) => report.submitted === true);
 
   return (
     <div className={classes.root}>
-        {props.reports.length ? ReportsList(props) : NoReports(classes)}
+        {submittedReports.length ? ReportsList(props.customer.name, submittedReports) : NoReports(classes)}
     </div>
   );
 }

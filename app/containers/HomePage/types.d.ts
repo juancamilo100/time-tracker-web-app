@@ -11,6 +11,7 @@ export interface Report {
     id: number
     startDate: string,
     endDate: string,
+    submitted: boolean,
     tasks: object[]
 }
 /* --- STATE --- */
