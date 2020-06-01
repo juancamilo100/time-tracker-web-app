@@ -1,9 +1,12 @@
 import ActionTypes from './constants';
 import { ContainerState, ContainerActions } from './types';
+import { Customer } from './types.d';
 
 // The initial state of the App
 export const initialState: ContainerState = {
   drawerOpen: true,
+  reports: [],
+  customer: {} as Customer
 };
 
 // Take this container's state (as a slice of root state), this container's actions and return new state

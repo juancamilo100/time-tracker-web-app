@@ -6,9 +6,14 @@ import { useInjectReducer } from 'utils/injectReducer';
 import { useInjectSaga } from 'utils/injectSaga';
 import reducer from './reducer';
 import saga from './saga';
-import { RootState } from './types';
+import { RootState, Report } from './types';
 import Drawer from '../../components/Drawer';
-import { makeSelectAuthenticated } from 'containers/App/selectors';
+import {
+  makeSelectAuthenticated,
+  makeSelectEmployee,
+  makeSelectReports,
+  makeSelectCustomer
+} from 'containers/App/selectors';
 import { Redirect, Switch, Route, Link } from 'react-router-dom';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -21,10 +26,12 @@ import { routePath } from 'config';
 import clsx from 'clsx';
 import { makeSelectDrawerOpen } from './selectors';
 import { toggleDrawerState } from './actions';
-import FeaturePage from 'containers/FeaturePage';
-import { HistoryPage } from '../HistoryPage/index';
+import CreateReportPage from 'containers/CreateReportPage';
+import { ReportHistoryPage } from '../ReportHistoryPage/index';
 import { ProfilePage } from 'containers/ProfilePage';
 import { logout } from 'containers/App/actions';
+import { Employee } from '../App/types.d';
+import { Customer } from './types.d';
 
 // tslint:disable-next-line:no-empty-interface
 interface OwnProps {}
@@ -32,6 +39,9 @@ interface OwnProps {}
 interface StateProps {
   authenticated: boolean;
   drawerOpen: boolean;
+  employee: Employee;
+  reports: Report[];
+  customer: Customer;
 }
 
 interface DispatchProps {
@@ -49,7 +59,7 @@ export function HomePage(props: Props) {
   useInjectSaga({ key: key, saga: saga });
 
   if (!props.authenticated) {
-      return <Redirect to="/login" />;
+    return <Redirect to="/login" />;
   }
 
   return (
@@ -57,7 +67,7 @@ export function HomePage(props: Props) {
       <AppBar
         position="fixed"
         className={clsx(classes.appBar, {
-          [classes.appBarShift]: props.drawerOpen,
+          [classes.appBarShift]: props.drawerOpen
         })}
       >
         <Toolbar className={classes.toolbar}>
@@ -68,7 +78,7 @@ export function HomePage(props: Props) {
             edge="start"
             className={clsx(
               classes.menuButton,
-              props.drawerOpen && classes.hide,
+              props.drawerOpen && classes.hide
             )}
           >
             <MenuIcon />
@@ -92,12 +102,19 @@ export function HomePage(props: Props) {
       />
       <div
         className={clsx(classes.content, {
-          [classes.contentShift]: props.drawerOpen,
+          [classes.contentShift]: props.drawerOpen
         })}
       >
         <Switch>
-          <Route path={routePath.featuresPath} component={FeaturePage} />
-          <Route path={routePath.reportHistoryPath} component={HistoryPage} />
+          <Route path={routePath.featuresPath} component={CreateReportPage} />
+          <Route
+            path={routePath.reportHistoryPath}
+            render={() => 
+                <ReportHistoryPage 
+                    reports={props.reports}
+                    customer={props.customer}
+                />}
+          />
           <Route path={routePath.profilePath} component={ProfilePage} />
         </Switch>
       </div>
@@ -108,11 +125,11 @@ export function HomePage(props: Props) {
 // Map Disptach to your DispatchProps
 export function mapDispatchToProps(
   dispatch: Dispatch,
-  ownProps: OwnProps,
+  ownProps: OwnProps
 ): DispatchProps {
   return {
     onToggleDrawerState: () => dispatch(toggleDrawerState()),
-    onLogout: () => dispatch(logout()),
+    onLogout: () => dispatch(logout())
   };
 }
 
@@ -120,14 +137,17 @@ export function mapDispatchToProps(
 const mapStateToProps = createStructuredSelector<RootState, StateProps>({
   drawerOpen: makeSelectDrawerOpen(),
   authenticated: makeSelectAuthenticated(),
+  employee: makeSelectEmployee(),
+  reports: makeSelectReports(),
+  customer: makeSelectCustomer()
 });
 
 const withConnect = connect(
   mapStateToProps,
-  mapDispatchToProps,
+  mapDispatchToProps
 );
 
 export default compose(
   withConnect,
-  memo,
+  memo
 )(HomePage);

@@ -1,6 +1,19 @@
 import { ActionType } from 'typesafe-actions';
 import * as actions from './actions';
 import { ApplicationRootState } from 'types';
+import { Report } from 'containers/HomePage/types';
+import { Customer } from '../HomePage/types.d';
+
+export interface Employee {
+    id: number,
+    firstName: string,
+    lastName: string,
+    email: string,
+    jobTitle: string,
+    customerId: number,
+    employeeRate: number,
+    role: string,
+}
 
 /* --- STATE --- */
 interface AppState {
@@ -9,6 +22,9 @@ interface AppState {
   readonly authenticated: boolean;
   readonly authFailed: boolean;
   readonly token: string;
+  readonly employee: Employee;
+  readonly reports: Report[];
+  readonly customer: Customer;
 }
 
 /* --- ACTIONS --- */

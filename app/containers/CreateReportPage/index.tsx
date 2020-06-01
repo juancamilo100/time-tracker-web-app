@@ -171,6 +171,8 @@ const useStyles = makeStyles({
 });
 
 export default () => {
+    console.log("Rendering Reports Page: ");
+    
   const [columns] = useState([
     { name: 'saleDate', title: 'Date' },
     { name: 'task', title: 'Description' },
@@ -301,7 +303,7 @@ export default () => {
             showDeleteCommand
             commandComponent={Command}
           />
-          <MuiPickersUtilsProvider utils={DateFnsUtils} children={null}/>
+          <MuiPickersUtilsProvider utils={DateFnsUtils} children={<></>}/>
           <TableSummaryRow />
           <TableFixedColumns leftColumns={leftFixedColumns} />
           <PagingPanel pageSizes={pageSizes} />

@@ -1,4 +1,4 @@
-
+import { JWT_SESSION_STORAGE_NAME } from '../containers/App/constants';
 export class ResponseError extends Error {
   public response: Response;
 
@@ -42,42 +42,49 @@ function checkStatus(response): Response {
  *
  * @return {object}           An object containing either "data" or "err"
  */
-export default function request(url: string, options?: RequestInit): Promise<{ } | { err: ResponseError }> {
+export default function request(
+  url: string,
+  options?: RequestInit
+): Promise<{} | { err: ResponseError }> {
   return fetch(url, options)
     .then(checkStatus)
     .then(parseJSON)
-    .then((data) => (data))
-    .catch((err) => (err));
+    .then(data => data)
+    .catch(err => err);
 }
 
 export function postRequest(url, requestBody, requestHeaders = {}) {
-    return fetch(url, {
-      method: 'POST',
-      body: JSON.stringify(requestBody),
-      headers: new Headers(requestHeaders),
-    })
-      .then(checkStatus)
-      .then(parseJSON)
-      .then(json => json);
-  }
+  return fetch(url, {
+    method: 'POST',
+    body: JSON.stringify(requestBody),
+    headers: new Headers(requestHeaders)
+  })
+    .then(checkStatus)
+    .then(parseJSON)
+    .then(json => json);
+}
 
 export function putRequest(url, requestBody) {
-    return fetch(url, {
-      method: 'PUT',
-      body: requestBody,
-    })
-      .then(checkStatus)
-      .then(parseJSON)
-      .then(json => json);
-  }
+  return fetch(url, {
+    method: 'PUT',
+    body: requestBody
+  })
+    .then(checkStatus)
+    .then(parseJSON)
+    .then(json => json);
+}
 
-export function getRequest(url) {
-    return fetch(url, {
-       method: 'GET',
-     })
-     .then(checkStatus)
-     .then(parseJSON)
-     .then((json) => {
-       return json;
-     });
-  }
+export function getRequest(url, requestHeaders = {}) {
+  return fetch(url, {
+    method: 'GET',
+    headers: new Headers({
+      ...requestHeaders,
+      Authorization: sessionStorage.getItem(JWT_SESSION_STORAGE_NAME)!
+    })
+  })
+    .then(checkStatus)
+    .then(parseJSON)
+    .then(json => {
+      return json;
+    });
+}
