@@ -93,7 +93,7 @@
     "ip": "1.1.5",
     "jsonwebtoken": "^8.5.1",
     "lodash": "4.17.11",
-    "material-table": "^1.57.2",
+    "material-table": "^1.59.0",
     "material-ui": "^0.20.2",
     "minimist": "1.2.0",
     "moment": "^2.24.0",
