@@ -6,6 +6,7 @@ import { ContainerState as HomeState } from 'containers/HomePage/types';
 import { ContainerState as LoginPageState } from 'containers/LoginPage/types';
 import { ContainerState as HistoryPageState } from 'containers/ReportHistoryPage/types';
 import { ContainerState as ProfilePageState } from 'containers/ProfilePage/types';
+import { ContainerState as CreateReportPageState } from 'containers/CreateReportPage/types';
 import { SagaIterator } from 'redux-saga';
 
 export interface LifeStore extends Store {
@@ -32,6 +33,7 @@ export interface ApplicationRootState {
   readonly language: ILanguageProviderProps;
   readonly home: HomeState;
   readonly loginPage: LoginPageState;
+  readonly createReportPage: CreateReportPageState;
   readonly reportHistoryPage: HistoryPageState;
   readonly profilePage: ProfilePageState;
 }

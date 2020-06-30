@@ -1,6 +1,21 @@
 import { action } from 'typesafe-actions';
-import {} from './types';
-
 import ActionTypes from './constants';
+import { Task } from 'containers/HomePage/types';
 
-export const defaultAction = () => action(ActionTypes.DEFAULT_ACTION);
+export const createReportAction = (
+  startDate: Date,
+  endDate: Date,
+  customerId: Number,
+  employeeId: Number,
+  tasks: Task[]
+) =>
+  action(ActionTypes.CREATE_REPORT_ACTION, {
+    startDate,
+    endDate,
+    customerId,
+    employeeId,
+    tasks
+  });
+
+export const createReportFailed = () =>
+  action(ActionTypes.CREATE_REPORT_FAILED);
