@@ -14,9 +14,15 @@ const selectGlobal = (state: ApplicationRootState) => {
 };
 
 export const makeSelectCreateReportFailed = () =>
-    createSelector(selectCreateReportPage, createReportState => createReportState.createReportFailed);
+  createSelector(
+    selectCreateReportPage,
+    createReportState => createReportState.createReportFailed
+  );
 export const makeSelectReports = () =>
-    createSelector(selectGlobal, globalState => globalState.reports);
+  createSelector(
+    selectGlobal,
+    globalState => globalState.reports
+  );
 
 /**
  * Other specific selectors
