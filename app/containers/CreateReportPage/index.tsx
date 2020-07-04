@@ -7,7 +7,7 @@ import { createStructuredSelector } from 'reselect';
 import { RootState } from './types';
 import AddBoxIcon from '@material-ui/icons/AddBox';
 import { useStyles } from './styles';
-import { createReportAction } from './actions';
+import { createReportAction, updateReportTaskAction } from './actions';
 import { useInjectSaga } from 'utils/injectSaga';
 import saga from './saga';
 import { makeSelectCreateReportFailed, makeSelectReports } from './selectors';
