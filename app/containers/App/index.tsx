@@ -79,8 +79,6 @@ function App(props: Props) {
 
   useEffect(() => {
     if (props.authenticated) {
-        console.log("Fetching startup data!!!");
-        
       fetchStartupData(props);
     }
   }, [props.authenticated]);

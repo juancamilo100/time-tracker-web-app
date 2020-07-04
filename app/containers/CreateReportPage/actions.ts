@@ -18,4 +18,4 @@ export const createReportAction = (
   });
 
 export const createReportFailed = () =>
-  action(ActionTypes.CREATE_REPORT_FAILED);
+  action(ActionTypes.CREATE_REPORT_FAILED_ACTION);
