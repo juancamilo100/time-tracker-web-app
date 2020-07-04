@@ -5,10 +5,8 @@ import { ContainerActions } from './types';
 import {
   authActionSuccess,
   authActionError,
-//   getEmployeeProfileAction
 } from '../App/actions';
 import { TIME_TRACKER_API_BASE_URL } from 'config';
-import jwt from 'jsonwebtoken';
 
 export function* authenticate(action: ContainerActions) {
   const requestURL = `http://${TIME_TRACKER_API_BASE_URL}/api/auth/login`;
@@ -27,10 +25,7 @@ export function* authenticate(action: ContainerActions) {
       requestHeaders
     );
 
-    // const decodedToken = jwt.decode(response.token);
-
     yield put(authActionSuccess(response.auth, response.token));
-    // yield put(getEmployeeProfileAction(decodedToken!['employeeId']));
   } catch (err) {
     yield put(authActionError());
   }

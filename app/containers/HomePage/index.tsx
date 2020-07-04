@@ -106,7 +106,11 @@ export function HomePage(props: Props) {
         })}
       >
         <Switch>
-          <Route path={routePath.featuresPath} component={CreateReportPage} />
+          <Route path={routePath.featuresPath} render={() => 
+                <CreateReportPage
+                    customer={props.customer}
+                    employee={props.employee}
+                />} />
           <Route
             path={routePath.reportHistoryPath}
             render={() => 

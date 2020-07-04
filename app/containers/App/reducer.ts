@@ -57,6 +57,14 @@ function appReducer(
         ...state,
         customer: action.payload.customer
       };
+
+    case ActionTypes.CREATE_REPORT_SUCCESS:
+        const newReports = [ ...state.reports, action.payload.report ]
+
+      return {
+        ...state, 
+        reports: newReports
+      };
       
     case ActionTypes.LOGOUT:
       sessionStorage.removeItem(JWT_SESSION_STORAGE_NAME);

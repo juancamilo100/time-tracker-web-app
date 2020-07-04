@@ -68,9 +68,6 @@ type Props = DispatchProps & OwnProps & StateProps;
 const key = 'global';
 
 function App(props: Props) {
-  console.log('Rendering APP with props:');
-  console.log(props);
-
   useInjectSaga({ key: key, saga: saga });
   const { token, tokenIsExpired } = validateToken();
 
@@ -82,6 +79,8 @@ function App(props: Props) {
 
   useEffect(() => {
     if (props.authenticated) {
+        console.log("Fetching startup data!!!");
+        
       fetchStartupData(props);
     }
   }, [props.authenticated]);
@@ -95,7 +94,6 @@ function App(props: Props) {
         <Switch>
           <Route path={routePath.mainPath} component={HomePage} />
           <Route path={routePath.loginPath} component={LoginPage} />
-          <Route path="/" component={HomePage} />
           <Route path="" component={NotFoundPage} />
         </Switch>
       )}

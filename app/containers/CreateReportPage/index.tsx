@@ -1,327 +1,226 @@
-import React, { useState, useCallback } from 'react';
-import {
-  SortingState,
-  EditingState,
-  PagingState,
-  SummaryState,
-  IntegratedPaging,
-  IntegratedSorting,
-  IntegratedSummary,
-} from '@devexpress/dx-react-grid';
-import {
-  Grid,
-  Table,
-  TableHeaderRow,
-  TableEditRow,
-  TableEditColumn,
-  PagingPanel,
-  DragDropProvider,
-  TableColumnReordering,
-  TableFixedColumns,
-  TableSummaryRow,
-} from '@devexpress/dx-react-grid-material-ui';
-import Paper from '@material-ui/core/Paper';
-import Button from '@material-ui/core/Button';
-import IconButton from '@material-ui/core/IconButton';
-import Input from '@material-ui/core/Input';
-import Select from '@material-ui/core/Select';
-import MenuItem from '@material-ui/core/MenuItem';
-import TableCell from '@material-ui/core/TableCell';
-
-import DeleteIcon from '@material-ui/icons/Delete';
-import EditIcon from '@material-ui/icons/Edit';
-import SaveIcon from '@material-ui/icons/Save';
-import CancelIcon from '@material-ui/icons/Cancel';
-import { withStyles, makeStyles } from '@material-ui/core/styles';
-import { CurrencyTypeProvider } from './components/currency-type-provider';
-import { PercentTypeProvider } from './components/percent-type-provider';
-import { generateRows, globalSalesValues } from './demo-data/generator';
+import React, { useState } from 'react';
+import MaterialTable, { Column } from 'material-table';
+import { Report, Task, Customer } from 'containers/HomePage/types';
+import { connect } from 'react-redux';
+import { Dispatch, compose } from 'redux';
+import { createStructuredSelector } from 'reselect';
+import { RootState } from './types';
+import AddBoxIcon from '@material-ui/icons/AddBox';
+import { useStyles } from './styles';
+import { createReportAction } from './actions';
+import { useInjectSaga } from 'utils/injectSaga';
+import saga from './saga';
+import { makeSelectCreateReportFailed, makeSelectReports } from './selectors';
 import DateFnsUtils from '@date-io/date-fns';
-import { MuiPickersUtilsProvider } from '@material-ui/pickers';
+import { DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
+import moment from 'moment';
+import { Employee } from 'containers/App/types';
 
-const styles = theme => ({
-  lookupEditCell: {
-    padding: theme.spacing(1),
-  },
-  dialog: {
-    width: 'calc(100% - 16px)',
-  },
-  inputRoot: {
-    width: '100%',
-  },
-});
+interface Row {
+  datePerformed: Date;
+  taskDescription: string;
+  hoursSpent: number;
+}
 
-const AddButton = ({ onExecute }) => (
-  <div style={{ textAlign: 'center' }}>
-    <Button color="primary" onClick={onExecute} title="Create new row">
-      Add Task
-    </Button>
+interface TableState {
+  columns: Array<Column<Row>>;
+  data: Row[];
+}
+
+interface OwnProps {
+  customer: Customer;
+  employee: Employee;
+}
+
+interface StateProps {
+  createReportFailed: Boolean;
+  reports: Report[];
+}
+interface DispatchProps {
+  onCreateReport(
+    startDate: Date,
+    endDate: Date,
+    customerId: Number,
+    employeeId: Number,
+    tasks: Task[]
+  ): void;
+  dispatch: Dispatch;
+}
+
+type Props = StateProps & DispatchProps & OwnProps;
+
+const createEmptyReport = (props: Props, datePickerState) => {
+  // console.log("Creating empty report:");
+
+  props.onCreateReport(
+    datePickerState.startDate,
+    datePickerState.endDate,
+    props.customer.id,
+    props.employee.id,
+    []
+  );
+};
+
+const createReportButton = (props, classes, datePickerState) => (
+  <div className={classes.addReport}>
+    <AddBoxIcon
+      onClick={() => createEmptyReport(props, datePickerState)}
+      className={classes.addReportIcon}
+    />
+    <h3>Create Report for Dates:</h3>
+    <div className={classes.datePickers}>
+      <MuiPickersUtilsProvider utils={DateFnsUtils}>
+        <DatePicker
+          label="Start Date"
+          value={datePickerState.startDate}
+          onChange={datePickerState.setStartDate}
+        />
+        <DatePicker
+          label="End Date"
+          value={datePickerState.endDate}
+          onChange={datePickerState.setEndDate}
+        />
+      </MuiPickersUtilsProvider>
+    </div>
   </div>
 );
 
-const EditButton = ({ onExecute }) => (
-  <IconButton onClick={onExecute} title="Edit row">
-    <EditIcon />
-  </IconButton>
-);
-
-const DeleteButton = ({ onExecute }) => (
-  <IconButton
-    onClick={useCallback(() => {
-      // eslint-disable-next-line
-      if (window.confirm('Are you sure you want to delete this row?')) {
-        onExecute();
+const reportTable = (props, tableState, setState) => (
+  <MaterialTable
+    localization={{
+      header: {
+        actions: ''
       }
-    }, [])}
-    title="Delete row"
-  >
-    <DeleteIcon />
-  </IconButton>
+    }}
+    style={{ padding: '50px' }}
+    options={{
+      search: false,
+      paging: false
+    }}
+    title="Report:"
+    columns={tableState.columns}
+    data={tableState.data}
+    editable={{
+      onRowAdd: newData =>
+        new Promise(resolve => {
+          setTimeout(() => {
+            resolve();
+            setState(prevState => {
+              console.log('Creating data:');
+              console.log(newData);
+              const data = [...prevState.data];
+              data.push(newData);
+              return { ...prevState, data };
+            });
+          }, 600);
+        }),
+      onRowUpdate: (newData, oldData) =>
+        new Promise(resolve => {
+          setTimeout(() => {
+            resolve();
+            if (oldData) {
+              setState(prevState => {
+                console.log('Updating data:');
+                console.log(newData);
+
+                const data = [...prevState.data];
+                data[data.indexOf(oldData)] = newData;
+                return { ...prevState, data };
+              });
+            }
+          }, 600);
+        }),
+      onRowDelete: oldData =>
+        new Promise(resolve => {
+          setTimeout(() => {
+            resolve();
+            setState(prevState => {
+              console.log('Deleting data:');
+              console.log(oldData);
+              const data = [...prevState.data];
+              data.splice(data.indexOf(oldData), 1);
+              return { ...prevState, data };
+            });
+          }, 600);
+        })
+    }}
+  />
 );
 
-const CommitButton = ({ onExecute }) => (
-  <IconButton onClick={onExecute} title="Save changes">
-    <SaveIcon />
-  </IconButton>
-);
+const keyCreateReportPage = 'createReportPage';
 
-const CancelButton = ({ onExecute }) => (
-  <IconButton color="secondary" onClick={onExecute} title="Cancel changes">
-    <CancelIcon />
-  </IconButton>
-);
-
-const commandComponents = {
-  add: AddButton,
-  edit: EditButton,
-  delete: DeleteButton,
-  commit: CommitButton,
-  cancel: CancelButton,
-};
-
-const Command = ({ id, onExecute }) => {
-  const CommandButton = commandComponents[id];
-  return <CommandButton onExecute={onExecute} />;
-};
-
-const availableValues = {
-  product: globalSalesValues.product,
-  region: globalSalesValues.region,
-  customer: globalSalesValues.customer,
-};
-
-const LookupEditCellBase = ({
-  availableColumnValues,
-  value,
-  onValueChange,
-  classes,
-}) => (
-  <TableCell className={classes.lookupEditCell}>
-    <Select
-      value={value}
-      onChange={useCallback(event => onValueChange(event.target.value), [])}
-      input={<Input classes={{ root: classes.inputRoot }} />}
-    >
-      {availableColumnValues.map(item => (
-        <MenuItem key={item} value={item}>
-          {item}
-        </MenuItem>
-      ))}
-    </Select>
-  </TableCell>
-);
-export const LookupEditCell = withStyles(styles, {
-  name: 'ControlledModeDemo',
-})(LookupEditCellBase);
-
-const Cell = props => {
-  const { column } = props;
-  if (column.name === 'discount') {
-  }
-  if (column.name === 'amount') {
-  }
-  return <Table.Cell {...props} />;
-};
-
-const EditCell = props => {
-  const { column } = props;
-  const availableColumnValues = availableValues[column.name];
-  if (availableColumnValues) {
-    return (
-      <LookupEditCell
-        {...props}
-        availableColumnValues={availableColumnValues}
-      />
-    );
-  }
-  return <TableEditRow.Cell {...props} />;
-};
-
-const getRowId = row => row.id;
-
-const useStyles = makeStyles({
-  centerButton: {
-    margin: '5px',
-  },
-  center: {
-    paddingTop: '5%',
-    display: 'flex',
-    justifyContent: 'center',
-  },
-});
-
-export default () => {
-    console.log("Rendering Reports Page: ");
-    
-  const [columns] = useState([
-    { name: 'saleDate', title: 'Date' },
-    { name: 'task', title: 'Description' },
-    { name: 'amount', title: 'Hours' },
-  ]);
-  const [rows, setRows] = useState(
-    generateRows({
-      columnValues: { id: ({ index }) => index, ...globalSalesValues },
-      length: 2,
-    }),
-  );
-  const [tableColumnExtensions] = useState([]);
-
-  const [sorting] = useState([]);
-  const [editingRowIds, setEditingRowIds] = useState<Array<string | number>>([]);
-  const [addedRows, setAddedRows] = useState([]);
-  const [rowChanges, setRowChanges] = useState({});
-  const [currentPage, setCurrentPage] = useState(0);
-  const [pageSize, setPageSize] = useState(0);
-  const [pageSizes] = useState([5, 10, 0]);
-  const [columnOrder, setColumnOrder] = useState([
-    'saleDate',
-    'task',
-    'amount',
-  ]);
-  const [currencyColumns] = useState(['amount']);
-  const [percentColumns] = useState(['discount']);
-  const [leftFixedColumns] = useState([TableEditColumn.COLUMN_TYPE]);
-  const [totalSummaryItems] = useState([{ columnName: 'amount', type: 'sum' }]);
-
-  const changeAddedRows = value =>
-    setAddedRows(
-      value.map(row =>
-        Object.keys(row).length
-          ? row
-          : {
-              amount: 0,
-              saleDate: new Date().toISOString().split('T')[0],
-              task: '',
-            },
-      ),
-    );
-
-  const deleteRows = deletedIds => {
-    const rowsForDelete = rows.slice();
-    deletedIds.forEach(rowId => {
-      const index = rowsForDelete.findIndex(row => row.id === rowId);
-      if (index > -1) {
-        rowsForDelete.splice(index, 1);
-      }
-    });
-    return rowsForDelete;
-  };
-
-  const commitChanges = ({ added, changed, deleted }) => {
-    let changedRows;
-    if (added) {
-      const startingAddedId =
-        rows.length > 0 ? rows[rows.length - 1].id + 1 : 0;
-      changedRows = [
-        ...rows,
-        ...added.map((row, index) => ({
-          id: startingAddedId + index,
-          ...row,
-        })),
-      ];
-    }
-    if (changed) {
-      changedRows = rows.map(row =>
-        changed[row.id] ? { ...row, ...changed[row.id] } : row,
-      );
-    }
-    if (deleted) {
-      changedRows = deleteRows(deleted);
-    }
-    setRows(changedRows);
-  };
-
+export function CreateReportPage(props: Props) {
+  useInjectSaga({ key: keyCreateReportPage, saga: saga });
   const classes = useStyles();
 
-  return (
-    <div>
-      <Paper>
-        <Grid rows={rows} columns={columns} getRowId={getRowId}>
-          <SortingState
-            sorting={sorting}
-          />
-          <PagingState
-            currentPage={currentPage}
-            onCurrentPageChange={setCurrentPage}
-            pageSize={pageSize}
-            onPageSizeChange={setPageSize}
-          />
-          <EditingState
-            editingRowIds={editingRowIds}
-            onEditingRowIdsChange={useCallback((rowIds) => setEditingRowIds(rowIds), [])}
-            rowChanges={rowChanges}
-            onRowChangesChange={setRowChanges}
-            addedRows={addedRows}
-            onAddedRowsChange={changeAddedRows}
-            onCommitChanges={commitChanges}
-          />
-          <SummaryState totalItems={totalSummaryItems} />
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(moment().add(2, 'weeks'));
 
-          <IntegratedSorting />
-          <IntegratedPaging />
-          <IntegratedSummary />
+  const [tableState, setTableState] = useState<TableState>({
+    columns: [
+      {
+        title: 'Date',
+        field: 'datePerformed',
+        type: 'date',
+        cellStyle: { width: 300 },
+        headerStyle: { width: 200, fontWeight: 'bold' }
+      },
+      {
+        title: 'Task Description',
+        field: 'taskDescription',
+        cellStyle: { width: 200, minWidth: 200 },
+        headerStyle: { width: 200, minWidth: 200, fontWeight: 'bold' }
+      },
+      {
+        title: 'Hours',
+        field: 'hoursSpent',
+        type: 'numeric',
+        cellStyle: { textAlign: 'left' },
+        headerStyle: { textAlign: 'left', fontWeight: 'bold' }
+      }
+    ],
+    data: [
+      //   { datePerformed: new Date(), taskDescription: 'Baran asdfasdfkhalsdfhajsdlfhajsdklfhjahdlsfhjasd adsjklfhadskljfhadjksl ', hoursSpent: 34 },
+    ]
+  });
 
-          <CurrencyTypeProvider for={currencyColumns} />
-          <PercentTypeProvider for={percentColumns} />
+  return props.reports.find(report => report.submitted === false)
+    ? reportTable(props, tableState, setTableState)
+    : createReportButton(props, classes, {
+        startDate,
+        endDate,
+        setStartDate,
+        setEndDate
+      });
+}
 
-          <DragDropProvider />
+const mapStateToProps = createStructuredSelector<RootState, StateProps>({
+  createReportFailed: makeSelectCreateReportFailed(),
+  reports: makeSelectReports()
+});
 
-          <Table
-            columnExtensions={tableColumnExtensions}
-            cellComponent={Cell}
-          />
-          <TableColumnReordering
-            order={columnOrder}
-            onOrderChange={setColumnOrder}
-          />
-          <TableHeaderRow showSortingControls />
-          <TableEditRow cellComponent={EditCell} />
-          <TableEditColumn
-            width={170}
-            showAddCommand={!addedRows.length}
-            showEditCommand
-            showDeleteCommand
-            commandComponent={Command}
-          />
-          <MuiPickersUtilsProvider utils={DateFnsUtils} children={<></>}/>
-          <TableSummaryRow />
-          <TableFixedColumns leftColumns={leftFixedColumns} />
-          <PagingPanel pageSizes={pageSizes} />
-        </Grid>
-      </Paper>
+function mapDispatchToProps(
+  dispatch: Dispatch,
+  ownProps: OwnProps
+): DispatchProps {
+  return {
+    onCreateReport: (
+      startDate: Date,
+      endDate: Date,
+      customerId: Number,
+      employeeId: Number,
+      tasks: Task[]
+    ) =>
+      dispatch(
+        createReportAction(startDate, endDate, customerId, employeeId, tasks)
+      ),
+    dispatch: dispatch
+  };
+}
 
-      <div className={classes.center}>
-        <div className={classes.centerButton}>
-          <Button variant="outlined" color="primary">
-            Save
-          </Button>
-        </div>
-        <div className={classes.centerButton}>
-          <Button variant="outlined" color="secondary">
-            Submit
-          </Button>
-        </div>
-      </div>
-    </div>
-  );
-};
+const withConnect = connect(
+  mapStateToProps,
+  mapDispatchToProps
+);
+
+export default compose(withConnect)(CreateReportPage);

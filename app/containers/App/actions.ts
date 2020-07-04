@@ -9,7 +9,9 @@ import { Customer } from '../HomePage/types.d';
 export const authActionSuccess = (auth: boolean, token: string) =>
   action(ActionTypes.AUTH_ACTION_SUCCESS, { auth: auth, token: token });
 
-  export const setLoadingAction = (loading: boolean) =>
+export const authActionError = () => action(ActionTypes.AUTH_ACTION_ERROR);
+
+export const setLoadingAction = (loading: boolean) =>
   action(ActionTypes.LOADING_ACTION, { loading });
 
 export const getEmployeeSuccessAction = (employee: Employee) =>
@@ -21,8 +23,7 @@ export const getEmployeeReportsSuccessAction = (reports: Report[]) =>
 export const getEmployeeCustomerSuccessAction = (customer: Customer) =>
   action(ActionTypes.GET_EMPLOYEE_CUSTOMER_SUCCESS, { customer });
 
-export const authActionError = () => {
-  return action(ActionTypes.AUTH_ACTION_ERROR);
-};
+export const createReportSuccess = (report: Report) =>
+  action(ActionTypes.CREATE_REPORT_SUCCESS, { report });
 
 export const logout = () => action(ActionTypes.LOGOUT);

@@ -176,7 +176,7 @@ export const defaultNestedColumnValues = {
 
 export const globalSalesValues = {
   amount: ({ random }) => Math.floor(random() * 10) + 5,
-  saleDate: ({ random }) =>
+  date: ({ random }) =>
     generateDate({
       month: () => Math.floor(random() * 3) + 1,
       random,
