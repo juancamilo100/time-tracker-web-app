@@ -10,12 +10,9 @@ import { useStyles } from './styles';
 import { createReportAction } from './actions';
 import { useInjectSaga } from 'utils/injectSaga';
 import saga from './saga';
-import { makeSelectCreateReportFailed } from './selectors';
-import DateFnsUtils from "@date-io/date-fns";
-import {
-    DatePicker,
-    MuiPickersUtilsProvider,
-  } from '@material-ui/pickers';
+import { makeSelectCreateReportFailed, makeSelectReports } from './selectors';
+import DateFnsUtils from '@date-io/date-fns';
+import { DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import moment from 'moment';
 import { Employee } from 'containers/App/types';
 
@@ -31,158 +28,175 @@ interface TableState {
 }
 
 interface OwnProps {
-    report?: Report;
-    customer: Customer;
-    employee: Employee;
+  customer: Customer;
+  employee: Employee;
 }
 
 interface StateProps {
-    createReportFailed: Boolean;
+  createReportFailed: Boolean;
+  reports: Report[];
 }
 interface DispatchProps {
-    onCreateReport(
-        startDate: Date, 
-        endDate: Date, 
-        customerId: Number, 
-        employeeId: Number,
-        tasks: Task[]): void;
-    dispatch: Dispatch;
+  onCreateReport(
+    startDate: Date,
+    endDate: Date,
+    customerId: Number,
+    employeeId: Number,
+    tasks: Task[]
+  ): void;
+  dispatch: Dispatch;
 }
 
 type Props = StateProps & DispatchProps & OwnProps;
 
 const createEmptyReport = (props: Props, datePickerState) => {
-    console.log("Creating empty report:");
-    
-    props.onCreateReport(
-        datePickerState.startDate, 
-        datePickerState.endDate, 
-        props.customer.id, 
-        props.employee.id,
-        []
-    );
-}
+  // console.log("Creating empty report:");
+
+  props.onCreateReport(
+    datePickerState.startDate,
+    datePickerState.endDate,
+    props.customer.id,
+    props.employee.id,
+    []
+  );
+};
 
 const createReportButton = (props, classes, datePickerState) => (
-    <div className={classes.addReport}>
-        <AddBoxIcon onClick={() => createEmptyReport(props, datePickerState)} className={classes.addReportIcon}/>
-        <h3>Create Report for Dates:</h3>
-        <div className={classes.datePickers}>
-            <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                <DatePicker 
-                    label="Start Date"
-                    value={datePickerState.startDate}
-                    onChange={datePickerState.setStartDate} />
-                <DatePicker 
-                    label="End Date"
-                    value={datePickerState.endDate} 
-                    onChange={datePickerState.setEndDate} />
-            </MuiPickersUtilsProvider>
-        </div>
-    </div>
-)
-
-const reportTable = (props, tableState, setState) => 
-    (
-        <MaterialTable
-            localization={{
-                header: {
-                    actions: ''
-                },
-            }}
-            style={{padding: '50px'}}
-            options={{
-                search: false,
-                paging: false
-            }}
-            title="Report:"
-            columns={tableState.columns}
-            data={tableState.data}
-            editable={{
-                onRowAdd: (newData) =>
-                new Promise((resolve) => {
-                    setTimeout(() => {
-                    resolve();
-                    setState((prevState) => {
-                        const data = [...prevState.data];
-                        data.push(newData);
-                        return { ...prevState, data };
-                    });
-                    }, 600);
-                }),
-                onRowUpdate: (newData, oldData) =>
-                new Promise((resolve) => {
-                    setTimeout(() => {
-                    resolve();
-                    if (oldData) {
-                        setState((prevState) => {
-                        const data = [...prevState.data];
-                        data[data.indexOf(oldData)] = newData;
-                        return { ...prevState, data };
-                        });
-                    }
-                    }, 600);
-                }),
-                onRowDelete: (oldData) =>
-                new Promise((resolve) => {
-                    setTimeout(() => {
-                    resolve();
-                    setState((prevState) => {
-                        const data = [...prevState.data];
-                        data.splice(data.indexOf(oldData), 1);
-                        return { ...prevState, data };
-                    });
-                    }, 600);
-                }),
-            }}
+  <div className={classes.addReport}>
+    <AddBoxIcon
+      onClick={() => createEmptyReport(props, datePickerState)}
+      className={classes.addReportIcon}
+    />
+    <h3>Create Report for Dates:</h3>
+    <div className={classes.datePickers}>
+      <MuiPickersUtilsProvider utils={DateFnsUtils}>
+        <DatePicker
+          label="Start Date"
+          value={datePickerState.startDate}
+          onChange={datePickerState.setStartDate}
         />
-      );
+        <DatePicker
+          label="End Date"
+          value={datePickerState.endDate}
+          onChange={datePickerState.setEndDate}
+        />
+      </MuiPickersUtilsProvider>
+    </div>
+  </div>
+);
 
-const keyCreateReportPage = 'createReportPage'
+const reportTable = (props, tableState, setState) => (
+  <MaterialTable
+    localization={{
+      header: {
+        actions: ''
+      }
+    }}
+    style={{ padding: '50px' }}
+    options={{
+      search: false,
+      paging: false
+    }}
+    title="Report:"
+    columns={tableState.columns}
+    data={tableState.data}
+    editable={{
+      onRowAdd: newData =>
+        new Promise(resolve => {
+          setTimeout(() => {
+            resolve();
+            setState(prevState => {
+              console.log('Creating data:');
+              console.log(newData);
+              const data = [...prevState.data];
+              data.push(newData);
+              return { ...prevState, data };
+            });
+          }, 600);
+        }),
+      onRowUpdate: (newData, oldData) =>
+        new Promise(resolve => {
+          setTimeout(() => {
+            resolve();
+            if (oldData) {
+              setState(prevState => {
+                console.log('Updating data:');
+                console.log(newData);
 
-export function CreateReportTable(props: Props) { 
-    useInjectSaga({ key: keyCreateReportPage, saga: saga });
-    const classes = useStyles();
+                const data = [...prevState.data];
+                data[data.indexOf(oldData)] = newData;
+                return { ...prevState, data };
+              });
+            }
+          }, 600);
+        }),
+      onRowDelete: oldData =>
+        new Promise(resolve => {
+          setTimeout(() => {
+            resolve();
+            setState(prevState => {
+              console.log('Deleting data:');
+              console.log(oldData);
+              const data = [...prevState.data];
+              data.splice(data.indexOf(oldData), 1);
+              return { ...prevState, data };
+            });
+          }, 600);
+        })
+    }}
+  />
+);
 
-    console.log("**********Create report failed state: ");
-    console.log(props.createReportFailed);
-    
-    const [startDate, setStartDate] = useState(new Date());
-    const [endDate, setEndDate] = useState(moment().add(2, 'weeks'));
+const keyCreateReportPage = 'createReportPage';
 
-  const [tableState, setTableState] = useState<TableState>({  
+export function CreateReportPage(props: Props) {
+  useInjectSaga({ key: keyCreateReportPage, saga: saga });
+  const classes = useStyles();
+
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(moment().add(2, 'weeks'));
+
+  const [tableState, setTableState] = useState<TableState>({
     columns: [
-        { 
-            title: 'Date', 
-            field: 'datePerformed', 
-            type: 'date',
-            cellStyle: { width: 300 },
-            headerStyle: { width: 200, fontWeight: "bold" } 
-        },
-        { 
-            title: 'Task Description', 
-            field: 'taskDescription',
-            cellStyle: { width: 200, minWidth: 200 },
-            headerStyle: { width: 200, minWidth: 200, fontWeight: "bold" } 
-        },
-        { 
-            title: 'Hours', 
-            field: 'hoursSpent', 
-            type: 'numeric',
-            cellStyle: { textAlign: 'left'},
-            headerStyle: { textAlign: 'left', fontWeight: "bold" } 
-        }
+      {
+        title: 'Date',
+        field: 'datePerformed',
+        type: 'date',
+        cellStyle: { width: 300 },
+        headerStyle: { width: 200, fontWeight: 'bold' }
+      },
+      {
+        title: 'Task Description',
+        field: 'taskDescription',
+        cellStyle: { width: 200, minWidth: 200 },
+        headerStyle: { width: 200, minWidth: 200, fontWeight: 'bold' }
+      },
+      {
+        title: 'Hours',
+        field: 'hoursSpent',
+        type: 'numeric',
+        cellStyle: { textAlign: 'left' },
+        headerStyle: { textAlign: 'left', fontWeight: 'bold' }
+      }
     ],
     data: [
-      { datePerformed: new Date(), taskDescription: 'Baran asdfasdfkhalsdfhajsdlfhajsdklfhjahdlsfhjasd adsjklfhadskljfhadjksl ', hoursSpent: 34 },
-    ],
+      //   { datePerformed: new Date(), taskDescription: 'Baran asdfasdfkhalsdfhajsdlfhajsdklfhjahdlsfhjasd adsjklfhadskljfhadjksl ', hoursSpent: 34 },
+    ]
   });
 
-  return props.report ? reportTable(props, tableState, setTableState) : createReportButton(props, classes, {startDate, endDate, setStartDate, setEndDate});
+  return props.reports.find(report => report.submitted === false)
+    ? reportTable(props, tableState, setTableState)
+    : createReportButton(props, classes, {
+        startDate,
+        endDate,
+        setStartDate,
+        setEndDate
+      });
 }
 
 const mapStateToProps = createStructuredSelector<RootState, StateProps>({
-    createReportFailed: makeSelectCreateReportFailed()
+  createReportFailed: makeSelectCreateReportFailed(),
+  reports: makeSelectReports()
 });
 
 function mapDispatchToProps(
@@ -191,12 +205,15 @@ function mapDispatchToProps(
 ): DispatchProps {
   return {
     onCreateReport: (
-        startDate: Date, 
-        endDate: Date, 
-        customerId: Number, 
-        employeeId: Number,
-        tasks: Task[]) => { console.log("Creating report....");
-         dispatch(createReportAction(startDate, endDate, customerId, employeeId, tasks)) },
+      startDate: Date,
+      endDate: Date,
+      customerId: Number,
+      employeeId: Number,
+      tasks: Task[]
+    ) =>
+      dispatch(
+        createReportAction(startDate, endDate, customerId, employeeId, tasks)
+      ),
     dispatch: dispatch
   };
 }
@@ -206,4 +223,4 @@ const withConnect = connect(
   mapDispatchToProps
 );
 
-export default compose(withConnect)(CreateReportTable);
+export default compose(withConnect)(CreateReportPage);

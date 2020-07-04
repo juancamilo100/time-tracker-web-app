@@ -94,7 +94,6 @@ function App(props: Props) {
         <Switch>
           <Route path={routePath.mainPath} component={HomePage} />
           <Route path={routePath.loginPath} component={LoginPage} />
-          <Route path="/" component={HomePage} />
           <Route path="" component={NotFoundPage} />
         </Switch>
       )}

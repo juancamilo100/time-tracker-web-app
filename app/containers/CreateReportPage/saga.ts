@@ -16,7 +16,8 @@ export function* createReport(action: ContainerActions) {
     employeeId: action["payload"].employeeId,
     startDate: moment(action["payload"].startDate).format('MM/DD/YYYY'),
     endDate: moment(action["payload"].endDate).format('MM/DD/YYYY'),
-    tasks: action["payload"].tasks
+    tasks: action["payload"].tasks,
+    submitted: false
   };
 
   const requestHeaders = {

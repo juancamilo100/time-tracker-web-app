@@ -9,9 +9,14 @@ import { createSelector } from 'reselect';
 const selectCreateReportPage = (state: ApplicationRootState) => {
   return state.createReportPage || initialState;
 };
+const selectGlobal = (state: ApplicationRootState) => {
+  return state.global;
+};
 
 export const makeSelectCreateReportFailed = () =>
     createSelector(selectCreateReportPage, createReportState => createReportState.createReportFailed);
+export const makeSelectReports = () =>
+    createSelector(selectGlobal, globalState => globalState.reports);
 
 /**
  * Other specific selectors

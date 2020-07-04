@@ -59,13 +59,10 @@ function appReducer(
       };
 
     case ActionTypes.CREATE_REPORT_SUCCESS:
-        console.log("Report created successfully");
-        
-        const newReports = { ...state.reports }
-        newReports.push(action.payload.report);
+        const newReports = [ ...state.reports, action.payload.report ]
 
       return {
-        ...state,
+        ...state, 
         reports: newReports
       };
       

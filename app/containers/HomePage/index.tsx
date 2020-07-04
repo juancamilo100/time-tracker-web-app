@@ -107,8 +107,7 @@ export function HomePage(props: Props) {
       >
         <Switch>
           <Route path={routePath.featuresPath} render={() => 
-                <CreateReportPage 
-                    report={props.reports.find((report) => report.submitted === false)}
+                <CreateReportPage
                     customer={props.customer}
                     employee={props.employee}
                 />} />
