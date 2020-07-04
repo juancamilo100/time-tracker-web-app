@@ -44,6 +44,7 @@ interface DispatchProps {
     employeeId: Number,
     tasks: Task[]
   ): void;
+  onUpdateReportTask(): void
   dispatch: Dispatch;
 }
 
@@ -112,7 +113,7 @@ const reportTable = (props, tableState, setState) => (
               data.push(newData);
               return { ...prevState, data };
             });
-          }, 600);
+          }, 0);
         }),
       onRowUpdate: (newData, oldData) =>
         new Promise(resolve => {
@@ -128,7 +129,7 @@ const reportTable = (props, tableState, setState) => (
                 return { ...prevState, data };
               });
             }
-          }, 600);
+          }, 0);
         }),
       onRowDelete: oldData =>
         new Promise(resolve => {
@@ -141,7 +142,7 @@ const reportTable = (props, tableState, setState) => (
               data.splice(data.indexOf(oldData), 1);
               return { ...prevState, data };
             });
-          }, 600);
+          }, 0);
         })
     }}
   />
@@ -214,6 +215,7 @@ function mapDispatchToProps(
       dispatch(
         createReportAction(startDate, endDate, customerId, employeeId, tasks)
       ),
+    onUpdateReportTask: () => dispatch(updateReportTaskAction()),
     dispatch: dispatch
   };
 }

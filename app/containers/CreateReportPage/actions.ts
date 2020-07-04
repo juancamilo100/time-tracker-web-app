@@ -17,5 +17,8 @@ export const createReportAction = (
     tasks
   });
 
+export const updateReportTaskAction = () =>
+  action(ActionTypes.UPDATE_TASK_REPORT_ACTION, {});
+
 export const createReportFailed = () =>
   action(ActionTypes.CREATE_REPORT_FAILED_ACTION);
