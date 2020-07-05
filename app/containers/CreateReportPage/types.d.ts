@@ -5,6 +5,7 @@ import { ApplicationRootState } from 'types';
 /* --- STATE --- */
 interface CreateReportPageState {
   createReportFailed: boolean;
+  createReportTaskFailed: boolean;
 }
 
 /* --- ACTIONS --- */

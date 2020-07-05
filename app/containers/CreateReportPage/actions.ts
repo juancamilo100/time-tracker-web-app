@@ -1,6 +1,6 @@
 import { action } from 'typesafe-actions';
 import ActionTypes from './constants';
-import { Task } from 'containers/HomePage/types';
+import { Task, Report } from 'containers/HomePage/types';
 
 export const createReportAction = (
   startDate: Date,
@@ -17,8 +17,21 @@ export const createReportAction = (
     tasks
   });
 
-export const updateReportTaskAction = () =>
-  action(ActionTypes.UPDATE_TASK_REPORT_ACTION, {});
+export const createReportTaskAction = (
+  report: Report,
+  datePerformed: Date,
+  hours: Number,
+  description: String
+) =>
+  action(ActionTypes.CREATE_REPORT_TASK_ACTION, {
+    report,
+    datePerformed,
+    hours,
+    description
+  });
 
 export const createReportFailed = () =>
   action(ActionTypes.CREATE_REPORT_FAILED_ACTION);
+
+export const createReportTaskFailed = () =>
+  action(ActionTypes.CREATE_REPORT_TASK_FAILED_ACTION);

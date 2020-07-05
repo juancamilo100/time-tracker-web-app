@@ -64,6 +64,17 @@ export function postRequest(url, requestBody, requestHeaders = {}) {
     .then(json => json);
 }
 
+export function patchRequest(url, requestBody, requestHeaders = {}) {
+  return fetch(url, {
+    method: 'PATCH',
+    body: JSON.stringify(requestBody),
+    headers: new Headers(requestHeaders)
+  })
+    .then(checkStatus)
+    .then(parseJSON)
+    .then(json => json);
+}
+
 export function putRequest(url, requestBody) {
   return fetch(url, {
     method: 'PUT',

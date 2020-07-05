@@ -65,6 +65,14 @@ function appReducer(
         ...state, 
         reports: newReports
       };
+
+    case ActionTypes.CREATE_REPORT_TASK_SUCCESS:
+      console.log("Created report task successfully");
+      console.log(action.payload);
+      
+      return {
+        ...state
+      };
       
     case ActionTypes.LOGOUT:
       sessionStorage.removeItem(JWT_SESSION_STORAGE_NAME);
