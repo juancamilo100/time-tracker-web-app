@@ -67,9 +67,6 @@ function appReducer(
       };
 
     case ActionTypes.CREATE_REPORT_TASK_SUCCESS:
-      console.log("Created report task successfully");
-      console.log(action.payload);
-      
       return {
         ...state
       };

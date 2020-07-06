@@ -26,19 +26,18 @@ function createReportPageReducer(
       return {
         ...state,
         createReportTaskFailed: {
-            state: true,
-            rowId: action['payload'].rowId
+          state: true,
+          rowId: action['payload'].rowId
         }
       };
       break;
 
     case ActionTypes.CLEAR_REPORT_TASK_CREATION_ERROR_ACTION:
-      console.log('Clearing error@@@@@@@@@@');
       return {
         ...state,
         createReportTaskFailed: {
-            state: false,
-            rowId: undefined
+          state: false,
+          rowId: undefined
         }
       };
       break;
