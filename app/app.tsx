@@ -1,4 +1,3 @@
-
 // Needed for redux-saga es6 generator support
 import '@babel/polyfill';
 
@@ -14,6 +13,8 @@ import 'sanitize.css/sanitize.css';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import App from 'containers/App';
 import LanguageProvider from 'containers/LanguageProvider';
+import { Provider as AlertProvider } from 'react-alert';
+import AlertTemplate from 'react-alert-template-basic';
 
 // Load the favicon and the .htaccess file
 import '!file-loader?name=[name].[ext]!./images/favicon.ico';
@@ -40,25 +41,34 @@ const MOUNT_NODE = document.getElementById('app') as HTMLElement;
 const theme = createMuiTheme({
   direction: 'ltr',
   palette: {
-    type: 'light',
-  },
+    type: 'light'
+  }
 });
+
+const alertOptions = {
+  position: 'bottom right',
+  timeout: 4000,
+  offset: '30px',
+  transition: 'fade'
+};
 
 const render = (messages: any, Component = App) => {
   ReactDOM.render(
     // tslint:disable-next-line:jsx-wrap-multiline
     <Provider store={store}>
-      <LanguageProvider messages={messages}>
-        <ConnectedRouter history={history}>
-          <MuiThemeProvider theme={theme}>
-            <BrowserRouter>
-              <Component />
-            </BrowserRouter>
-          </MuiThemeProvider>
-        </ConnectedRouter>
-      </LanguageProvider>
+      <AlertProvider template={AlertTemplate} {...alertOptions}>
+        <LanguageProvider messages={messages}>
+          <ConnectedRouter history={history}>
+            <MuiThemeProvider theme={theme}>
+              <BrowserRouter>
+                <Component />
+              </BrowserRouter>
+            </MuiThemeProvider>
+          </ConnectedRouter>
+        </LanguageProvider>
+      </AlertProvider>
     </Provider>,
-    MOUNT_NODE,
+    MOUNT_NODE
   );
 };
 
@@ -79,8 +89,8 @@ if (!(window as any).Intl) {
     .then(() =>
       Promise.all([
         import('intl/locale-data/jsonp/en.js'),
-        import('intl/locale-data/jsonp/de.js'),
-      ]),
+        import('intl/locale-data/jsonp/de.js')
+      ])
     ) // eslint-disable-line prettier/prettier
     .then(() => render(translationMessages))
     .catch(err => {

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import MaterialTable, { Column } from 'material-table';
+import MaterialTable from 'material-table';
+import reducer from './reducer';
 import { Report, Task, Customer } from 'containers/HomePage/types';
 import { connect } from 'react-redux';
 import { Dispatch, compose } from 'redux';
@@ -7,51 +8,59 @@ import { createStructuredSelector } from 'reselect';
 import { RootState } from './types';
 import AddBoxIcon from '@material-ui/icons/AddBox';
 import { useStyles } from './styles';
-import { createReportAction } from './actions';
+import {
+  createReportAction,
+  createReportTaskAction,
+  clearReportTaskCreationErrorAction
+} from './actions';
 import { useInjectSaga } from 'utils/injectSaga';
 import saga from './saga';
-import { makeSelectCreateReportFailed, makeSelectReports } from './selectors';
+import {
+  makeSelectCreateReportFailed,
+  makeSelectCreateReportTaskFailed
+} from './selectors';
 import DateFnsUtils from '@date-io/date-fns';
 import { DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import moment from 'moment';
 import { Employee } from 'containers/App/types';
-
-interface Row {
-  datePerformed: Date;
-  taskDescription: string;
-  hoursSpent: number;
-}
-
-interface TableState {
-  columns: Array<Column<Row>>;
-  data: Row[];
-}
+import { useAlert } from 'react-alert';
+import { useInjectReducer } from 'utils/injectReducer';
 
 interface OwnProps {
   customer: Customer;
   employee: Employee;
+  report?: Report;
 }
 
 interface StateProps {
   createReportFailed: Boolean;
-  reports: Report[];
+  createReportTaskFailed: {
+    state: boolean;
+    rowId?: number;
+  };
 }
 interface DispatchProps {
   onCreateReport(
     startDate: Date,
     endDate: Date,
-    customerId: Number,
-    employeeId: Number,
+    customerId: number,
+    employeeId: number,
     tasks: Task[]
   ): void;
+  onCreateReportTask(
+    report: Report,
+    datePerformed: Date,
+    hours: number,
+    description: String,
+    rowId: number
+  ): void;
+  clearReportTaskCreationError(): void;
   dispatch: Dispatch;
 }
 
 type Props = StateProps & DispatchProps & OwnProps;
 
 const createEmptyReport = (props: Props, datePickerState) => {
-  // console.log("Creating empty report:");
-
   props.onCreateReport(
     datePickerState.startDate,
     datePickerState.endDate,
@@ -85,7 +94,7 @@ const createReportButton = (props, classes, datePickerState) => (
   </div>
 );
 
-const reportTable = (props, tableState, setState) => (
+const reportTable = (props: Props, columns, tableData, setTableData, alert) => (
   <MaterialTable
     localization={{
       header: {
@@ -97,51 +106,80 @@ const reportTable = (props, tableState, setState) => (
       search: false,
       paging: false
     }}
-    title="Report:"
-    columns={tableState.columns}
-    data={tableState.data}
+    title={`
+        Report for ${moment(props.report!.startDate).format(
+          'MMMM Do YYYY'
+        )} - ${moment(props.report!.endDate).format('MMMM Do YYYY')}`}
+    columns={columns}
+    data={tableData}
     editable={{
       onRowAdd: newData =>
-        new Promise(resolve => {
+        new Promise((resolve, reject) => {
           setTimeout(() => {
+            if (
+              !newData['datePerformed'] ||
+              !newData['hours'] ||
+              !newData['description']
+            ) {
+              alert.show('All fields are required', {
+                timeout: 4000,
+                type: 'error',
+                transition: 'scale'
+              });
+              return reject();
+            }
+
+            if (
+              !moment(newData['datePerformed']).isBetween(
+                props.report!.startDate,
+                props.report!.endDate,
+                undefined,
+                '[]'
+              )
+            ) {
+              alert.show('Task date should be within report dates', {
+                timeout: 4000,
+                type: 'error',
+                transition: 'scale'
+              });
+              return reject();
+            }
+
+            props.onCreateReportTask(
+              props.report!,
+              newData['datePerformed'],
+              newData['hours'],
+              newData['description'],
+              tableData ? tableData.length : 0
+            );
+
+            setTableData([...(tableData ? tableData : []), newData]);
             resolve();
-            setState(prevState => {
-              console.log('Creating data:');
-              console.log(newData);
-              const data = [...prevState.data];
-              data.push(newData);
-              return { ...prevState, data };
-            });
-          }, 600);
+          }, 0);
         }),
       onRowUpdate: (newData, oldData) =>
         new Promise(resolve => {
           setTimeout(() => {
-            resolve();
             if (oldData) {
-              setState(prevState => {
-                console.log('Updating data:');
-                console.log(newData);
+              const dataUpdate = [...tableData];
+              const index = oldData['tableData'].id;
+              dataUpdate[index] = newData;
+              setTableData([...dataUpdate]);
 
-                const data = [...prevState.data];
-                data[data.indexOf(oldData)] = newData;
-                return { ...prevState, data };
-              });
+              resolve();
             }
-          }, 600);
+          }, 0);
         }),
       onRowDelete: oldData =>
         new Promise(resolve => {
           setTimeout(() => {
+            const dataDelete = [...tableData];
+            const index = oldData['tableData'].id;
+            dataDelete.splice(index, 1);
+            setTableData([...dataDelete]);
+
             resolve();
-            setState(prevState => {
-              console.log('Deleting data:');
-              console.log(oldData);
-              const data = [...prevState.data];
-              data.splice(data.indexOf(oldData), 1);
-              return { ...prevState, data };
-            });
-          }, 600);
+          }, 0);
         })
     }}
   />
@@ -151,41 +189,56 @@ const keyCreateReportPage = 'createReportPage';
 
 export function CreateReportPage(props: Props) {
   useInjectSaga({ key: keyCreateReportPage, saga: saga });
+  useInjectReducer({ key: keyCreateReportPage, reducer: reducer });
+  const alert = useAlert();
   const classes = useStyles();
 
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(moment().add(2, 'weeks'));
 
-  const [tableState, setTableState] = useState<TableState>({
-    columns: [
-      {
-        title: 'Date',
-        field: 'datePerformed',
-        type: 'date',
-        cellStyle: { width: 300 },
-        headerStyle: { width: 200, fontWeight: 'bold' }
-      },
-      {
-        title: 'Task Description',
-        field: 'taskDescription',
-        cellStyle: { width: 200, minWidth: 200 },
-        headerStyle: { width: 200, minWidth: 200, fontWeight: 'bold' }
-      },
-      {
-        title: 'Hours',
-        field: 'hoursSpent',
-        type: 'numeric',
-        cellStyle: { textAlign: 'left' },
-        headerStyle: { textAlign: 'left', fontWeight: 'bold' }
-      }
-    ],
-    data: [
-      //   { datePerformed: new Date(), taskDescription: 'Baran asdfasdfkhalsdfhajsdlfhajsdklfhjahdlsfhjasd adsjklfhadskljfhadjksl ', hoursSpent: 34 },
-    ]
-  });
+  const [data, setData] = useState(props.report && props.report.tasks);
 
-  return props.reports.find(report => report.submitted === false)
-    ? reportTable(props, tableState, setTableState)
+  if (props.createReportTaskFailed.state) {
+    alert.show('There was a problem saving the task', {
+      timeout: 4000,
+      type: 'error',
+      transition: 'scale'
+    });
+
+    setTimeout(() => {
+      const newData = [...data!];
+      newData.splice(props.createReportTaskFailed.rowId!, 1);
+      setData(newData);
+    }, 0);
+
+    props.clearReportTaskCreationError();
+  }
+
+  const [columns, setColumns] = useState([
+    {
+      title: 'Date',
+      field: 'datePerformed',
+      type: 'date',
+      cellStyle: { width: 300 },
+      headerStyle: { width: 200, fontWeight: 'bold' }
+    },
+    {
+      title: 'Task Description',
+      field: 'description',
+      cellStyle: { width: 200, minWidth: 200 },
+      headerStyle: { width: 200, minWidth: 200, fontWeight: 'bold' }
+    },
+    {
+      title: 'Hours',
+      field: 'hours',
+      type: 'numeric',
+      cellStyle: { textAlign: 'left' },
+      headerStyle: { textAlign: 'left', fontWeight: 'bold' }
+    }
+  ]);
+
+  return props.report
+    ? reportTable(props, columns, data, setData, alert)
     : createReportButton(props, classes, {
         startDate,
         endDate,
@@ -196,7 +249,7 @@ export function CreateReportPage(props: Props) {
 
 const mapStateToProps = createStructuredSelector<RootState, StateProps>({
   createReportFailed: makeSelectCreateReportFailed(),
-  reports: makeSelectReports()
+  createReportTaskFailed: makeSelectCreateReportTaskFailed()
 });
 
 function mapDispatchToProps(
@@ -207,13 +260,25 @@ function mapDispatchToProps(
     onCreateReport: (
       startDate: Date,
       endDate: Date,
-      customerId: Number,
-      employeeId: Number,
+      customerId: number,
+      employeeId: number,
       tasks: Task[]
     ) =>
       dispatch(
         createReportAction(startDate, endDate, customerId, employeeId, tasks)
       ),
+    onCreateReportTask: (
+      report: Report,
+      datePerformed: Date,
+      hours: number,
+      description: String,
+      rowId: number
+    ) =>
+      dispatch(
+        createReportTaskAction(report, datePerformed, hours, description, rowId)
+      ),
+    clearReportTaskCreationError: () =>
+      dispatch(clearReportTaskCreationErrorAction()),
     dispatch: dispatch
   };
 }

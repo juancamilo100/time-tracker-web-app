@@ -110,6 +110,7 @@ export function HomePage(props: Props) {
                 <CreateReportPage
                     customer={props.customer}
                     employee={props.employee}
+                    report={props.reports.find(report => report.submitted === false)}
                 />} />
           <Route
             path={routePath.reportHistoryPath}

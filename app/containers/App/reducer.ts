@@ -65,6 +65,11 @@ function appReducer(
         ...state, 
         reports: newReports
       };
+
+    case ActionTypes.CREATE_REPORT_TASK_SUCCESS:
+      return {
+        ...state
+      };
       
     case ActionTypes.LOGOUT:
       sessionStorage.removeItem(JWT_SESSION_STORAGE_NAME);

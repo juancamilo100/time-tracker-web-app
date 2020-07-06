@@ -26,4 +26,7 @@ export const getEmployeeCustomerSuccessAction = (customer: Customer) =>
 export const createReportSuccess = (report: Report) =>
   action(ActionTypes.CREATE_REPORT_SUCCESS, { report });
 
+export const createReportTaskSuccess = (report: Report) =>
+  action(ActionTypes.CREATE_REPORT_TASK_SUCCESS, { report });
+
 export const logout = () => action(ActionTypes.LOGOUT);

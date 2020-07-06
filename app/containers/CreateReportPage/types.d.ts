@@ -5,6 +5,10 @@ import { ApplicationRootState } from 'types';
 /* --- STATE --- */
 interface CreateReportPageState {
   createReportFailed: boolean;
+  createReportTaskFailed: {
+      state: boolean,
+      rowId?: number
+  };
 }
 
 /* --- ACTIONS --- */
