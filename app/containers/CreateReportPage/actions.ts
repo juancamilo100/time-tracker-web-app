@@ -5,8 +5,8 @@ import { Task, Report } from 'containers/HomePage/types';
 export const createReportAction = (
   startDate: Date,
   endDate: Date,
-  customerId: Number,
-  employeeId: Number,
+  customerId: number,
+  employeeId: number,
   tasks: Task[]
 ) =>
   action(ActionTypes.CREATE_REPORT_ACTION, {
@@ -20,18 +20,25 @@ export const createReportAction = (
 export const createReportTaskAction = (
   report: Report,
   datePerformed: Date,
-  hours: Number,
-  description: String
+  hours: number,
+  description: String,
+  rowId: number
 ) =>
   action(ActionTypes.CREATE_REPORT_TASK_ACTION, {
     report,
     datePerformed,
     hours,
-    description
+    description,
+    rowId
   });
 
 export const createReportFailed = () =>
   action(ActionTypes.CREATE_REPORT_FAILED_ACTION);
 
-export const createReportTaskFailed = () =>
-  action(ActionTypes.CREATE_REPORT_TASK_FAILED_ACTION);
+export const clearReportTaskCreationErrorAction = () =>
+  action(ActionTypes.CLEAR_REPORT_TASK_CREATION_ERROR_ACTION);
+
+export const createReportTaskFailed = (rowId: number) =>
+  action(ActionTypes.CREATE_REPORT_TASK_FAILED_ACTION, {
+    rowId
+  });

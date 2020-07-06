@@ -62,10 +62,13 @@ export function* createReportTask(action: ContainerActions) {
       requestBody,
       requestHeaders
     );
-
+    console.log("RESPONSE");
+    
+        console.log(response);
+        
     yield put(createReportTaskSuccess(response));
   } catch (err) {
-    yield put(createReportTaskFailed());
+    yield put(createReportTaskFailed(action['payload'].rowId));
   }
 }
 

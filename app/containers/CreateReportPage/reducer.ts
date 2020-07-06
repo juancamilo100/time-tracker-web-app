@@ -3,7 +3,10 @@ import ActionTypes from './constants';
 
 export const initialState: ContainerState = {
   createReportFailed: false,
-  createReportTaskFailed: false
+  createReportTaskFailed: {
+    state: false,
+    rowId: undefined
+  }
 };
 
 function createReportPageReducer(
@@ -19,9 +22,24 @@ function createReportPageReducer(
       break;
 
     case ActionTypes.CREATE_REPORT_TASK_FAILED_ACTION:
-      console.log('Faied to create report');
+      console.log('Faied to create report task');
       return {
-        ...state
+        ...state,
+        createReportTaskFailed: {
+            state: true,
+            rowId: action['payload'].rowId
+        }
+      };
+      break;
+
+    case ActionTypes.CLEAR_REPORT_TASK_CREATION_ERROR_ACTION:
+      console.log('Clearing error@@@@@@@@@@');
+      return {
+        ...state,
+        createReportTaskFailed: {
+            state: false,
+            rowId: undefined
+        }
       };
       break;
 
