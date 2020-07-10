@@ -29,4 +29,7 @@ export const createReportSuccess = (report: Report) =>
 export const createReportTaskSuccess = (report: Report) =>
   action(ActionTypes.CREATE_REPORT_TASK_SUCCESS, { report });
 
+export const updateReportTaskSuccess = (report: Report) =>
+  action(ActionTypes.UPDATE_REPORT_TASK_SUCCESS, { report });
+
 export const logout = () => action(ActionTypes.LOGOUT);

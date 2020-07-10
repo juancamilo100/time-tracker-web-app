@@ -65,6 +65,11 @@ export function postRequest(url, requestBody, requestHeaders = {}) {
 }
 
 export function patchRequest(url, requestBody, requestHeaders = {}) {
+    console.log("Fetching:");
+    console.log(url);
+    console.log(requestBody);
+    console.log(requestHeaders);
+    
   return fetch(url, {
     method: 'PATCH',
     body: JSON.stringify(requestBody),

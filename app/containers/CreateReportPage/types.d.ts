@@ -9,6 +9,10 @@ interface CreateReportPageState {
       state: boolean,
       rowId?: number
   };
+  updateReportTaskFailed: {
+      state: boolean,
+      oldData: object
+  };
 }
 
 /* --- ACTIONS --- */

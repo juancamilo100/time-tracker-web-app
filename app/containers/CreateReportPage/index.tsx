@@ -11,13 +11,16 @@ import { useStyles } from './styles';
 import {
   createReportAction,
   createReportTaskAction,
-  clearReportTaskCreationErrorAction
+  clearReportTaskCreationErrorAction,
+  updateReportTaskAction,
+  clearReportTaskUpdateErrorAction
 } from './actions';
 import { useInjectSaga } from 'utils/injectSaga';
 import saga from './saga';
 import {
   makeSelectCreateReportFailed,
-  makeSelectCreateReportTaskFailed
+  makeSelectCreateReportTaskFailed,
+  makeSelectUpdateReportTaskFailed
 } from './selectors';
 import DateFnsUtils from '@date-io/date-fns';
 import { DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
@@ -38,7 +41,12 @@ interface StateProps {
     state: boolean;
     rowId?: number;
   };
+  updateReportTaskFailed: {
+    state: boolean;
+    oldData: object;
+  };
 }
+
 interface DispatchProps {
   onCreateReport(
     startDate: Date,
@@ -54,7 +62,17 @@ interface DispatchProps {
     description: String,
     rowId: number
   ): void;
+  onUpdateReportTask(
+    taskId: number,
+    reportId: number,
+    datePerformed: Date,
+    hours: number,
+    description: String,
+    oldData: object
+  ): void;
+
   clearReportTaskCreationError(): void;
+  clearReportTaskUpdateError(): void;
   dispatch: Dispatch;
 }
 
@@ -94,6 +112,34 @@ const createReportButton = (props, classes, datePickerState) => (
   </div>
 );
 
+const taskDataIsValid = (props, data, alert) => {
+  if (!data['datePerformed'] || !data['hours'] || !data['description']) {
+    alert.show('All fields are required', {
+      timeout: 4000,
+      type: 'error',
+      transition: 'scale'
+    });
+    return false;
+  }
+
+  if (
+    !moment(data['datePerformed']).isBetween(
+      props.report!.startDate,
+      props.report!.endDate,
+      undefined,
+      '[]'
+    )
+  ) {
+    alert.show('Task date should be within report dates', {
+      timeout: 4000,
+      type: 'error',
+      transition: 'scale'
+    });
+    return false;
+  }
+  return true;
+};
+
 const reportTable = (props: Props, columns, tableData, setTableData, alert) => (
   <MaterialTable
     localization={{
@@ -116,32 +162,7 @@ const reportTable = (props: Props, columns, tableData, setTableData, alert) => (
       onRowAdd: newData =>
         new Promise((resolve, reject) => {
           setTimeout(() => {
-            if (
-              !newData['datePerformed'] ||
-              !newData['hours'] ||
-              !newData['description']
-            ) {
-              alert.show('All fields are required', {
-                timeout: 4000,
-                type: 'error',
-                transition: 'scale'
-              });
-              return reject();
-            }
-
-            if (
-              !moment(newData['datePerformed']).isBetween(
-                props.report!.startDate,
-                props.report!.endDate,
-                undefined,
-                '[]'
-              )
-            ) {
-              alert.show('Task date should be within report dates', {
-                timeout: 4000,
-                type: 'error',
-                transition: 'scale'
-              });
+            if (!taskDataIsValid(props, newData, alert)) {
               return reject();
             }
 
@@ -158,9 +179,22 @@ const reportTable = (props: Props, columns, tableData, setTableData, alert) => (
           }, 0);
         }),
       onRowUpdate: (newData, oldData) =>
-        new Promise(resolve => {
+        new Promise((resolve, reject) => {
           setTimeout(() => {
+            if (!taskDataIsValid(props, newData, alert)) {
+              return reject();
+            }
+
             if (oldData) {
+              props.onUpdateReportTask(
+                newData['id'],
+                newData['reportId'],
+                newData['datePerformed'],
+                newData['hours'],
+                newData['description'],
+                oldData
+              );
+
               const dataUpdate = [...tableData];
               const index = oldData['tableData'].id;
               dataUpdate[index] = newData;
@@ -214,6 +248,23 @@ export function CreateReportPage(props: Props) {
     props.clearReportTaskCreationError();
   }
 
+  if (props.updateReportTaskFailed.state) {
+    alert.show('There was a problem updating the task', {
+      timeout: 4000,
+      type: 'error',
+      transition: 'scale'
+    });
+
+    setTimeout(() => {
+      const newData = [...data!];
+      newData[props.updateReportTaskFailed.oldData['tableData'].id] =
+        props.updateReportTaskFailed.oldData;
+      setData(newData);
+    }, 0);
+
+    props.clearReportTaskUpdateError();
+  }
+
   const [columns, setColumns] = useState([
     {
       title: 'Date',
@@ -249,7 +300,8 @@ export function CreateReportPage(props: Props) {
 
 const mapStateToProps = createStructuredSelector<RootState, StateProps>({
   createReportFailed: makeSelectCreateReportFailed(),
-  createReportTaskFailed: makeSelectCreateReportTaskFailed()
+  createReportTaskFailed: makeSelectCreateReportTaskFailed(),
+  updateReportTaskFailed: makeSelectUpdateReportTaskFailed()
 });
 
 function mapDispatchToProps(
@@ -277,8 +329,28 @@ function mapDispatchToProps(
       dispatch(
         createReportTaskAction(report, datePerformed, hours, description, rowId)
       ),
+    onUpdateReportTask: (
+      taskId: number,
+      reportId: number,
+      datePerformed: Date,
+      hours: number,
+      description: String,
+      oldData: object
+    ) =>
+      dispatch(
+        updateReportTaskAction(
+          taskId,
+          reportId,
+          datePerformed,
+          hours,
+          description,
+          oldData
+        )
+      ),
     clearReportTaskCreationError: () =>
       dispatch(clearReportTaskCreationErrorAction()),
+    clearReportTaskUpdateError: () =>
+      dispatch(clearReportTaskUpdateErrorAction()),
     dispatch: dispatch
   };
 }
