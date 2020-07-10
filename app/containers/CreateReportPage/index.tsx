@@ -247,55 +247,17 @@ export function CreateReportPage(props: Props) {
   const [data, setData] = useState(props.report && props.report.tasks);
 
   if (props.createReportTaskFailed.state) {
-    alert.show('There was a problem saving the task', {
-      timeout: 4000,
-      type: 'error',
-      transition: 'scale'
-    });
-
-    setTimeout(() => {
-      const newData = [...data!];
-      newData.splice(props.createReportTaskFailed.rowId!, 1);
-      setData(newData);
-    }, 0);
-
+    revertReportTaskCreation(alert, data, props, setData);
     props.clearReportTaskCreationError();
   }
 
   if (props.updateReportTaskFailed.state) {
-    alert.show('There was a problem updating the task', {
-      timeout: 4000,
-      type: 'error',
-      transition: 'scale'
-    });
-
-    setTimeout(() => {
-      const newData = [...data!];
-      newData[props.updateReportTaskFailed.oldData['tableData'].id] =
-        props.updateReportTaskFailed.oldData;
-      setData(newData);
-    }, 0);
-
+    revertReportTaskUpdate(alert, data, props, setData);
     props.clearReportTaskUpdateError();
   }
 
   if (props.deleteReportTaskFailed.state) {
-    alert.show('There was a problem deleting the task', {
-      timeout: 4000,
-      type: 'error',
-      transition: 'scale'
-    });
-
-    setTimeout(() => {
-      const newData = [...data!];
-      newData.splice(
-        props.deleteReportTaskFailed.oldData['tableData'].id,
-        0,
-        props.deleteReportTaskFailed.oldData
-      );
-      setData(newData);
-    }, 0);
-
+    revertReportTaskDeletion(alert, data, props, setData);
     props.clearReportTaskDeleteError();
   }
 
@@ -338,6 +300,65 @@ const mapStateToProps = createStructuredSelector<RootState, StateProps>({
   updateReportTaskFailed: makeSelectUpdateReportTaskFailed(),
   deleteReportTaskFailed: makeSelectDeleteReportTaskFailed()
 });
+
+function revertReportTaskDeletion(
+  alert: any,
+  data: Task[] | undefined,
+  props: Props,
+  setData: React.Dispatch<React.SetStateAction<Task[] | undefined>>
+) {
+  alert.show('There was a problem deleting the task', {
+    timeout: 4000,
+    type: 'error',
+    transition: 'scale'
+  });
+  setTimeout(() => {
+    const newData = [...data!];
+    newData.splice(
+      props.deleteReportTaskFailed.oldData['tableData'].id,
+      0,
+      props.deleteReportTaskFailed.oldData
+    );
+    setData(newData);
+  }, 0);
+}
+
+function revertReportTaskUpdate(
+  alert: any,
+  data: Task[] | undefined,
+  props: Props,
+  setData: React.Dispatch<React.SetStateAction<Task[] | undefined>>
+) {
+  alert.show('There was a problem updating the task', {
+    timeout: 4000,
+    type: 'error',
+    transition: 'scale'
+  });
+  setTimeout(() => {
+    const newData = [...data!];
+    newData[props.updateReportTaskFailed.oldData['tableData'].id] =
+      props.updateReportTaskFailed.oldData;
+    setData(newData);
+  }, 0);
+}
+
+function revertReportTaskCreation(
+  alert: any,
+  data: Task[] | undefined,
+  props: Props,
+  setData: React.Dispatch<React.SetStateAction<Task[] | undefined>>
+) {
+  alert.show('There was a problem saving the task', {
+    timeout: 4000,
+    type: 'error',
+    transition: 'scale'
+  });
+  setTimeout(() => {
+    const newData = [...data!];
+    newData.splice(props.createReportTaskFailed.rowId!, 1);
+    setData(newData);
+  }, 0);
+}
 
 function mapDispatchToProps(
   dispatch: Dispatch,
