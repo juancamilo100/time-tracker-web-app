@@ -10,6 +10,10 @@ export const initialState: ContainerState = {
   updateReportTaskFailed: {
     state: false,
     oldData: {}
+  },
+  deleteReportTaskFailed: {
+    state: false,
+    oldData: {}
   }
 };
 
@@ -19,13 +23,11 @@ function createReportPageReducer(
 ): ContainerState {
   switch (action.type) {
     case ActionTypes.CREATE_REPORT_FAILED_ACTION:
-      console.log('Faied to create report');
       return {
         ...state
       };
 
     case ActionTypes.CREATE_REPORT_TASK_FAILED_ACTION:
-      console.log('Faied to create report task');
       return {
         ...state,
         createReportTaskFailed: {
@@ -35,10 +37,18 @@ function createReportPageReducer(
       };
 
     case ActionTypes.UPDATE_REPORT_TASK_FAILED_ACTION:
-      console.log('Faied to update report task');
       return {
         ...state,
         updateReportTaskFailed: {
+          state: true,
+          oldData: action['payload'].oldData
+        }
+      };
+
+    case ActionTypes.DELETE_REPORT_TASK_FAILED_ACTION:
+      return {
+        ...state,
+        deleteReportTaskFailed: {
           state: true,
           oldData: action['payload'].oldData
         }
@@ -57,6 +67,15 @@ function createReportPageReducer(
       return {
         ...state,
         updateReportTaskFailed: {
+          state: false,
+          oldData: {}
+        }
+      };
+
+    case ActionTypes.CLEAR_REPORT_TASK_DELETE_ERROR_ACTION:
+      return {
+        ...state,
+        deleteReportTaskFailed: {
           state: false,
           oldData: {}
         }

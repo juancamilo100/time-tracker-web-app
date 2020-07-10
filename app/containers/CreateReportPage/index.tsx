@@ -13,14 +13,17 @@ import {
   createReportTaskAction,
   clearReportTaskCreationErrorAction,
   updateReportTaskAction,
-  clearReportTaskUpdateErrorAction
+  deleteReportTaskAction,
+  clearReportTaskUpdateErrorAction,
+  clearReportTaskDeleteErrorAction
 } from './actions';
 import { useInjectSaga } from 'utils/injectSaga';
 import saga from './saga';
 import {
   makeSelectCreateReportFailed,
   makeSelectCreateReportTaskFailed,
-  makeSelectUpdateReportTaskFailed
+  makeSelectUpdateReportTaskFailed,
+  makeSelectDeleteReportTaskFailed
 } from './selectors';
 import DateFnsUtils from '@date-io/date-fns';
 import { DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
@@ -42,6 +45,10 @@ interface StateProps {
     rowId?: number;
   };
   updateReportTaskFailed: {
+    state: boolean;
+    oldData: object;
+  };
+  deleteReportTaskFailed: {
     state: boolean;
     oldData: object;
   };
@@ -70,9 +77,10 @@ interface DispatchProps {
     description: String,
     oldData: object
   ): void;
-
+  onDeleteReportTask(taskId: number, reportId: number, oldData: object): void;
   clearReportTaskCreationError(): void;
   clearReportTaskUpdateError(): void;
+  clearReportTaskDeleteError(): void;
   dispatch: Dispatch;
 }
 
@@ -207,6 +215,11 @@ const reportTable = (props: Props, columns, tableData, setTableData, alert) => (
       onRowDelete: oldData =>
         new Promise(resolve => {
           setTimeout(() => {
+            props.onDeleteReportTask(
+              oldData['id'],
+              oldData['reportId'],
+              oldData
+            );
             const dataDelete = [...tableData];
             const index = oldData['tableData'].id;
             dataDelete.splice(index, 1);
@@ -233,36 +246,18 @@ export function CreateReportPage(props: Props) {
   const [data, setData] = useState(props.report && props.report.tasks);
 
   if (props.createReportTaskFailed.state) {
-    alert.show('There was a problem saving the task', {
-      timeout: 4000,
-      type: 'error',
-      transition: 'scale'
-    });
-
-    setTimeout(() => {
-      const newData = [...data!];
-      newData.splice(props.createReportTaskFailed.rowId!, 1);
-      setData(newData);
-    }, 0);
-
+    revertReportTaskCreation(alert, data, props, setData);
     props.clearReportTaskCreationError();
   }
 
   if (props.updateReportTaskFailed.state) {
-    alert.show('There was a problem updating the task', {
-      timeout: 4000,
-      type: 'error',
-      transition: 'scale'
-    });
-
-    setTimeout(() => {
-      const newData = [...data!];
-      newData[props.updateReportTaskFailed.oldData['tableData'].id] =
-        props.updateReportTaskFailed.oldData;
-      setData(newData);
-    }, 0);
-
+    revertReportTaskUpdate(alert, data, props, setData);
     props.clearReportTaskUpdateError();
+  }
+
+  if (props.deleteReportTaskFailed.state) {
+    revertReportTaskDeletion(alert, data, props, setData);
+    props.clearReportTaskDeleteError();
   }
 
   const [columns, setColumns] = useState([
@@ -301,8 +296,68 @@ export function CreateReportPage(props: Props) {
 const mapStateToProps = createStructuredSelector<RootState, StateProps>({
   createReportFailed: makeSelectCreateReportFailed(),
   createReportTaskFailed: makeSelectCreateReportTaskFailed(),
-  updateReportTaskFailed: makeSelectUpdateReportTaskFailed()
+  updateReportTaskFailed: makeSelectUpdateReportTaskFailed(),
+  deleteReportTaskFailed: makeSelectDeleteReportTaskFailed()
 });
+
+function revertReportTaskDeletion(
+  alert: any,
+  data: Task[] | undefined,
+  props: Props,
+  setData: React.Dispatch<React.SetStateAction<Task[] | undefined>>
+) {
+  alert.show('There was a problem deleting the task', {
+    timeout: 4000,
+    type: 'error',
+    transition: 'scale'
+  });
+  setTimeout(() => {
+    const newData = [...data!];
+    newData.splice(
+      props.deleteReportTaskFailed.oldData['tableData'].id,
+      0,
+      props.deleteReportTaskFailed.oldData
+    );
+    setData(newData);
+  }, 0);
+}
+
+function revertReportTaskUpdate(
+  alert: any,
+  data: Task[] | undefined,
+  props: Props,
+  setData: React.Dispatch<React.SetStateAction<Task[] | undefined>>
+) {
+  alert.show('There was a problem updating the task', {
+    timeout: 4000,
+    type: 'error',
+    transition: 'scale'
+  });
+  setTimeout(() => {
+    const newData = [...data!];
+    newData[props.updateReportTaskFailed.oldData['tableData'].id] =
+      props.updateReportTaskFailed.oldData;
+    setData(newData);
+  }, 0);
+}
+
+function revertReportTaskCreation(
+  alert: any,
+  data: Task[] | undefined,
+  props: Props,
+  setData: React.Dispatch<React.SetStateAction<Task[] | undefined>>
+) {
+  alert.show('There was a problem saving the task', {
+    timeout: 4000,
+    type: 'error',
+    transition: 'scale'
+  });
+  setTimeout(() => {
+    const newData = [...data!];
+    newData.splice(props.createReportTaskFailed.rowId!, 1);
+    setData(newData);
+  }, 0);
+}
 
 function mapDispatchToProps(
   dispatch: Dispatch,
@@ -347,10 +402,14 @@ function mapDispatchToProps(
           oldData
         )
       ),
+    onDeleteReportTask: (taskId: number, reportId: number, oldData: object) =>
+      dispatch(deleteReportTaskAction(taskId, reportId, oldData)),
     clearReportTaskCreationError: () =>
       dispatch(clearReportTaskCreationErrorAction()),
     clearReportTaskUpdateError: () =>
       dispatch(clearReportTaskUpdateErrorAction()),
+    clearReportTaskDeleteError: () =>
+      dispatch(clearReportTaskDeleteErrorAction()),
     dispatch: dispatch
   };
 }
