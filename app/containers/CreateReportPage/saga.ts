@@ -132,8 +132,6 @@ export function* deleteReportTask(action: ContainerActions) {
 
     yield put(deleteReportTaskSuccess());
   } catch (err) {
-      console.log("Failed deletting saga");
-      
     yield put(deleteReportTaskFailed(action['payload'].oldData));
   }
 }

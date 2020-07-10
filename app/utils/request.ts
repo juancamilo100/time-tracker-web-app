@@ -85,7 +85,7 @@ export function putRequest(url, requestBody) {
     .then(json => json);
 }
 
-export function deleteRequest(url, requestBody, requestHeaders = {}) {
+export function deleteRequest(url, requestHeaders = {}) {
     return fetch(url, {
       method: 'DELETE',
       headers: new Headers(requestHeaders)

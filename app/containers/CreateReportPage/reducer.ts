@@ -23,13 +23,11 @@ function createReportPageReducer(
 ): ContainerState {
   switch (action.type) {
     case ActionTypes.CREATE_REPORT_FAILED_ACTION:
-      console.log('Faied to create report');
       return {
         ...state
       };
 
     case ActionTypes.CREATE_REPORT_TASK_FAILED_ACTION:
-      console.log('Faied to create report task');
       return {
         ...state,
         createReportTaskFailed: {
@@ -39,7 +37,6 @@ function createReportPageReducer(
       };
 
     case ActionTypes.UPDATE_REPORT_TASK_FAILED_ACTION:
-      console.log('Faied to update report task');
       return {
         ...state,
         updateReportTaskFailed: {
@@ -49,9 +46,6 @@ function createReportPageReducer(
       };
 
     case ActionTypes.DELETE_REPORT_TASK_FAILED_ACTION:
-      console.log('Faied to delete report task');
-      console.log(action['payload'].oldData);
-      
       return {
         ...state,
         deleteReportTaskFailed: {
@@ -79,8 +73,6 @@ function createReportPageReducer(
       };
 
     case ActionTypes.CLEAR_REPORT_TASK_DELETE_ERROR_ACTION:
-        console.log("Clearing delete state");
-        
       return {
         ...state,
         deleteReportTaskFailed: {
