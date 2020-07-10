@@ -50,6 +50,7 @@ export function* createReport(action: ContainerActions) {
 
 export function* createReportTask(action: ContainerActions) {
   const currentReport = action['payload'].report;
+  
   const requestURL = `http://${TIME_TRACKER_API_BASE_URL}/api/reports/${
     currentReport.id
   }/tasks`;
@@ -81,6 +82,7 @@ export function* createReportTask(action: ContainerActions) {
 
 export function* updateReportTask(action: ContainerActions) {
   const taskToUpdate = action['payload'];
+
   const requestURL = `http://${TIME_TRACKER_API_BASE_URL}/api/reports/${
     taskToUpdate.reportId
   }/tasks/${taskToUpdate.taskId}`;
@@ -129,7 +131,6 @@ export function* deleteReportTask(action: ContainerActions) {
 
   try {
     yield call(deleteRequest, requestURL, requestHeaders);
-
     yield put(deleteReportTaskSuccess());
   } catch (err) {
     yield put(deleteReportTaskFailed(action['payload'].oldData));

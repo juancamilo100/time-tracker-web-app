@@ -78,7 +78,6 @@ interface DispatchProps {
     oldData: object
   ): void;
   onDeleteReportTask(taskId: number, reportId: number, oldData: object): void;
-
   clearReportTaskCreationError(): void;
   clearReportTaskUpdateError(): void;
   clearReportTaskDeleteError(): void;
