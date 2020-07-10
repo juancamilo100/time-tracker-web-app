@@ -6,6 +6,10 @@ export const initialState: ContainerState = {
   createReportTaskFailed: {
     state: false,
     rowId: undefined
+  },
+  updateReportTaskFailed: {
+    state: false,
+    oldData: {}
   }
 };
 
@@ -19,7 +23,6 @@ function createReportPageReducer(
       return {
         ...state
       };
-      break;
 
     case ActionTypes.CREATE_REPORT_TASK_FAILED_ACTION:
       console.log('Faied to create report task');
@@ -30,7 +33,16 @@ function createReportPageReducer(
           rowId: action['payload'].rowId
         }
       };
-      break;
+
+    case ActionTypes.UPDATE_REPORT_TASK_FAILED_ACTION:
+      console.log('Faied to update report task');
+      return {
+        ...state,
+        updateReportTaskFailed: {
+          state: true,
+          oldData: action['payload'].oldData
+        }
+      };
 
     case ActionTypes.CLEAR_REPORT_TASK_CREATION_ERROR_ACTION:
       return {
@@ -40,7 +52,15 @@ function createReportPageReducer(
           rowId: undefined
         }
       };
-      break;
+
+    case ActionTypes.CLEAR_REPORT_TASK_UPDATE_ERROR_ACTION:
+      return {
+        ...state,
+        updateReportTaskFailed: {
+          state: false,
+          oldData: {}
+        }
+      };
 
     default:
       return state;

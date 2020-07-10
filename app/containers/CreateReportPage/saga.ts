@@ -1,9 +1,9 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
 import ActionTypes from './constants';
-import { postRequest } from 'utils/request';
+import { postRequest, patchRequest } from 'utils/request';
 import { ContainerActions } from './types';
-import { createReportSuccess, createReportTaskSuccess } from '../App/actions';
-import { createReportFailed, createReportTaskFailed } from './actions';
+import { createReportSuccess, createReportTaskSuccess, updateReportTaskSuccess } from '../App/actions';
+import { createReportFailed, createReportTaskFailed, updateReportTaskFailed } from './actions';
 import { TIME_TRACKER_API_BASE_URL } from 'config';
 import { JWT_SESSION_STORAGE_NAME } from '../App/constants';
 import moment from 'moment';
@@ -62,9 +62,6 @@ export function* createReportTask(action: ContainerActions) {
       requestBody,
       requestHeaders
     );
-    console.log("RESPONSE");
-    
-        console.log(response);
         
     yield put(createReportTaskSuccess(response));
   } catch (err) {
@@ -72,7 +69,39 @@ export function* createReportTask(action: ContainerActions) {
   }
 }
 
+export function* updateReportTask(action: ContainerActions) {
+  const taskToUpdate = action['payload'];
+  const requestURL = `http://${TIME_TRACKER_API_BASE_URL}/api/reports/${
+    taskToUpdate.reportId
+  }/tasks/${taskToUpdate.taskId}`;
+
+  const requestBody = {
+    ...action['payload'].hours && { hours: action['payload'].hours},
+    ...action['payload'].description && { description: action['payload'].description },
+    ...action['payload'].datePerformed && { datePerformed: moment(action['payload'].datePerformed).format('MM/DD/YYYY') }
+  };
+
+  const requestHeaders = {
+    'content-type': 'application/json',
+    Authorization: sessionStorage.getItem(JWT_SESSION_STORAGE_NAME)
+  };
+
+  try {
+    const response = yield call(
+      patchRequest,
+      requestURL,
+      requestBody,
+      requestHeaders
+    );
+    
+    yield put(updateReportTaskSuccess(response));
+  } catch (err) {
+    yield put(updateReportTaskFailed(action['payload'].oldData));
+  }
+}
+
 export default function* createReportSaga() {
   yield takeLatest(ActionTypes.CREATE_REPORT_ACTION, createReport);
   yield takeLatest(ActionTypes.CREATE_REPORT_TASK_ACTION, createReportTask);
+  yield takeLatest(ActionTypes.UPDATE_REPORT_TASK_ACTION, updateReportTask);
 }

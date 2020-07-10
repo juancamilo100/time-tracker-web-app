@@ -70,6 +70,11 @@ function appReducer(
       return {
         ...state
       };
+
+    case ActionTypes.UPDATE_REPORT_TASK_SUCCESS:
+      return {
+        ...state
+      };
       
     case ActionTypes.LOGOUT:
       sessionStorage.removeItem(JWT_SESSION_STORAGE_NAME);
