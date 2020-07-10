@@ -13,6 +13,10 @@ interface CreateReportPageState {
       state: boolean,
       oldData: object
   };
+  deleteReportTaskFailed: {
+      state: boolean,
+      oldData: object
+  };
 }
 
 /* --- ACTIONS --- */

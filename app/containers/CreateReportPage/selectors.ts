@@ -28,6 +28,12 @@ export const makeSelectUpdateReportTaskFailed = () =>
     createReportState => createReportState.updateReportTaskFailed
   );
 
+export const makeSelectDeleteReportTaskFailed = () =>
+  createSelector(
+    selectCreateReportPage,
+    createReportState => createReportState.deleteReportTaskFailed
+  );
+
 /**
  * Other specific selectors
  */

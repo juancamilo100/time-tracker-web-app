@@ -49,11 +49,27 @@ export const updateReportTaskAction = (
     oldData
   });
 
+export const deleteReportTaskAction = (
+  taskId: number,
+  reportId: number,
+  oldData: object
+) =>
+  action(ActionTypes.DELETE_REPORT_TASK_ACTION, {
+    taskId,
+    reportId,
+    oldData
+  });
+
 export const createReportFailed = () =>
   action(ActionTypes.CREATE_REPORT_FAILED_ACTION);
 
 export const updateReportTaskFailed = (oldData: object) =>
   action(ActionTypes.UPDATE_REPORT_TASK_FAILED_ACTION, {
+    oldData
+  });
+
+export const deleteReportTaskFailed = (oldData: object) =>
+  action(ActionTypes.DELETE_REPORT_TASK_FAILED_ACTION, {
     oldData
   });
 
@@ -67,3 +83,6 @@ export const clearReportTaskCreationErrorAction = () =>
   
 export const clearReportTaskUpdateErrorAction = () =>
   action(ActionTypes.CLEAR_REPORT_TASK_UPDATE_ERROR_ACTION);
+
+export const clearReportTaskDeleteErrorAction = () =>
+  action(ActionTypes.CLEAR_REPORT_TASK_DELETE_ERROR_ACTION);
