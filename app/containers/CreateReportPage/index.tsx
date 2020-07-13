@@ -37,6 +37,7 @@ import { useInjectReducer } from 'utils/injectReducer';
 import { Button } from '@material-ui/core';
 import Icon from '@material-ui/core/Icon';
 import { Theme, withStyles } from '@material-ui/core/styles';
+import IconButton from '@material-ui/core/IconButton';
 
 interface OwnProps {
   customer: Customer;
@@ -107,11 +108,17 @@ const createEmptyReport = (props: Props, datePickerState) => {
 
 const createReportButton = (props, classes, datePickerState) => (
   <div className={classes.addReport}>
-    <AddBoxIcon
+    <IconButton
+      aria-label="delete"
       onClick={() => createEmptyReport(props, datePickerState)}
-      className={classes.addReportIcon}
-    />
-    <h3>Create Report for Dates:</h3>
+      style={{
+        width: '160px',
+        height: '160px'
+      }}
+    >
+      <AddBoxIcon style={{fontSize: '100px'}} />
+    </IconButton>
+    <h3>Create Report</h3>
     <div className={classes.datePickers}>
       <MuiPickersUtilsProvider utils={DateFnsUtils}>
         <DatePicker
@@ -279,7 +286,7 @@ export function CreateReportPage(props: Props) {
   const [data, setData] = useState(props.report && props.report.tasks);
   useEffect(() => {
     setData(props.report && props.report.tasks);
-  })
+  });
 
   if (props.createReportTaskFailed.state) {
     revertReportTaskCreation(alert, data, props, setData);
@@ -298,10 +305,10 @@ export function CreateReportPage(props: Props) {
 
   if (props.submitReportFailed) {
     alert.show('There was a problem submitting the report', {
-        timeout: 4000,
-        type: 'error',
-        transition: 'scale'
-      });
+      timeout: 4000,
+      type: 'error',
+      transition: 'scale'
+    });
     props.clearReportSubmitError();
   }
 
@@ -327,7 +334,7 @@ export function CreateReportPage(props: Props) {
       headerStyle: { textAlign: 'left', fontWeight: 'bold' }
     }
   ]);
-  
+
   return props.report
     ? reportTable(props, columns, data, setData, alert)
     : createReportButton(props, classes, {
@@ -343,7 +350,7 @@ const mapStateToProps = createStructuredSelector<RootState, StateProps>({
   createReportTaskFailed: makeSelectCreateReportTaskFailed(),
   updateReportTaskFailed: makeSelectUpdateReportTaskFailed(),
   deleteReportTaskFailed: makeSelectDeleteReportTaskFailed(),
-  submitReportFailed: makeSelectSubmiteReportFailed(),
+  submitReportFailed: makeSelectSubmiteReportFailed()
 });
 
 function revertReportTaskDeletion(
@@ -456,8 +463,7 @@ function mapDispatchToProps(
       dispatch(clearReportTaskUpdateErrorAction()),
     clearReportTaskDeleteError: () =>
       dispatch(clearReportTaskDeleteErrorAction()),
-    clearReportSubmitError: () =>
-      dispatch(clearSubmitReportErrorAction()),
+    clearReportSubmitError: () => dispatch(clearSubmitReportErrorAction()),
     onSubmitReport: (reportId: number) =>
       dispatch(submitReportAction(reportId)),
     dispatch: dispatch
