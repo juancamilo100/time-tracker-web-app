@@ -108,17 +108,18 @@ const createEmptyReport = (props: Props, datePickerState) => {
 
 const createReportButton = (props, classes, datePickerState) => (
   <div className={classes.addReport}>
+    <h3 style={{ fontSize: '30px' }}>Create Report</h3>
     <IconButton
       aria-label="delete"
       onClick={() => createEmptyReport(props, datePickerState)}
       style={{
-        width: '160px',
-        height: '160px'
+        width: '150px',
+        height: '150px'
       }}
     >
-      <AddBoxIcon style={{fontSize: '100px'}} />
+      <AddBoxIcon style={{ fontSize: '90px' }} />
     </IconButton>
-    <h3>Create Report</h3>
+
     <div className={classes.datePickers}>
       <MuiPickersUtilsProvider utils={DateFnsUtils}>
         <DatePicker
@@ -190,8 +191,8 @@ const reportTable = (props: Props, columns, tableData, setTableData, alert) => (
       }}
       title={`
         Report for ${moment(props.report!.startDate).format(
-          'MMMM Do YYYY'
-        )} - ${moment(props.report!.endDate).format('MMMM Do YYYY')}`}
+          'MMMM Do'
+        )} - ${moment(props.report!.endDate).format('MMMM Do')}`}
       columns={columns}
       data={tableData}
       editable={{
