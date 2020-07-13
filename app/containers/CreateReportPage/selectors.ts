@@ -6,10 +6,6 @@ import { createSelector } from 'reselect';
  * Direct selector to the loginPage state domain
  */
 
-const selectGlobalState = (state: ApplicationRootState) => {
-  return state.global;
-};
-
 const selectCreateReportPage = (state: ApplicationRootState) => {
   return state.createReportPage || initialState;
 };

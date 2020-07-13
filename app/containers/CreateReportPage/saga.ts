@@ -153,8 +153,6 @@ export function* submitReport(action: ContainerActions) {
     const response = yield call(postRequest, requestURL, {}, requestHeaders);
     yield put(submitReportSuccess(Number.parseInt(response.reportId)));
   } catch (err) {
-      console.log("Error", err);
-      
     yield put(submitReportFailed());
   }
 }

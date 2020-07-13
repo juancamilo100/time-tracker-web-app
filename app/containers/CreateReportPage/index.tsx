@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import MaterialTable from 'material-table';
 import reducer from './reducer';
 import { Report, Task, Customer } from 'containers/HomePage/types';
@@ -26,8 +26,7 @@ import {
   makeSelectCreateReportTaskFailed,
   makeSelectUpdateReportTaskFailed,
   makeSelectDeleteReportTaskFailed,
-  makeSelectSubmiteReportFailed,
-  makeSelectReload
+  makeSelectSubmiteReportFailed
 } from './selectors';
 import DateFnsUtils from '@date-io/date-fns';
 import { DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
@@ -278,6 +277,9 @@ export function CreateReportPage(props: Props) {
   const [endDate, setEndDate] = useState(moment().add(2, 'weeks'));
 
   const [data, setData] = useState(props.report && props.report.tasks);
+  useEffect(() => {
+    setData(props.report && props.report.tasks);
+  })
 
   if (props.createReportTaskFailed.state) {
     revertReportTaskCreation(alert, data, props, setData);
@@ -325,7 +327,7 @@ export function CreateReportPage(props: Props) {
       headerStyle: { textAlign: 'left', fontWeight: 'bold' }
     }
   ]);
-
+  
   return props.report
     ? reportTable(props, columns, data, setData, alert)
     : createReportButton(props, classes, {

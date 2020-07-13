@@ -2,7 +2,6 @@ import { ContainerState, ContainerActions } from './types';
 import ActionTypes, { JWT_SESSION_STORAGE_NAME } from './constants';
 import { Employee } from './types.d';
 import { Customer } from '../HomePage/types.d';
-import { Report } from 'containers/HomePage/types';
 
 export const initialState: ContainerState = {
   loading: false,
@@ -12,7 +11,7 @@ export const initialState: ContainerState = {
   token: '',
   employee: {} as Employee,
   reports: [],
-  customer: {} as Customer,
+  customer: {} as Customer
 };
 
 function appReducer(
