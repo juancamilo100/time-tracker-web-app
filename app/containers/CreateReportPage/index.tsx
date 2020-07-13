@@ -14,8 +14,10 @@ import {
   clearReportTaskCreationErrorAction,
   updateReportTaskAction,
   deleteReportTaskAction,
+  submitReportAction,
   clearReportTaskUpdateErrorAction,
-  clearReportTaskDeleteErrorAction
+  clearReportTaskDeleteErrorAction,
+  clearSubmitReportErrorAction
 } from './actions';
 import { useInjectSaga } from 'utils/injectSaga';
 import saga from './saga';
@@ -23,7 +25,9 @@ import {
   makeSelectCreateReportFailed,
   makeSelectCreateReportTaskFailed,
   makeSelectUpdateReportTaskFailed,
-  makeSelectDeleteReportTaskFailed
+  makeSelectDeleteReportTaskFailed,
+  makeSelectSubmiteReportFailed,
+  makeSelectReload
 } from './selectors';
 import DateFnsUtils from '@date-io/date-fns';
 import { DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
@@ -31,6 +35,9 @@ import moment from 'moment';
 import { Employee } from 'containers/App/types';
 import { useAlert } from 'react-alert';
 import { useInjectReducer } from 'utils/injectReducer';
+import { Button } from '@material-ui/core';
+import Icon from '@material-ui/core/Icon';
+import { Theme, withStyles } from '@material-ui/core/styles';
 
 interface OwnProps {
   customer: Customer;
@@ -52,6 +59,7 @@ interface StateProps {
     state: boolean;
     oldData: object;
   };
+  submitReportFailed: boolean;
 }
 
 interface DispatchProps {
@@ -78,9 +86,11 @@ interface DispatchProps {
     oldData: object
   ): void;
   onDeleteReportTask(taskId: number, reportId: number, oldData: object): void;
+  onSubmitReport(reportId: number): void;
   clearReportTaskCreationError(): void;
   clearReportTaskUpdateError(): void;
   clearReportTaskDeleteError(): void;
+  clearReportSubmitError(): void;
   dispatch: Dispatch;
 }
 
@@ -148,88 +158,112 @@ const taskDataIsValid = (props, data, alert) => {
   return true;
 };
 
+const SubmitButton = withStyles((theme: Theme) => ({
+  root: {
+    color: 'white',
+    margin: 'auto 0',
+    backgroundColor: '#ef8133',
+    '&:hover': {
+      backgroundColor: '#eeb388'
+    }
+  }
+}))(Button);
+
 const reportTable = (props: Props, columns, tableData, setTableData, alert) => (
-  <MaterialTable
-    localization={{
-      header: {
-        actions: ''
-      }
-    }}
-    style={{ padding: '50px' }}
-    options={{
-      search: false,
-      paging: false
-    }}
-    title={`
+  <>
+    <MaterialTable
+      localization={{
+        header: {
+          actions: ''
+        }
+      }}
+      style={{ padding: '50px' }}
+      options={{
+        search: false,
+        paging: false
+      }}
+      title={`
         Report for ${moment(props.report!.startDate).format(
           'MMMM Do YYYY'
         )} - ${moment(props.report!.endDate).format('MMMM Do YYYY')}`}
-    columns={columns}
-    data={tableData}
-    editable={{
-      onRowAdd: newData =>
-        new Promise((resolve, reject) => {
-          setTimeout(() => {
-            if (!taskDataIsValid(props, newData, alert)) {
-              return reject();
-            }
+      columns={columns}
+      data={tableData}
+      editable={{
+        onRowAdd: newData =>
+          new Promise((resolve, reject) => {
+            setTimeout(() => {
+              if (!taskDataIsValid(props, newData, alert)) {
+                return reject();
+              }
 
-            props.onCreateReportTask(
-              props.report!,
-              newData['datePerformed'],
-              newData['hours'],
-              newData['description'],
-              tableData ? tableData.length : 0
-            );
-
-            setTableData([...(tableData ? tableData : []), newData]);
-            resolve();
-          }, 0);
-        }),
-      onRowUpdate: (newData, oldData) =>
-        new Promise((resolve, reject) => {
-          setTimeout(() => {
-            if (!taskDataIsValid(props, newData, alert)) {
-              return reject();
-            }
-
-            if (oldData) {
-              props.onUpdateReportTask(
-                newData['id'],
-                newData['reportId'],
+              props.onCreateReportTask(
+                props.report!,
                 newData['datePerformed'],
                 newData['hours'],
                 newData['description'],
-                oldData
+                tableData ? tableData.length : 0
               );
 
-              const dataUpdate = [...tableData];
+              setTableData([...(tableData ? tableData : []), newData]);
+              resolve();
+            }, 0);
+          }),
+        onRowUpdate: (newData, oldData) =>
+          new Promise((resolve, reject) => {
+            setTimeout(() => {
+              if (!taskDataIsValid(props, newData, alert)) {
+                return reject();
+              }
+
+              if (oldData) {
+                props.onUpdateReportTask(
+                  newData['id'],
+                  newData['reportId'],
+                  newData['datePerformed'],
+                  newData['hours'],
+                  newData['description'],
+                  oldData
+                );
+
+                const dataUpdate = [...tableData];
+                const index = oldData['tableData'].id;
+                dataUpdate[index] = newData;
+                setTableData([...dataUpdate]);
+
+                resolve();
+              }
+            }, 0);
+          }),
+        onRowDelete: oldData =>
+          new Promise(resolve => {
+            setTimeout(() => {
+              props.onDeleteReportTask(
+                oldData['id'],
+                oldData['reportId'],
+                oldData
+              );
+              const dataDelete = [...tableData];
               const index = oldData['tableData'].id;
-              dataUpdate[index] = newData;
-              setTableData([...dataUpdate]);
+              dataDelete.splice(index, 1);
+              setTableData([...dataDelete]);
 
               resolve();
-            }
-          }, 0);
-        }),
-      onRowDelete: oldData =>
-        new Promise(resolve => {
-          setTimeout(() => {
-            props.onDeleteReportTask(
-              oldData['id'],
-              oldData['reportId'],
-              oldData
-            );
-            const dataDelete = [...tableData];
-            const index = oldData['tableData'].id;
-            dataDelete.splice(index, 1);
-            setTableData([...dataDelete]);
-
-            resolve();
-          }, 0);
-        })
-    }}
-  />
+            }, 0);
+          })
+      }}
+    />
+    <div
+      style={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}
+    >
+      <SubmitButton
+        onClick={() => props.onSubmitReport(props.report!.id)}
+        size="large"
+        endIcon={<Icon>send</Icon>}
+      >
+        Submit
+      </SubmitButton>
+    </div>
+  </>
 );
 
 const keyCreateReportPage = 'createReportPage';
@@ -258,6 +292,15 @@ export function CreateReportPage(props: Props) {
   if (props.deleteReportTaskFailed.state) {
     revertReportTaskDeletion(alert, data, props, setData);
     props.clearReportTaskDeleteError();
+  }
+
+  if (props.submitReportFailed) {
+    alert.show('There was a problem submitting the report', {
+        timeout: 4000,
+        type: 'error',
+        transition: 'scale'
+      });
+    props.clearReportSubmitError();
   }
 
   const [columns, setColumns] = useState([
@@ -297,7 +340,8 @@ const mapStateToProps = createStructuredSelector<RootState, StateProps>({
   createReportFailed: makeSelectCreateReportFailed(),
   createReportTaskFailed: makeSelectCreateReportTaskFailed(),
   updateReportTaskFailed: makeSelectUpdateReportTaskFailed(),
-  deleteReportTaskFailed: makeSelectDeleteReportTaskFailed()
+  deleteReportTaskFailed: makeSelectDeleteReportTaskFailed(),
+  submitReportFailed: makeSelectSubmiteReportFailed(),
 });
 
 function revertReportTaskDeletion(
@@ -410,6 +454,10 @@ function mapDispatchToProps(
       dispatch(clearReportTaskUpdateErrorAction()),
     clearReportTaskDeleteError: () =>
       dispatch(clearReportTaskDeleteErrorAction()),
+    clearReportSubmitError: () =>
+      dispatch(clearSubmitReportErrorAction()),
+    onSubmitReport: (reportId: number) =>
+      dispatch(submitReportAction(reportId)),
     dispatch: dispatch
   };
 }

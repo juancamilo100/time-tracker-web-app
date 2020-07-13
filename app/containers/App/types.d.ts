@@ -12,7 +12,7 @@ export interface Employee {
     jobTitle: string,
     customerId: number,
     employeeRate: number,
-    role: string,
+    role: string
 }
 
 /* --- STATE --- */

@@ -6,6 +6,10 @@ import { createSelector } from 'reselect';
  * Direct selector to the loginPage state domain
  */
 
+const selectGlobalState = (state: ApplicationRootState) => {
+  return state.global;
+};
+
 const selectCreateReportPage = (state: ApplicationRootState) => {
   return state.createReportPage || initialState;
 };
@@ -32,6 +36,12 @@ export const makeSelectDeleteReportTaskFailed = () =>
   createSelector(
     selectCreateReportPage,
     createReportState => createReportState.deleteReportTaskFailed
+  );
+
+export const makeSelectSubmiteReportFailed = () =>
+  createSelector(
+    selectCreateReportPage,
+    createReportState => createReportState.submitReportFailed
   );
 
 /**

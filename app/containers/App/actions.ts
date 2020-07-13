@@ -32,7 +32,12 @@ export const createReportTaskSuccess = (report: Report) =>
 export const updateReportTaskSuccess = (report: Report) =>
   action(ActionTypes.UPDATE_REPORT_TASK_SUCCESS, { report });
 
-  export const deleteReportTaskSuccess = () =>
+export const deleteReportTaskSuccess = () =>
   action(ActionTypes.UPDATE_REPORT_TASK_SUCCESS);
+
+export const submitReportSuccess = (reportId: number) =>
+  action(ActionTypes.SUBMIT_REPORT_SUCCESS, {
+    reportId
+  });
 
 export const logout = () => action(ActionTypes.LOGOUT);

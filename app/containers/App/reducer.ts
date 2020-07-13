@@ -2,6 +2,7 @@ import { ContainerState, ContainerActions } from './types';
 import ActionTypes, { JWT_SESSION_STORAGE_NAME } from './constants';
 import { Employee } from './types.d';
 import { Customer } from '../HomePage/types.d';
+import { Report } from 'containers/HomePage/types';
 
 export const initialState: ContainerState = {
   loading: false,
@@ -11,7 +12,7 @@ export const initialState: ContainerState = {
   token: '',
   employee: {} as Employee,
   reports: [],
-  customer: {} as Customer
+  customer: {} as Customer,
 };
 
 function appReducer(
@@ -24,7 +25,7 @@ function appReducer(
         ...state,
         loading: action.payload.loading
       };
-      
+
     case ActionTypes.AUTH_ACTION_SUCCESS:
       sessionStorage.setItem(JWT_SESSION_STORAGE_NAME, action.payload.token);
       return {
@@ -33,25 +34,25 @@ function appReducer(
         authFailed: false,
         token: action.payload.token
       };
-      
+
     case ActionTypes.AUTH_ACTION_ERROR:
       return {
         ...state,
         authFailed: true
       };
-      
+
     case ActionTypes.GET_EMPLOYEE_PROFILE_SUCCESS:
       return {
         ...state,
         employee: action.payload.employee
       };
-      
+
     case ActionTypes.GET_EMPLOYEE_REPORTS_SUCCESS:
       return {
         ...state,
         reports: action.payload.reports
       };
-      
+
     case ActionTypes.GET_EMPLOYEE_CUSTOMER_SUCCESS:
       return {
         ...state,
@@ -59,10 +60,10 @@ function appReducer(
       };
 
     case ActionTypes.CREATE_REPORT_SUCCESS:
-        const newReports = [ ...state.reports, action.payload.report ]
+      const newReports = [...state.reports, action.payload.report];
 
       return {
-        ...state, 
+        ...state,
         reports: newReports
       };
 
@@ -75,7 +76,20 @@ function appReducer(
       return {
         ...state
       };
-      
+
+    case ActionTypes.SUBMIT_REPORT_SUCCESS:
+      const updatedReports = state.reports.map(report => {
+        if (report.id === action.payload.reportId) {
+          report.submitted = true;
+        }
+        return report;
+      });
+
+      return {
+        ...state,
+        reports: [...updatedReports]
+      };
+
     case ActionTypes.LOGOUT:
       sessionStorage.removeItem(JWT_SESSION_STORAGE_NAME);
       return {
@@ -84,7 +98,7 @@ function appReducer(
         authFailed: false,
         token: ''
       };
-      
+
     default:
       return state;
   }

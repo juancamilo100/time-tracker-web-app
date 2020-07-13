@@ -14,7 +14,8 @@ export const initialState: ContainerState = {
   deleteReportTaskFailed: {
     state: false,
     oldData: {}
-  }
+  },
+  submitReportFailed: false
 };
 
 function createReportPageReducer(
@@ -52,6 +53,18 @@ function createReportPageReducer(
           state: true,
           oldData: action['payload'].oldData
         }
+      };
+
+    case ActionTypes.SUBMIT_REPORT_FAILED_ACTION:
+      return {
+        ...state,
+        submitReportFailed: true
+      };
+
+    case ActionTypes.CLEAR_SUBMIT_REPORT_ERROR_ACTION:
+      return {
+        ...state,
+        submitReportFailed: false
       };
 
     case ActionTypes.CLEAR_REPORT_TASK_CREATION_ERROR_ACTION:

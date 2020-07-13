@@ -34,7 +34,8 @@ import {
   makeSelectCustomer,
   makeSelectToken,
   makeSelectAuthenticated,
-  makeSelectLoading
+  makeSelectLoading,
+  makeSelectReload
 } from './selectors';
 
 const AppWrapper = styled.div`
@@ -124,6 +125,8 @@ function App(props: Props) {
 
 function fetchStartupData(props: Props) {
   (async () => {
+      console.log("Fetching startup data...");
+      
     props.onLoadingChange(true);
     const decodedToken = jwt.decode(props.token);
 

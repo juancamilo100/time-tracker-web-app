@@ -15,6 +15,7 @@ import App from 'containers/App';
 import LanguageProvider from 'containers/LanguageProvider';
 import { Provider as AlertProvider } from 'react-alert';
 import AlertTemplate from 'react-alert-template-basic';
+// import AlertMUITemplate from "react-alert-template-mui";
 
 // Load the favicon and the .htaccess file
 import '!file-loader?name=[name].[ext]!./images/favicon.ico';

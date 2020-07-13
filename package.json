@@ -102,6 +102,7 @@
     "react": "16.8.6",
     "react-alert": "^7.0.1",
     "react-alert-template-basic": "^1.0.0",
+    "react-alert-template-mui": "^1.0.7",
     "react-dom": "16.8.6",
     "react-helmet": "6.0.0-beta",
     "react-intl": "2.8.0",
