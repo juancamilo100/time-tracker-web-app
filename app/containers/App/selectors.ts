@@ -37,5 +37,8 @@ export const makeSelectCustomer = () =>
 export const makeSelectAuthFailed = () =>
   createSelector(selectGlobal, globalState => globalState.authFailed);
 
+export const makeSelectReload = () =>
+  createSelector(selectGlobal, globalState => globalState.reload);
+
 export const makeSelectLocation = () =>
   createSelector(selectRoute, routeState => routeState.location);

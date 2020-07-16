@@ -11,7 +11,8 @@ export const initialState: ContainerState = {
   token: '',
   employee: {} as Employee,
   reports: [],
-  customer: {} as Customer
+  customer: {} as Customer,
+  reload: false
 };
 
 function appReducer(
@@ -67,16 +68,24 @@ function appReducer(
       };
 
     case ActionTypes.CREATE_REPORT_TASK_SUCCESS:
-        console.log("Create report task success");
-        
+      let newReload = !state.reload;
       return {
-        ...state
+        ...state,
+        reload: newReload
       };
 
     case ActionTypes.UPDATE_REPORT_TASK_SUCCESS:
-        console.log("Update report task success");
+      newReload = !state.reload;
       return {
-        ...state
+        ...state,
+        reload: newReload
+      };
+
+    case ActionTypes.DELETE_REPORT_TASK_SUCCESS:
+      newReload = !state.reload;
+      return {
+        ...state,
+        reload: newReload
       };
 
     case ActionTypes.SUBMIT_REPORT_SUCCESS:

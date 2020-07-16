@@ -289,13 +289,13 @@ export function CreateReportPage(props: Props) {
 
   const [data, setData] = useState(props.report && props.report.tasks);
 
-//   useEffect(() => {
-//       console.log("Setting report tasks to: ");
-//       console.log(props.report && props.report.tasks);
+  useEffect(() => {
+      console.log("Setting report tasks to: ");
+      console.log(props.report && props.report.tasks);
       
       
-//     setData(props.report && props.report.tasks);
-//   });
+    setData(props.report && props.report.tasks);
+  });
 
   if (props.createReportTaskFailed.state) {
     revertReportTaskCreation(alert, data, props, setData);
