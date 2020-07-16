@@ -67,11 +67,14 @@ function appReducer(
       };
 
     case ActionTypes.CREATE_REPORT_TASK_SUCCESS:
+        console.log("Create report task success");
+        
       return {
         ...state
       };
 
     case ActionTypes.UPDATE_REPORT_TASK_SUCCESS:
+        console.log("Update report task success");
       return {
         ...state
       };

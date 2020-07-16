@@ -198,7 +198,7 @@ const reportTable = (props: Props, columns, tableData, setTableData, alert) => (
       editable={{
         onRowAdd: newData =>
           new Promise((resolve, reject) => {
-            setTimeout(() => {
+            // setTimeout(() => {
               if (!taskDataIsValid(props, newData, alert)) {
                 return reject();
               }
@@ -213,11 +213,11 @@ const reportTable = (props: Props, columns, tableData, setTableData, alert) => (
 
               setTableData([...(tableData ? tableData : []), newData]);
               resolve();
-            }, 0);
+            // }, 0);
           }),
         onRowUpdate: (newData, oldData) =>
           new Promise((resolve, reject) => {
-            setTimeout(() => {
+            // setTimeout(() => {
               if (!taskDataIsValid(props, newData, alert)) {
                 return reject();
               }
@@ -239,11 +239,11 @@ const reportTable = (props: Props, columns, tableData, setTableData, alert) => (
 
                 resolve();
               }
-            }, 0);
+            // }, 0);
           }),
         onRowDelete: oldData =>
           new Promise(resolve => {
-            setTimeout(() => {
+            // setTimeout(() => {
               props.onDeleteReportTask(
                 oldData['id'],
                 oldData['reportId'],
@@ -255,7 +255,7 @@ const reportTable = (props: Props, columns, tableData, setTableData, alert) => (
               setTableData([...dataDelete]);
 
               resolve();
-            }, 0);
+            // }, 0);
           })
       }}
     />
@@ -284,10 +284,18 @@ export function CreateReportPage(props: Props) {
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(moment().add(2, 'weeks'));
 
+  console.log("Setting default value to: ");
+  console.log(props.report && props.report.tasks);
+
   const [data, setData] = useState(props.report && props.report.tasks);
-  useEffect(() => {
-    setData(props.report && props.report.tasks);
-  });
+
+//   useEffect(() => {
+//       console.log("Setting report tasks to: ");
+//       console.log(props.report && props.report.tasks);
+      
+      
+//     setData(props.report && props.report.tasks);
+//   });
 
   if (props.createReportTaskFailed.state) {
     revertReportTaskCreation(alert, data, props, setData);
