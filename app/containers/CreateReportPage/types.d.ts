@@ -17,6 +17,7 @@ interface CreateReportPageState {
       state: boolean,
       oldData: object
   };
+  submitReportFailed: boolean;
 }
 
 /* --- ACTIONS --- */

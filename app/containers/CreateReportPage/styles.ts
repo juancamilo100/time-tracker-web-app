@@ -17,6 +17,7 @@ export const useStyles = makeStyles({
   },
   datePickers: {
     display: 'flex',
-    flexDirection: 'row'
+    flexDirection: 'row',
+    paddingTop: '20px'
   }
 });

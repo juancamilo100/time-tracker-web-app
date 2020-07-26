@@ -11,7 +11,8 @@ export const initialState: ContainerState = {
   token: '',
   employee: {} as Employee,
   reports: [],
-  customer: {} as Customer
+  customer: {} as Customer,
+  reload: false
 };
 
 function appReducer(
@@ -24,7 +25,7 @@ function appReducer(
         ...state,
         loading: action.payload.loading
       };
-      
+
     case ActionTypes.AUTH_ACTION_SUCCESS:
       sessionStorage.setItem(JWT_SESSION_STORAGE_NAME, action.payload.token);
       return {
@@ -33,25 +34,25 @@ function appReducer(
         authFailed: false,
         token: action.payload.token
       };
-      
+
     case ActionTypes.AUTH_ACTION_ERROR:
       return {
         ...state,
         authFailed: true
       };
-      
+
     case ActionTypes.GET_EMPLOYEE_PROFILE_SUCCESS:
       return {
         ...state,
         employee: action.payload.employee
       };
-      
+
     case ActionTypes.GET_EMPLOYEE_REPORTS_SUCCESS:
       return {
         ...state,
         reports: action.payload.reports
       };
-      
+
     case ActionTypes.GET_EMPLOYEE_CUSTOMER_SUCCESS:
       return {
         ...state,
@@ -59,23 +60,47 @@ function appReducer(
       };
 
     case ActionTypes.CREATE_REPORT_SUCCESS:
-        const newReports = [ ...state.reports, action.payload.report ]
+      const newReports = [...state.reports, action.payload.report];
 
       return {
-        ...state, 
+        ...state,
         reports: newReports
       };
 
     case ActionTypes.CREATE_REPORT_TASK_SUCCESS:
+      let newReload = !state.reload;
       return {
-        ...state
+        ...state,
+        reload: newReload
       };
 
     case ActionTypes.UPDATE_REPORT_TASK_SUCCESS:
+      newReload = !state.reload;
       return {
-        ...state
+        ...state,
+        reload: newReload
       };
-      
+
+    case ActionTypes.DELETE_REPORT_TASK_SUCCESS:
+      newReload = !state.reload;
+      return {
+        ...state,
+        reload: newReload
+      };
+
+    case ActionTypes.SUBMIT_REPORT_SUCCESS:
+      const updatedReports = state.reports.map(report => {
+        if (report.id === action.payload.reportId) {
+          report.submitted = true;
+        }
+        return report;
+      });
+
+      return {
+        ...state,
+        reports: [...updatedReports]
+      };
+
     case ActionTypes.LOGOUT:
       sessionStorage.removeItem(JWT_SESSION_STORAGE_NAME);
       return {
@@ -84,7 +109,7 @@ function appReducer(
         authFailed: false,
         token: ''
       };
-      
+
     default:
       return state;
   }

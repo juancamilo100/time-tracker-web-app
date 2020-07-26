@@ -12,7 +12,7 @@ export interface Employee {
     jobTitle: string,
     customerId: number,
     employeeRate: number,
-    role: string,
+    role: string
 }
 
 /* --- STATE --- */
@@ -25,6 +25,7 @@ interface AppState {
   readonly employee: Employee;
   readonly reports: Report[];
   readonly customer: Customer;
+  readonly reload: boolean;
 }
 
 /* --- ACTIONS --- */

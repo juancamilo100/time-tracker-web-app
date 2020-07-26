@@ -34,7 +34,8 @@ import {
   makeSelectCustomer,
   makeSelectToken,
   makeSelectAuthenticated,
-  makeSelectLoading
+  makeSelectLoading,
+  makeSelectReload
 } from './selectors';
 
 const AppWrapper = styled.div`
@@ -52,6 +53,7 @@ interface StateProps {
   employee: Employee;
   reports: Report[];
   customer: Customer;
+  reload: boolean;
 }
 
 interface DispatchProps {
@@ -81,7 +83,7 @@ function App(props: Props) {
     if (props.authenticated) {
       fetchStartupData(props);
     }
-  }, [props.authenticated]);
+  }, [props.reload, props.authenticated]);
 
   return (
     <AppWrapper>
@@ -188,7 +190,8 @@ const mapStateToProps = createStructuredSelector<RootState, StateProps>({
   authenticated: makeSelectAuthenticated(),
   employee: makeSelectEmployee(),
   reports: makeSelectReports(),
-  customer: makeSelectCustomer()
+  customer: makeSelectCustomer(),
+  reload: makeSelectReload()
 });
 
 const withConnect = connect(

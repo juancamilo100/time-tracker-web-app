@@ -78,11 +78,22 @@ export const createReportTaskFailed = (rowId: number) =>
     rowId
   });
 
+export const submitReportAction = (reportId: number) =>
+  action(ActionTypes.SUBMIT_REPORT_ACTION, {
+    reportId
+  });
+  
+export const submitReportFailed = () =>
+  action(ActionTypes.SUBMIT_REPORT_FAILED_ACTION);
+
 export const clearReportTaskCreationErrorAction = () =>
   action(ActionTypes.CLEAR_REPORT_TASK_CREATION_ERROR_ACTION);
-  
+
 export const clearReportTaskUpdateErrorAction = () =>
   action(ActionTypes.CLEAR_REPORT_TASK_UPDATE_ERROR_ACTION);
 
 export const clearReportTaskDeleteErrorAction = () =>
   action(ActionTypes.CLEAR_REPORT_TASK_DELETE_ERROR_ACTION);
+
+export const clearSubmitReportErrorAction = () =>
+  action(ActionTypes.CLEAR_SUBMIT_REPORT_ERROR_ACTION);

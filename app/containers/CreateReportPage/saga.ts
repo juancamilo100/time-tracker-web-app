@@ -6,13 +6,15 @@ import {
   createReportSuccess,
   createReportTaskSuccess,
   updateReportTaskSuccess,
-  deleteReportTaskSuccess
+  deleteReportTaskSuccess,
+  submitReportSuccess
 } from '../App/actions';
 import {
   createReportFailed,
   createReportTaskFailed,
   updateReportTaskFailed,
-  deleteReportTaskFailed
+  deleteReportTaskFailed,
+  submitReportFailed
 } from './actions';
 import { TIME_TRACKER_API_BASE_URL } from 'config';
 import { JWT_SESSION_STORAGE_NAME } from '../App/constants';
@@ -50,7 +52,7 @@ export function* createReport(action: ContainerActions) {
 
 export function* createReportTask(action: ContainerActions) {
   const currentReport = action['payload'].report;
-  
+
   const requestURL = `http://${TIME_TRACKER_API_BASE_URL}/api/reports/${
     currentReport.id
   }/tasks`;
@@ -73,6 +75,7 @@ export function* createReportTask(action: ContainerActions) {
       requestBody,
       requestHeaders
     );
+    
 
     yield put(createReportTaskSuccess(response));
   } catch (err) {
@@ -137,9 +140,28 @@ export function* deleteReportTask(action: ContainerActions) {
   }
 }
 
+export function* submitReport(action: ContainerActions) {
+  const requestURL = `http://${TIME_TRACKER_API_BASE_URL}/api/reports/${
+    action['payload'].reportId
+  }/submit`;
+
+  const requestHeaders = {
+    'content-type': 'application/json',
+    Authorization: sessionStorage.getItem(JWT_SESSION_STORAGE_NAME)
+  };
+
+  try {
+    const response = yield call(postRequest, requestURL, {}, requestHeaders);
+    yield put(submitReportSuccess(Number.parseInt(response.reportId)));
+  } catch (err) {
+    yield put(submitReportFailed());
+  }
+}
+
 export default function* createReportSaga() {
   yield takeLatest(ActionTypes.CREATE_REPORT_ACTION, createReport);
   yield takeLatest(ActionTypes.CREATE_REPORT_TASK_ACTION, createReportTask);
   yield takeLatest(ActionTypes.UPDATE_REPORT_TASK_ACTION, updateReportTask);
   yield takeLatest(ActionTypes.DELETE_REPORT_TASK_ACTION, deleteReportTask);
+  yield takeLatest(ActionTypes.SUBMIT_REPORT_ACTION, submitReport);
 }
