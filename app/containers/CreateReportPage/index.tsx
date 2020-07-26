@@ -198,7 +198,7 @@ const reportTable = (props: Props, columns, tableData, setTableData, alert) => (
       editable={{
         onRowAdd: newData =>
           new Promise((resolve, reject) => {
-            // setTimeout(() => {
+            setTimeout(() => {
               if (!taskDataIsValid(props, newData, alert)) {
                 return reject();
               }
@@ -213,11 +213,11 @@ const reportTable = (props: Props, columns, tableData, setTableData, alert) => (
 
               setTableData([...(tableData ? tableData : []), newData]);
               resolve();
-            // }, 0);
+            }, 0);
           }),
         onRowUpdate: (newData, oldData) =>
           new Promise((resolve, reject) => {
-            // setTimeout(() => {
+            setTimeout(() => {
               if (!taskDataIsValid(props, newData, alert)) {
                 return reject();
               }
@@ -239,11 +239,11 @@ const reportTable = (props: Props, columns, tableData, setTableData, alert) => (
 
                 resolve();
               }
-            // }, 0);
+            }, 0);
           }),
         onRowDelete: oldData =>
           new Promise(resolve => {
-            // setTimeout(() => {
+            setTimeout(() => {
               props.onDeleteReportTask(
                 oldData['id'],
                 oldData['reportId'],
@@ -255,7 +255,7 @@ const reportTable = (props: Props, columns, tableData, setTableData, alert) => (
               setTableData([...dataDelete]);
 
               resolve();
-            // }, 0);
+            }, 0);
           })
       }}
     />

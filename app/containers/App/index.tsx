@@ -78,13 +78,9 @@ function App(props: Props) {
   } else {
     props.onTokenValid(true, token);
   }
-  console.log("Loading APP with props:");
-  console.log(props);
 
   useEffect(() => {
     if (props.authenticated) {
-        console.log("Fetching startup data");
-        
       fetchStartupData(props);
     }
   }, [props.reload, props.authenticated]);
