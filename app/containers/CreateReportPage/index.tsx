@@ -284,16 +284,9 @@ export function CreateReportPage(props: Props) {
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(moment().add(2, 'weeks'));
 
-  console.log("Setting default value to: ");
-  console.log(props.report && props.report.tasks);
-
   const [data, setData] = useState(props.report && props.report.tasks);
 
   useEffect(() => {
-      console.log("Setting report tasks to: ");
-      console.log(props.report && props.report.tasks);
-      
-      
     setData(props.report && props.report.tasks);
   });
 
