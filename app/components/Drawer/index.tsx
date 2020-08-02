@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link  } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useTheme } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -13,16 +13,62 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import FaceIcon from '@material-ui/icons/Face';
 import TimeIcon from '@material-ui/icons/AlarmOn';
+import SendIcon from '@material-ui/icons/Send';
 import ReportsIcon from '@material-ui/icons/Description';
 import { routePath } from 'config';
 import { useStyles } from './styles';
 
 interface OwnProps {
-    open: boolean;
-    toggleDrawerState: () => void;
+  open: boolean;
+  isAdmin: boolean;
+  toggleDrawerState: () => void;
 }
 
 type Props = OwnProps;
+
+const devListItems = classes => (
+  <>
+    <ListItem
+      button
+      className={classes.listItem}
+      component={Link}
+      to={routePath.featuresPath}
+    >
+      <ListItemIcon>
+        <TimeIcon className={classes.itemIcon} />
+      </ListItemIcon>
+      <ListItemText className={classes.itemText} primary="Create Report" />
+    </ListItem>
+
+    <ListItem
+      button
+      className={classes.listItem}
+      component={Link}
+      to={routePath.reportHistoryPath}
+    >
+      <ListItemIcon>
+        <ReportsIcon className={classes.itemIcon} />
+      </ListItemIcon>
+      <ListItemText className={classes.itemText} primary="Report History" />
+    </ListItem>
+  </>
+);
+
+const adminListItems = classes => (
+  <>
+    <ListItem
+      button
+      className={classes.listItem}
+      component={Link}
+      to={routePath.invoiceDeliveryPath}
+    >
+      <ListItemIcon>
+        <SendIcon className={classes.itemIcon} />
+      </ListItemIcon>
+      <ListItemText className={classes.itemText} primary="Deliver Invoices" />
+    </ListItem>
+  </>
+);
 
 export default function PersistentDrawerLeft(props: Props) {
   const classes = useStyles();
@@ -33,11 +79,11 @@ export default function PersistentDrawerLeft(props: Props) {
       <CssBaseline />
       <Drawer
         className={classes.drawer}
-        variant="persistent"
+        variant="persistent"    
         anchor="left"
         open={props.open}
         classes={{
-          paper: classes.drawerPaper,
+          paper: classes.drawerPaper
         }}
       >
         <div className={classes.drawerHeader}>
@@ -51,36 +97,7 @@ export default function PersistentDrawerLeft(props: Props) {
         </div>
         <Divider />
         <List>
-          <ListItem
-            button
-            className={classes.listItem}
-            component={Link}
-            to={routePath.featuresPath}
-          >
-            <ListItemIcon>
-              <TimeIcon className={classes.itemIcon} />
-            </ListItemIcon>
-            <ListItemText
-              className={classes.itemText}
-              primary="Create Report"
-            />
-          </ListItem>
-
-          <ListItem
-            button
-            className={classes.listItem}
-            component={Link}
-            to={routePath.reportHistoryPath}
-          >
-            <ListItemIcon>
-              <ReportsIcon className={classes.itemIcon} />
-            </ListItemIcon>
-            <ListItemText
-              className={classes.itemText}
-              primary="Report History"
-            />
-          </ListItem>
-
+          {props.isAdmin ? adminListItems(classes) : devListItems(classes)}
           <ListItem
             button
             className={classes.listItem}

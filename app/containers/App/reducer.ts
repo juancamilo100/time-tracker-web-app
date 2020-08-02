@@ -47,6 +47,12 @@ function appReducer(
         employee: action.payload.employee
       };
 
+    case ActionTypes.GET_ADMIN_REPORTS_SUCCESS:
+      return {
+        ...state,
+        reports: action.payload.reports
+      };
+
     case ActionTypes.GET_EMPLOYEE_REPORTS_SUCCESS:
       return {
         ...state,

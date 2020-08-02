@@ -18,6 +18,7 @@ import {
   getEmployeeSuccessAction,
   getEmployeeReportsSuccessAction,
   getEmployeeCustomerSuccessAction,
+  getAdminReportsSuccessAction,
   setLoadingAction
 } from './actions';
 import jwt from 'jsonwebtoken';
@@ -60,7 +61,8 @@ interface DispatchProps {
   onLoadingChange(loading: boolean): void;
   onTokenInvalid(): void;
   onTokenValid(auth: boolean, token: string): void;
-  onGetEmployeeReportsSuccess: (employee: Report[]) => void;
+  onGetEmployeeReportsSuccess: (reports: Report[]) => void;
+  onGetAdminReportsSuccess: (reports: Report[]) => void;
   onGetEmployeeCustomerSuccess: (customer: Customer) => void;
   onGetEmployeeProfileSuccess: (employee: Employee) => void;
 }
@@ -71,7 +73,7 @@ const key = 'global';
 
 function App(props: Props) {
   useInjectSaga({ key: key, saga: saga });
-  const { token, tokenIsExpired } = validateToken();
+  const { token, tokenIsExpired, isAdmin } = validateToken();
 
   if (!token || tokenIsExpired) {
     props.onTokenInvalid();
@@ -81,7 +83,7 @@ function App(props: Props) {
 
   useEffect(() => {
     if (props.authenticated) {
-      fetchStartupData(props);
+      fetchStartupData(props, isAdmin);
     }
   }, [props.reload, props.authenticated]);
 
@@ -92,7 +94,10 @@ function App(props: Props) {
       </Helmet>
       {props.loading ? null : (
         <Switch>
-          <Route path={routePath.mainPath} component={HomePage} />
+          <Route
+            path={routePath.mainPath}
+            render={() => <HomePage isAdminUser={isAdmin} />}
+          />
           <Route path={routePath.loginPath} component={LoginPage} />
           <Route path="" component={NotFoundPage} />
         </Switch>
@@ -105,6 +110,7 @@ function App(props: Props) {
   function validateToken() {
     let token = sessionStorage.getItem(JWT_SESSION_STORAGE_NAME);
     let tokenIsExpired = false;
+    let isAdmin = false;
 
     try {
       const decodedToken = jwt.decode(token!);
@@ -115,24 +121,31 @@ function App(props: Props) {
       const currentDateTimeEpoch = moment().unix();
 
       tokenIsExpired = currentDateTimeEpoch > tokenExpirationDateTimeEpoch;
+      isAdmin = decodedToken!['role'] === 'admin';
     } catch (error) {
       token = null;
       tokenIsExpired = true;
     }
 
-    return { token, tokenIsExpired };
+    return { token, tokenIsExpired, isAdmin };
   }
 }
 
-function fetchStartupData(props: Props) {
+function fetchStartupData(props: Props, isAdmin: boolean) {
   (async () => {
     props.onLoadingChange(true);
     const decodedToken = jwt.decode(props.token);
 
-    await getReportsData(decodedToken);
     const employeeResponse: Employee = await getEmployeeData(decodedToken);
-    await getCustomerData(employeeResponse);
-
+    
+    if(isAdmin) {
+        await getAdminReportsData()
+    }
+    else {
+        await getEmployeeReportsData(decodedToken);
+        await getCustomerData(employeeResponse);
+    }
+    
     props.onLoadingChange(false);
   })();
 
@@ -144,7 +157,7 @@ function fetchStartupData(props: Props) {
     props.onGetEmployeeCustomerSuccess(customerResponse);
   }
 
-  async function getReportsData(
+  async function getEmployeeReportsData(
     decodedToken: string | { [key: string]: any } | null
   ) {
     const getReportsRequestURL = `http://${TIME_TRACKER_API_BASE_URL}/api/employees/${
@@ -152,6 +165,12 @@ function fetchStartupData(props: Props) {
     }/reports`;
     const reportsResponse: Report[] = await getRequest(getReportsRequestURL);
     props.onGetEmployeeReportsSuccess(reportsResponse);
+  }
+
+  async function getAdminReportsData() {
+    const getReportsRequestURL = `http://${TIME_TRACKER_API_BASE_URL}/api/reports`;
+    const reportsResponse: Report[] = await getRequest(getReportsRequestURL);
+    props.onGetAdminReportsSuccess(reportsResponse);
   }
 
   async function getEmployeeData(
@@ -177,6 +196,8 @@ export function mapDispatchToProps(
       dispatch(authActionSuccess(auth, token)),
     onGetEmployeeReportsSuccess: (reports: Report[]) =>
       dispatch(getEmployeeReportsSuccessAction(reports)),
+    onGetAdminReportsSuccess: (reports: Report[]) =>
+      dispatch(getAdminReportsSuccessAction(reports)),
     onGetEmployeeCustomerSuccess: (customer: Customer) =>
       dispatch(getEmployeeCustomerSuccessAction(customer)),
     onGetEmployeeProfileSuccess: (employee: Employee) =>

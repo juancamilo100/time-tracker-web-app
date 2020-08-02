@@ -20,6 +20,9 @@ export const getEmployeeSuccessAction = (employee: Employee) =>
 export const getEmployeeReportsSuccessAction = (reports: Report[]) =>
   action(ActionTypes.GET_EMPLOYEE_REPORTS_SUCCESS, { reports });
 
+export const getAdminReportsSuccessAction = (reports: Report[]) =>
+  action(ActionTypes.GET_ADMIN_REPORTS_SUCCESS, { reports });
+
 export const getEmployeeCustomerSuccessAction = (customer: Customer) =>
   action(ActionTypes.GET_EMPLOYEE_CUSTOMER_SUCCESS, { customer });
 
