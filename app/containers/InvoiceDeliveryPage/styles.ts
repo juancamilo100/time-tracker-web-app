@@ -1,23 +1,13 @@
-import { makeStyles } from '@material-ui/core/styles';
+import { Theme, createStyles, makeStyles } from '@material-ui/core/styles';
 
-export const useStyles = makeStyles({
-  addReport: {
-    display: 'flex',
-    flexDirection: 'column',
+export const useStyles = makeStyles((theme: Theme) =>
+createStyles({
+  root: {
     width: '100%',
-    height: '100%',
-    color: 'darkGrey',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: '70px'
   },
-  addReportIcon: {
-    height: '300%',
-    width: '300%'
+  heading: {
+    fontSize: theme.typography.pxToRem(15),
+    fontWeight: theme.typography.fontWeightRegular,
   },
-  datePickers: {
-    display: 'flex',
-    flexDirection: 'row',
-    paddingTop: '20px'
-  }
-});
+}),
+);

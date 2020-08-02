@@ -34,6 +34,9 @@ export const makeSelectReports = () =>
 export const makeSelectCustomer = () =>
   createSelector(selectGlobal, globalState => globalState.customer);
 
+export const makeSelectCustomers = () =>
+  createSelector(selectGlobal, globalState => globalState.customers);
+
 export const makeSelectAuthFailed = () =>
   createSelector(selectGlobal, globalState => globalState.authFailed);
 

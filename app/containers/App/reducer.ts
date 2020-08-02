@@ -12,6 +12,7 @@ export const initialState: ContainerState = {
   employee: {} as Employee,
   reports: [],
   customer: {} as Customer,
+  customers: [],
   reload: false
 };
 
@@ -63,6 +64,12 @@ function appReducer(
       return {
         ...state,
         customer: action.payload.customer
+      };
+
+    case ActionTypes.GET_ALL_CUSTOMER_SUCCESS:
+      return {
+        ...state,
+        customers: action.payload
       };
 
     case ActionTypes.CREATE_REPORT_SUCCESS:

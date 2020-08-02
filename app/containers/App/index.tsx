@@ -19,7 +19,8 @@ import {
   getEmployeeReportsSuccessAction,
   getEmployeeCustomerSuccessAction,
   getAdminReportsSuccessAction,
-  setLoadingAction
+  setLoadingAction,
+  getAllCustomersSuccessAction
 } from './actions';
 import jwt from 'jsonwebtoken';
 import moment from 'moment';
@@ -36,7 +37,8 @@ import {
   makeSelectToken,
   makeSelectAuthenticated,
   makeSelectLoading,
-  makeSelectReload
+  makeSelectReload,
+  makeSelectCustomers
 } from './selectors';
 
 const AppWrapper = styled.div`
@@ -54,6 +56,7 @@ interface StateProps {
   employee: Employee;
   reports: Report[];
   customer: Customer;
+  customers: Customer[];
   reload: boolean;
 }
 
@@ -64,6 +67,7 @@ interface DispatchProps {
   onGetEmployeeReportsSuccess: (reports: Report[]) => void;
   onGetAdminReportsSuccess: (reports: Report[]) => void;
   onGetEmployeeCustomerSuccess: (customer: Customer) => void;
+  onGetAllCustomersHashSuccess: (customers: Customer[]) => void;
   onGetEmployeeProfileSuccess: (employee: Employee) => void;
 }
 
@@ -137,17 +141,26 @@ function fetchStartupData(props: Props, isAdmin: boolean) {
     const decodedToken = jwt.decode(props.token);
 
     const employeeResponse: Employee = await getEmployeeData(decodedToken);
-    
-    if(isAdmin) {
-        await getAdminReportsData()
+
+    if (isAdmin) {
+      await getAdminReportsData();
+      await getAllCustomersData();
+    } else {
+      await getEmployeeReportsData(decodedToken);
+      await getCustomerData(employeeResponse);
     }
-    else {
-        await getEmployeeReportsData(decodedToken);
-        await getCustomerData(employeeResponse);
-    }
-    
+
     props.onLoadingChange(false);
   })();
+
+  async function getAllCustomersData() {
+    const getCustomerRequestURL = `http://${TIME_TRACKER_API_BASE_URL}/api/customers`;
+    const customersResponse: Customer[] = await getRequest(
+      getCustomerRequestURL
+    );
+
+    props.onGetAllCustomersHashSuccess(customersResponse);
+  }
 
   async function getCustomerData(employeeResponse: Employee) {
     const getCustomerRequestURL = `http://${TIME_TRACKER_API_BASE_URL}/api/customers/${
@@ -168,7 +181,7 @@ function fetchStartupData(props: Props, isAdmin: boolean) {
   }
 
   async function getAdminReportsData() {
-    const getReportsRequestURL = `http://${TIME_TRACKER_API_BASE_URL}/api/reports`;
+    const getReportsRequestURL = `http://${TIME_TRACKER_API_BASE_URL}/api/reports?invoiceable=true`;
     const reportsResponse: Report[] = await getRequest(getReportsRequestURL);
     props.onGetAdminReportsSuccess(reportsResponse);
   }
@@ -200,6 +213,8 @@ export function mapDispatchToProps(
       dispatch(getAdminReportsSuccessAction(reports)),
     onGetEmployeeCustomerSuccess: (customer: Customer) =>
       dispatch(getEmployeeCustomerSuccessAction(customer)),
+    onGetAllCustomersHashSuccess: (customers: Customer[]) =>
+      dispatch(getAllCustomersSuccessAction(customers)),
     onGetEmployeeProfileSuccess: (employee: Employee) =>
       dispatch(getEmployeeSuccessAction(employee))
   };
@@ -212,6 +227,7 @@ const mapStateToProps = createStructuredSelector<RootState, StateProps>({
   employee: makeSelectEmployee(),
   reports: makeSelectReports(),
   customer: makeSelectCustomer(),
+  customers: makeSelectCustomers(),
   reload: makeSelectReload()
 });
 

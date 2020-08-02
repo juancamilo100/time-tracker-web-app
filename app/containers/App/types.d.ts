@@ -25,6 +25,7 @@ interface AppState {
   readonly employee: Employee;
   readonly reports: Report[];
   readonly customer: Customer;
+  readonly customers: Customer[];
   readonly reload: boolean;
 }
 

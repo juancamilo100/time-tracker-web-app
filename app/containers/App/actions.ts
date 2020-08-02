@@ -26,6 +26,9 @@ export const getAdminReportsSuccessAction = (reports: Report[]) =>
 export const getEmployeeCustomerSuccessAction = (customer: Customer) =>
   action(ActionTypes.GET_EMPLOYEE_CUSTOMER_SUCCESS, { customer });
 
+export const getAllCustomersSuccessAction = (customers: Customer[]) =>
+  action(ActionTypes.GET_ALL_CUSTOMER_SUCCESS, customers);
+
 export const createReportSuccess = (report: Report) =>
   action(ActionTypes.CREATE_REPORT_SUCCESS, { report });
 

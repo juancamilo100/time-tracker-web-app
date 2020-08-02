@@ -12,7 +12,8 @@ import {
   makeSelectAuthenticated,
   makeSelectEmployee,
   makeSelectReports,
-  makeSelectCustomer
+  makeSelectCustomer,
+  makeSelectCustomers
 } from 'containers/App/selectors';
 import { Redirect, Switch, Route, Link } from 'react-router-dom';
 import AppBar from '@material-ui/core/AppBar';
@@ -45,6 +46,7 @@ interface StateProps {
   employee: Employee;
   reports: Report[];
   customer: Customer;
+  customers: Customer[];
 }
 
 interface DispatchProps {
@@ -81,7 +83,12 @@ const adminRoutes = props => (
   <>
     <Route
       path={routePath.invoiceDeliveryPath}
-      render={() => <InvoiceDeliveryPage />}
+      render={() => (
+        <InvoiceDeliveryPage
+          reports={props.reports}
+          customers={props.customers}
+        />
+      )}
     />
   </>
 );
@@ -165,7 +172,8 @@ const mapStateToProps = createStructuredSelector<RootState, StateProps>({
   authenticated: makeSelectAuthenticated(),
   employee: makeSelectEmployee(),
   reports: makeSelectReports(),
-  customer: makeSelectCustomer()
+  customer: makeSelectCustomer(),
+  customers: makeSelectCustomers()
 });
 
 const withConnect = connect(

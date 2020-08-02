@@ -7,16 +7,13 @@ export interface Customer {
     name: string,
 }
 
-export interface Task {
-
-}
-
 export interface Report {
     id: number
     startDate: string,
     endDate: string,
     submitted: boolean,
-    tasks: Task[]
+    tasks: Task[],
+    customerId: number
 }
 /* --- STATE --- */
 
