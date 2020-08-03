@@ -10,7 +10,8 @@ import { BrowserRouter } from 'react-router-dom';
 import FontFaceObserver from 'fontfaceobserver';
 import history from 'utils/history';
 import 'sanitize.css/sanitize.css';
-import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import { MuiThemeProvider } from '@material-ui/core/styles';
+import { createMuiTheme } from '@material-ui/core';
 import App from 'containers/App';
 import LanguageProvider from 'containers/LanguageProvider';
 import { Provider as AlertProvider } from 'react-alert';
@@ -41,7 +42,11 @@ const MOUNT_NODE = document.getElementById('app') as HTMLElement;
 const theme = createMuiTheme({
   direction: 'ltr',
   palette: {
-    type: 'light'
+    type: 'light',
+    primary: {
+      main: '#ef8133'
+    },
+    contrastThreshold: 1
   }
 });
 
@@ -102,7 +107,7 @@ if (!(window as any).Intl) {
 
 // Install ServiceWorker and AppCache in the end since
 // it's not most important operation and if main code fails,
-// we do not want it installed
+// we do not wantimport { CssBaseline } from '@material-ui/core/CssBaseline';
 if (process.env.NODE_ENV === 'production') {
   require('offline-plugin/runtime').install();
 }
