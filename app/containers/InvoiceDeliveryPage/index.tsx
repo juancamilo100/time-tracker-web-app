@@ -21,11 +21,14 @@ import Accordion from '@material-ui/core/Accordion';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import Typography from '@material-ui/core/Typography';
+import CustomerTitle from 'components/CustomerTitle';
+import { Employee } from '../App/types.d';
+import InvoiceDelivery from 'components/InvoiceDelivery';
 
 interface OwnProps {
   reports: Report[];
   customers: Customer[];
+  employees: Employee[];
 }
 
 interface StateProps {}
@@ -56,26 +59,25 @@ export function InvoiceDeliveryPage(props: Props) {
   return (
     <div className={classes.root}>
       {Object.keys(customersHash).map(customerId => (
-        <Accordion>
+        <Accordion key={customerId}>
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
             aria-controls="panel1a-content"
             id="panel1a-header"
           >
-            <Typography className={classes.heading}>
-              {props.customers.find(customer => customer.id.toString() === customerId)!.name}
-            </Typography>
+            <CustomerTitle
+              customer={
+                props.customers.find(
+                  customer => customer.id.toString() === customerId
+                )!
+              }
+            />
           </AccordionSummary>
           <AccordionDetails>
-            <Typography>
-            {customersHash[customerId].map(report => (
-              <h3>{report.id}</h3>
-            ))}
-            </Typography>
+            <InvoiceDelivery reports={customersHash[customerId]} employees={props.employees} />
           </AccordionDetails>
         </Accordion>
       ))}
-      ;
     </div>
   );
 }

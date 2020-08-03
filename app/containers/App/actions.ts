@@ -17,6 +17,9 @@ export const setLoadingAction = (loading: boolean) =>
 export const getEmployeeSuccessAction = (employee: Employee) =>
   action(ActionTypes.GET_EMPLOYEE_PROFILE_SUCCESS, { employee });
 
+export const getEmployeesSuccessAction = (employees: Employee[]) =>
+  action(ActionTypes.GET_EMPLOYEES_SUCCESS, employees);
+
 export const getEmployeeReportsSuccessAction = (reports: Report[]) =>
   action(ActionTypes.GET_EMPLOYEE_REPORTS_SUCCESS, { reports });
 

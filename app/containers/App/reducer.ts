@@ -10,6 +10,7 @@ export const initialState: ContainerState = {
   authFailed: false,
   token: '',
   employee: {} as Employee,
+  employees: [],
   reports: [],
   customer: {} as Customer,
   customers: [],
@@ -46,6 +47,12 @@ function appReducer(
       return {
         ...state,
         employee: action.payload.employee
+      };
+
+    case ActionTypes.GET_EMPLOYEES_SUCCESS:
+      return {
+        ...state,
+        employees: action.payload
       };
 
     case ActionTypes.GET_ADMIN_REPORTS_SUCCESS:

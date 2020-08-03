@@ -11,6 +11,7 @@ import Drawer from '../../components/Drawer';
 import {
   makeSelectAuthenticated,
   makeSelectEmployee,
+  makeSelectEmployees,
   makeSelectReports,
   makeSelectCustomer,
   makeSelectCustomers
@@ -44,6 +45,7 @@ interface StateProps {
   authenticated: boolean;
   drawerOpen: boolean;
   employee: Employee;
+  employees: Employee[];
   reports: Report[];
   customer: Customer;
   customers: Customer[];
@@ -87,6 +89,7 @@ const adminRoutes = props => (
         <InvoiceDeliveryPage
           reports={props.reports}
           customers={props.customers}
+          employees={props.employees}
         />
       )}
     />
@@ -171,6 +174,7 @@ const mapStateToProps = createStructuredSelector<RootState, StateProps>({
   drawerOpen: makeSelectDrawerOpen(),
   authenticated: makeSelectAuthenticated(),
   employee: makeSelectEmployee(),
+  employees: makeSelectEmployees(),
   reports: makeSelectReports(),
   customer: makeSelectCustomer(),
   customers: makeSelectCustomers()

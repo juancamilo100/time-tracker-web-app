@@ -16,6 +16,7 @@ import {
   logout,
   authActionSuccess,
   getEmployeeSuccessAction,
+  getEmployeesSuccessAction,
   getEmployeeReportsSuccessAction,
   getEmployeeCustomerSuccessAction,
   getAdminReportsSuccessAction,
@@ -32,6 +33,7 @@ import { Report } from 'containers/HomePage/types';
 import { Customer } from '../HomePage/types.d';
 import {
   makeSelectEmployee,
+  makeSelectEmployees,
   makeSelectReports,
   makeSelectCustomer,
   makeSelectToken,
@@ -54,6 +56,7 @@ interface StateProps {
   loading: boolean;
   authenticated: boolean;
   employee: Employee;
+  employees: Employee[];
   reports: Report[];
   customer: Customer;
   customers: Customer[];
@@ -69,6 +72,7 @@ interface DispatchProps {
   onGetEmployeeCustomerSuccess: (customer: Customer) => void;
   onGetAllCustomersHashSuccess: (customers: Customer[]) => void;
   onGetEmployeeProfileSuccess: (employee: Employee) => void;
+  onGetEmployeesSuccess: (employees: Employee[]) => void;
 }
 
 type Props = DispatchProps & OwnProps & StateProps;
@@ -145,6 +149,7 @@ function fetchStartupData(props: Props, isAdmin: boolean) {
     if (isAdmin) {
       await getAdminReportsData();
       await getAllCustomersData();
+      await getAllEmployeesData();
     } else {
       await getEmployeeReportsData(decodedToken);
       await getCustomerData(employeeResponse);
@@ -196,6 +201,12 @@ function fetchStartupData(props: Props, isAdmin: boolean) {
     props.onGetEmployeeProfileSuccess(employeeResponse);
     return employeeResponse;
   }
+
+  async function getAllEmployeesData() {
+    const getEmployeesRequestURL = `http://${TIME_TRACKER_API_BASE_URL}/api/employees`;
+    const employeesResponse: Employee[] = await getRequest(getEmployeesRequestURL);
+    props.onGetEmployeesSuccess(employeesResponse);
+  }
 }
 
 export function mapDispatchToProps(
@@ -216,7 +227,9 @@ export function mapDispatchToProps(
     onGetAllCustomersHashSuccess: (customers: Customer[]) =>
       dispatch(getAllCustomersSuccessAction(customers)),
     onGetEmployeeProfileSuccess: (employee: Employee) =>
-      dispatch(getEmployeeSuccessAction(employee))
+      dispatch(getEmployeeSuccessAction(employee)),
+    onGetEmployeesSuccess: (employees: Employee[]) =>
+      dispatch(getEmployeesSuccessAction(employees))
   };
 }
 
@@ -225,6 +238,7 @@ const mapStateToProps = createStructuredSelector<RootState, StateProps>({
   loading: makeSelectLoading(),
   authenticated: makeSelectAuthenticated(),
   employee: makeSelectEmployee(),
+  employees: makeSelectEmployees(),
   reports: makeSelectReports(),
   customer: makeSelectCustomer(),
   customers: makeSelectCustomers(),
