@@ -371,7 +371,7 @@ function revertReportTaskDeletion(
     newData.splice(
       props.deleteReportTaskFailed.oldData['tableData'].id,
       0,
-      props.deleteReportTaskFailed.oldData
+      props.deleteReportTaskFailed.oldData as Task
     );
     setData(newData);
   }, 0);
@@ -391,7 +391,7 @@ function revertReportTaskUpdate(
   setTimeout(() => {
     const newData = [...data!];
     newData[props.updateReportTaskFailed.oldData['tableData'].id] =
-      props.updateReportTaskFailed.oldData;
+      props.updateReportTaskFailed.oldData as Task;
     setData(newData);
   }, 0);
 }

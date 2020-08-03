@@ -19,7 +19,7 @@ interface Props {
   report: Report;
   employee: Employee;
   index: number;
-  onToggled: (state) => void;
+  onToggled: (state, index) => void;
 }
 
 const lulosoftOrange = '#ef8133';
@@ -41,7 +41,7 @@ function ReportDetails(props: Props) {
       <div className={classes.checkbox}>
         <OrangeCheckbox
           onChange={(event, checked) => {
-            props.onToggled(checked);
+            props.onToggled(checked, props.index);
           }}
           inputProps={{ 'aria-label': 'primary checkbox' }}
         />
