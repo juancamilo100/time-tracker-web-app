@@ -121,6 +121,9 @@ function appReducer(
         reports: [...updatedReports]
       };
 
+    case ActionTypes.DELIVER_INVOICE_SUCCESS:
+        return reload(state);
+
     case ActionTypes.LOGOUT:
       sessionStorage.removeItem(JWT_SESSION_STORAGE_NAME);
       return {
@@ -133,6 +136,14 @@ function appReducer(
     default:
       return state;
   }
+}
+
+const reload = (state) => {
+    const newReload = !state.reload;
+    return {
+        ...state,
+        reload: newReload
+    };
 }
 
 export default appReducer;

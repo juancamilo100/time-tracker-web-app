@@ -10,7 +10,6 @@ import { compose, Dispatch } from 'redux';
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
 import { createStructuredSelector } from 'reselect';
-import makeSelectInvoiceDelivery from './selectors';
 import reducer from './reducer';
 import { RootState } from './types';
 import saga from './saga';
@@ -24,6 +23,11 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import CustomerTitle from 'components/CustomerTitle';
 import { Employee } from '../App/types.d';
 import InvoiceDelivery from 'components/InvoiceDelivery';
+import {
+  deliverInvoiceAction,
+  clearDeliverInvoiceErrorAction
+} from './actions';
+import { makeSelectInvoiceDeliveryFailed } from './selectors';
 
 interface OwnProps {
   reports: Report[];
@@ -31,20 +35,38 @@ interface OwnProps {
   employees: Employee[];
 }
 
-interface StateProps {}
+interface StateProps {
+  deliverInvoiceFailed: boolean;
+}
 
 interface DispatchProps {
-  dispatch?: Dispatch;
+  onDeliverInvoice(
+    customerId: string,
+    startDate: Date,
+    endDate: Date,
+    reportIds: number[]
+  ): void;
+  dispatch: Dispatch;
 }
 
 type Props = StateProps & DispatchProps & OwnProps;
 
 const key = 'invoiceDeliveryPage';
+
 export function InvoiceDeliveryPage(props: Props) {
-  useInjectReducer({ key, reducer: reducer });
   useInjectSaga({ key, saga: saga });
+  useInjectReducer({ key, reducer: reducer });
   const alert = useAlert();
   const classes = useStyles();
+
+  if (props.deliverInvoiceFailed) {
+    alert.show('There was a problem delivering the invoice', {
+      timeout: 4000,
+      type: 'error',
+      transition: 'scale'
+    });
+    clearDeliverInvoiceErrorAction();
+  }
 
   const customersHash = {};
   props.reports.forEach(report => {
@@ -75,7 +97,26 @@ export function InvoiceDeliveryPage(props: Props) {
             />
           </AccordionSummary>
           <AccordionDetails>
-            <InvoiceDelivery reports={customersHash[customerId]} employees={props.employees} />
+            <InvoiceDelivery
+              reports={customersHash[customerId]}
+              employees={props.employees}
+              onDeliverInvoice={(
+                invoiceStartDate: Date,
+                invoiceEndDate: Date,
+                reportIds: number[]
+              ) => {
+                console.log('****************');
+                console.log(props);
+                console.log('****************');
+
+                props.onDeliverInvoice(
+                  customerId,
+                  invoiceStartDate,
+                  invoiceEndDate,
+                  reportIds
+                );
+              }}
+            />
           </AccordionDetails>
         </Accordion>
       ))}
@@ -85,7 +126,7 @@ export function InvoiceDeliveryPage(props: Props) {
 
 // Map RootState to your StateProps
 const mapStateToProps = createStructuredSelector<RootState, StateProps>({
-  invoiceDelivery: makeSelectInvoiceDelivery()
+  deliverInvoiceFailed: makeSelectInvoiceDeliveryFailed()
 });
 
 // Map Disptach to your DispatchProps
@@ -94,7 +135,14 @@ function mapDispatchToProps(
   ownProps: OwnProps
 ): DispatchProps {
   return {
-    dispatch: dispatch
+    dispatch: dispatch,
+    onDeliverInvoice: (
+      customerId: string,
+      startDate: Date,
+      endDate: Date,
+      reportIds: number[]
+    ) =>
+      dispatch(deliverInvoiceAction(customerId, startDate, endDate, reportIds))
   };
 }
 

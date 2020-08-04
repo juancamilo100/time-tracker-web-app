@@ -7,7 +7,7 @@ import { ContainerState as LoginPageState } from 'containers/LoginPage/types';
 import { ContainerState as HistoryPageState } from 'containers/ReportHistoryPage/types';
 import { ContainerState as ProfilePageState } from 'containers/ProfilePage/types';
 import { ContainerState as CreateReportPageState } from 'containers/CreateReportPage/types';
-import { ContainerState as InvoiceDeliveryState } from 'containers/InvoiceDelivery/types';
+import { ContainerState as InvoiceDeliveryState } from 'containers/InvoiceDeliveryPage/types';
 import { SagaIterator } from 'redux-saga';
 
 export interface LifeStore extends Store {

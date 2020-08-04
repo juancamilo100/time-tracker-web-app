@@ -8,7 +8,8 @@ import ActionTypes from './constants';
 import { ContainerState, ContainerActions } from './types';
 
 export const initialState: ContainerState = {
-  default: null
+  default: null,
+  deliverInvoiceFailed: false
 };
 
 function invoiceDeliveryReducer(
@@ -18,22 +19,19 @@ function invoiceDeliveryReducer(
   switch (action.type) {
     case ActionTypes.DEFAULT_ACTION:
       return state;
+    case ActionTypes.DELIVER_INVOICE_FAILED_ACTION:
+      return {
+        ...state,
+        deliverInvoiceFailed: true
+      };
+    case ActionTypes.CLEAR_DELIVER_INVOICE_ERROR_ACTION:
+      return {
+        ...state,
+        deliverInvoiceFailed: false
+      };
     default:
       return state;
   }
 }
 
 export default invoiceDeliveryReducer;
-
-// import { combineReducers } from 'redux';
-
-// export default combineReducers<ContainerState, ContainerActions>({
-//   default: (state = initialState, action) => {
-//     switch (action.type) {
-//       case ActionTypes.DEFAULT_ACTION:
-//         return 'state';
-//       default:
-//         return state;
-//     }
-//   },
-// });

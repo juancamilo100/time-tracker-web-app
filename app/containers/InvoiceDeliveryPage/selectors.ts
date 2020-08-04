@@ -7,7 +7,7 @@ import { initialState } from './reducer';
  */
 
 const selectInvoiceDeliveryPageDomain = (state: ApplicationRootState) => {
-  return state || initialState;
+  return state.invoiceDeliveryPage || initialState;
 };
 
 /**
@@ -18,13 +18,12 @@ const selectInvoiceDeliveryPageDomain = (state: ApplicationRootState) => {
  * Default selector used by InvoiceDeliveryPage
  */
 
-const selectInvoiceDelivery = () =>
+export const makeSelectInvoiceDeliveryFailed = () =>
   createSelector(
     selectInvoiceDeliveryPageDomain,
-    substate => {
-      return substate;
+    invoiceDelivery => {
+      return invoiceDelivery.deliverInvoiceFailed;
     }
   );
 
-export default selectInvoiceDelivery;
 export { selectInvoiceDeliveryPageDomain };

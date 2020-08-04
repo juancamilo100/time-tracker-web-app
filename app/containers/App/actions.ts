@@ -49,4 +49,7 @@ export const submitReportSuccess = (reportId: number) =>
     reportId
   });
 
+export const deliverInvoiceSuccess = () =>
+  action(ActionTypes.DELIVER_INVOICE_SUCCESS);
+
 export const logout = () => action(ActionTypes.LOGOUT);

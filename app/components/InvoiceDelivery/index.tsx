@@ -20,6 +20,11 @@ import DateFnsUtils from '@date-io/date-fns';
 interface Props {
   reports: Report[];
   employees: Employee[];
+  onDeliverInvoice: (
+    invoiceStartDate: Date,
+    invoiceEndDate: Date,
+    reportIds: number[]
+  ) => void;
 }
 
 const updateSelectedReports = (
@@ -55,7 +60,7 @@ function InvoiceDelivery(props: Props) {
   const classes = useStyles();
   const [selectedReports, setSelectedReports] = useState([]);
   const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(moment().add(2, 'weeks'));
+  const [endDate, setEndDate] = useState(moment().add(2, 'weeks').toDate());
 
   return (
     <div className={classes.root}>
@@ -94,7 +99,7 @@ function InvoiceDelivery(props: Props) {
       ))}
       <DeliverButton
         onClick={() => {
-          console.log(selectedReports);
+          props.onDeliverInvoice(startDate, endDate, selectedReports);
         }}
       >
         Deliver

@@ -46,7 +46,7 @@ interface OwnProps {
 }
 
 interface StateProps {
-  createReportFailed: Boolean;
+  createReportFailed: boolean;
   createReportTaskFailed: {
     state: boolean;
     rowId?: number;
@@ -276,7 +276,7 @@ const reportTable = (props: Props, columns, tableData, setTableData, alert) => (
 const keyCreateReportPage = 'createReportPage';
 
 export function CreateReportPage(props: Props) {
-  useInjectSaga({ key: keyCreateReportPage, saga: saga });
+  useInjectSaga({ key:  keyCreateReportPage, saga: saga });
   useInjectReducer({ key: keyCreateReportPage, reducer: reducer });
   const alert = useAlert();
   const classes = useStyles();
@@ -347,14 +347,6 @@ export function CreateReportPage(props: Props) {
       });
 }
 
-const mapStateToProps = createStructuredSelector<RootState, StateProps>({
-  createReportFailed: makeSelectCreateReportFailed(),
-  createReportTaskFailed: makeSelectCreateReportTaskFailed(),
-  updateReportTaskFailed: makeSelectUpdateReportTaskFailed(),
-  deleteReportTaskFailed: makeSelectDeleteReportTaskFailed(),
-  submitReportFailed: makeSelectSubmiteReportFailed()
-});
-
 function revertReportTaskDeletion(
   alert: any,
   data: Task[] | undefined,
@@ -390,8 +382,8 @@ function revertReportTaskUpdate(
   });
   setTimeout(() => {
     const newData = [...data!];
-    newData[props.updateReportTaskFailed.oldData['tableData'].id] =
-      props.updateReportTaskFailed.oldData as Task;
+    newData[props.updateReportTaskFailed.oldData['tableData'].id] = props
+      .updateReportTaskFailed.oldData as Task;
     setData(newData);
   }, 0);
 }
@@ -413,6 +405,14 @@ function revertReportTaskCreation(
     setData(newData);
   }, 0);
 }
+
+const mapStateToProps = createStructuredSelector<RootState, StateProps>({
+  createReportFailed: makeSelectCreateReportFailed(),
+  createReportTaskFailed: makeSelectCreateReportTaskFailed(),
+  updateReportTaskFailed: makeSelectUpdateReportTaskFailed(),
+  deleteReportTaskFailed: makeSelectDeleteReportTaskFailed(),
+  submitReportFailed: makeSelectSubmiteReportFailed()
+});
 
 function mapDispatchToProps(
   dispatch: Dispatch,
