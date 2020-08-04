@@ -71,6 +71,7 @@ export function InvoiceDeliveryPage(props: Props) {
                   customer => customer.id.toString() === customerId
                 )!
               }
+              reportsNumber={customersHash[customerId].length}
             />
           </AccordionSummary>
           <AccordionDetails>

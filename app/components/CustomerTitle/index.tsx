@@ -5,14 +5,16 @@
  */
 import React, { memo } from 'react';
 
-// import styled from 'styles/styled-components';
 import { Customer } from 'containers/HomePage/types';
 import { useStyles } from './styles';
 import BusinessIcon from '@material-ui/icons/Business';
 import EmailIcon from '@material-ui/icons/Email';
+import Badge from '@material-ui/core/Badge';
+import FolderIcon from '@material-ui/icons/Folder';
 
 interface Props {
   customer: Customer;
+  reportsNumber: number;
 }
 
 function CustomerTitle(props: Props) {
@@ -20,12 +22,23 @@ function CustomerTitle(props: Props) {
   return (
     <div className={classes.root}>
       <div className={classes.customerName}>
-        <BusinessIcon className={classes.customerNameIcon} style={{ color: 'lightgray' }}/>
-        <span >{props.customer.name}</span>
+        <BusinessIcon
+          className={classes.customerNameIcon}
+          style={{ color: 'lightgray' }}
+        />
+        <span>{props.customer.name}</span>
       </div>
       <div className={classes.customerEmail}>
-        <EmailIcon className={classes.customerEmailIcon} style={{ color: 'lightgray' }}/>
-        <span >{props.customer.email}</span>
+        <EmailIcon
+          className={classes.customerEmailIcon}
+          style={{ color: 'lightgray' }}
+        />
+        <span>{props.customer.email}</span>
+      </div>
+      <div>
+        <Badge badgeContent={props.reportsNumber} color="primary">
+          <FolderIcon style={{ color: 'lightgray' }}/>
+        </Badge>
       </div>
     </div>
   );

@@ -7,15 +7,18 @@ export const useStyles = makeStyles(theme => ({
     },
     customerName: {
         fontWeight: 'bold',
-        flex: '50%'
+        flex: '33%'
     },
     customerNameIcon: {
         marginRight: '10px'
     },
     customerEmail: {
-        flex: '50%'
+        flex: '33%'
     },
     customerEmailIcon: {
         marginRight: '10px'
+    },
+    badge: {
+        flex: '33%'
     }
   }));
