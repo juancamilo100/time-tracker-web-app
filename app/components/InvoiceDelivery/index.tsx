@@ -34,6 +34,8 @@ const updateSelectedReports = (
   selectedReports,
   setSelectedReports
 ) => {
+
+    
   let newReports = state
     ? [...selectedReports].concat(allReports[index])
     : [...selectedReports].splice(index, 1);
@@ -58,7 +60,7 @@ const DeliverButton = withStyles(() => ({
 
 function InvoiceDelivery(props: Props) {
   const classes = useStyles();
-  const [selectedReports, setSelectedReports] = useState([]);
+  const [selectedReports, setSelectedReports] = useState([] as Report[]);
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(moment().add(2, 'weeks').toDate());
 
@@ -99,7 +101,7 @@ function InvoiceDelivery(props: Props) {
       ))}
       <DeliverButton
         onClick={() => {
-          props.onDeliverInvoice(startDate, endDate, selectedReports);
+          props.onDeliverInvoice(startDate, endDate, selectedReports.map(report => report.id));
         }}
       >
         Deliver

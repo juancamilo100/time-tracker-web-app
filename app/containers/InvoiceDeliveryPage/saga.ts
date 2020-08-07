@@ -13,7 +13,7 @@ export function* deliverInvoice(action: ContainerActions) {
     const requestBody = {
       invoiceStartDate: moment(action['payload'].startDate).format('MM/DD/YYYY'),
       invoiceEndDate: moment(action['payload'].endDate).format('MM/DD/YYYY'),
-      reportIds: action['payload'].tasks,
+      reportIds: action['payload'].reportIds,
     };
   
     const requestHeaders = {
@@ -31,6 +31,8 @@ export function* deliverInvoice(action: ContainerActions) {
   
       yield put(deliverInvoiceSuccess());
     } catch (err) {
+        console.log(err);
+        
       yield put(deliverInvoiceFailedAction());
     }
   }

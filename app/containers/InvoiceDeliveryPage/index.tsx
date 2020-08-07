@@ -78,7 +78,8 @@ export function InvoiceDeliveryPage(props: Props) {
     ];
   });
 
-  return (
+  return Object.keys(customersHash).length ? 
+  (
     <div className={classes.root}>
       {Object.keys(customersHash).map(customerId => (
         <Accordion key={customerId}>
@@ -105,10 +106,6 @@ export function InvoiceDeliveryPage(props: Props) {
                 invoiceEndDate: Date,
                 reportIds: number[]
               ) => {
-                console.log('****************');
-                console.log(props);
-                console.log('****************');
-
                 props.onDeliverInvoice(
                   customerId,
                   invoiceStartDate,
@@ -121,6 +118,9 @@ export function InvoiceDeliveryPage(props: Props) {
         </Accordion>
       ))}
     </div>
+  ) :
+  (
+      <h1 className={classes.noReports}>No reports have been submitted</h1>
   );
 }
 
@@ -135,14 +135,14 @@ function mapDispatchToProps(
   ownProps: OwnProps
 ): DispatchProps {
   return {
-    dispatch: dispatch,
     onDeliverInvoice: (
       customerId: string,
       startDate: Date,
       endDate: Date,
       reportIds: number[]
     ) =>
-      dispatch(deliverInvoiceAction(customerId, startDate, endDate, reportIds))
+      dispatch(deliverInvoiceAction(customerId, startDate, endDate, reportIds)),
+    dispatch: dispatch
   };
 }
 

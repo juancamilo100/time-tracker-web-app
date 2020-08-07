@@ -4,8 +4,7 @@ import { ApplicationRootState } from 'types';
 
 /* --- STATE --- */
 interface InvoiceDeliveryPageState {
-  readonly default: any;
-  deliverInvoiceFailed: boolean;
+  readonly deliverInvoiceFailed: boolean;
 }
 
 /* --- ACTIONS --- */

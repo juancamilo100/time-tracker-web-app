@@ -8,6 +8,12 @@ export const useStyles = makeStyles((theme: Theme) =>
     heading: {
       fontSize: theme.typography.pxToRem(15),
       fontWeight: theme.typography.fontWeightRegular
+    },
+    noReports: {
+        display: 'flex',
+        justifyContent: 'center',
+        color: 'lightgray',
+        fontWeight: 'bold'
     }
   })
 );

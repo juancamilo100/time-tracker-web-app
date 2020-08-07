@@ -31,7 +31,7 @@ import { toggleDrawerState } from './actions';
 import CreateReportPage from 'containers/CreateReportPage';
 import { ReportHistoryPage } from '../ReportHistoryPage/index';
 import { ProfilePage } from 'containers/ProfilePage';
-import { InvoiceDeliveryPage } from 'containers/InvoiceDeliveryPage';
+import InvoiceDeliveryPage from 'containers/InvoiceDeliveryPage';
 import { logout } from 'containers/App/actions';
 import { Employee } from '../App/types.d';
 import { Customer } from './types.d';
