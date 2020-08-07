@@ -22,12 +22,13 @@ import AccordionDetails from '@material-ui/core/AccordionDetails';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import CustomerTitle from 'components/CustomerTitle';
 import { Employee } from '../App/types.d';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import InvoiceDelivery from 'components/InvoiceDelivery';
 import {
   deliverInvoiceAction,
   clearDeliverInvoiceErrorAction
 } from './actions';
-import { makeSelectInvoiceDeliveryFailed } from './selectors';
+import { makeSelectInvoiceDeliveryFailed, makeSelectDeliveringInvoice } from './selectors';
 
 interface OwnProps {
   reports: Report[];
@@ -37,6 +38,7 @@ interface OwnProps {
 
 interface StateProps {
   deliverInvoiceFailed: boolean;
+  deliveringInvoice: boolean;
 }
 
 interface DispatchProps {
@@ -66,6 +68,14 @@ export function InvoiceDeliveryPage(props: Props) {
       transition: 'scale'
     });
     clearDeliverInvoiceErrorAction();
+  }
+
+  if(props.deliveringInvoice) {
+      return (
+          <div className={classes.spinner}>
+              <CircularProgress  />
+          </div>
+      )
   }
 
   const customersHash = {};
@@ -126,7 +136,8 @@ export function InvoiceDeliveryPage(props: Props) {
 
 // Map RootState to your StateProps
 const mapStateToProps = createStructuredSelector<RootState, StateProps>({
-  deliverInvoiceFailed: makeSelectInvoiceDeliveryFailed()
+  deliverInvoiceFailed: makeSelectInvoiceDeliveryFailed(),
+  deliveringInvoice: makeSelectDeliveringInvoice()
 });
 
 // Map Disptach to your DispatchProps

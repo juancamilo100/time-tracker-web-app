@@ -14,6 +14,11 @@ export const useStyles = makeStyles((theme: Theme) =>
         justifyContent: 'center',
         color: 'lightgray',
         fontWeight: 'bold'
+    },
+    spinner: {
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center'
     }
   })
 );

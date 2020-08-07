@@ -8,7 +8,8 @@ import ActionTypes from './constants';
 import { ContainerState, ContainerActions } from './types';
 
 export const initialState: ContainerState = {
-  deliverInvoiceFailed: false
+  deliverInvoiceFailed: false,
+  deliveringInvoice: false
 };
 
 function invoiceDeliveryReducer(
@@ -27,6 +28,19 @@ function invoiceDeliveryReducer(
       return {
         ...state,
         deliverInvoiceFailed: false
+      };
+    case ActionTypes.DELIVERING_INVOICE_ACTION:
+        console.log("Delivering!");
+        
+      return {
+        ...state,
+        deliveringInvoice: true
+      };
+    case ActionTypes.DELIVERED_INVOICE_ACTION:
+        console.log("Delivered!");
+      return {
+        ...state,
+        deliveringInvoice: false
       };
     default:
       return state;

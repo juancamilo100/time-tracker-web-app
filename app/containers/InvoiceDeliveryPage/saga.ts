@@ -6,9 +6,10 @@ import { JWT_SESSION_STORAGE_NAME } from '../App/constants';
 import { TIME_TRACKER_API_BASE_URL } from 'config';
 import { postRequest } from 'utils/request';
 import { deliverInvoiceSuccess } from '../App/actions';
-import { deliverInvoiceFailedAction } from './actions';
+import { deliverInvoiceFailedAction, deliveringInvoiceAction, deliveredInvoiceAction } from './actions';
 
 export function* deliverInvoice(action: ContainerActions) {
+    yield put(deliveringInvoiceAction());
     const requestURL = `http://${TIME_TRACKER_API_BASE_URL}/api/customers/${action['payload'].customerId}/invoice`;
     const requestBody = {
       invoiceStartDate: moment(action['payload'].startDate).format('MM/DD/YYYY'),
@@ -30,6 +31,7 @@ export function* deliverInvoice(action: ContainerActions) {
       );
   
       yield put(deliverInvoiceSuccess());
+      yield put(deliveredInvoiceAction());
     } catch (err) {
         console.log(err);
         

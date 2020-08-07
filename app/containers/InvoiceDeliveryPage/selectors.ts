@@ -25,5 +25,12 @@ export const makeSelectInvoiceDeliveryFailed = () =>
       return invoiceDelivery.deliverInvoiceFailed;
     }
   );
+export const makeSelectDeliveringInvoice = () =>
+  createSelector(
+    selectInvoiceDeliveryPageDomain,
+    invoiceDelivery => {
+      return invoiceDelivery.deliveringInvoice;
+    }
+  );
 
 export { selectInvoiceDeliveryPageDomain };
