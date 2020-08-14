@@ -33,6 +33,8 @@ export function* deliverInvoice(action: ContainerActions) {
       yield put(deliverInvoiceSuccess());
       yield put(deliveredInvoiceAction());
     } catch (err) {
+        console.log("Failed to deliver invoice");
+        
         console.log(err);
         
       yield put(deliverInvoiceFailedAction());

@@ -34,14 +34,21 @@ const updateSelectedReports = (
   selectedReports,
   setSelectedReports
 ) => {
+  const selectedIndex = selectedReports.findIndex(
+    report => report.id === allReports[index].id
+  );
 
-    
-  let newReports = state
-    ? [...selectedReports].concat(allReports[index])
-    : [...selectedReports].splice(index, 1);
+  let newReports = [...selectedReports];
+
+  if (state) {
+    newReports.push(allReports[index]);
+  } else {
+    newReports.splice(selectedIndex, 1);
+  }
 
   setSelectedReports(newReports);
 };
+
 const lulosoftOrange = '#ef8133';
 const lulosoftGreen = '#88b838';
 
@@ -54,6 +61,10 @@ const DeliverButton = withStyles(() => ({
     marginTop: '20px',
     '&:hover': {
       backgroundColor: lulosoftGreen
+    },
+    '&:disabled': {
+      backgroundColor: 'lightgray',
+      color: 'white'
     }
   }
 }))(Button);
@@ -62,7 +73,11 @@ function InvoiceDelivery(props: Props) {
   const classes = useStyles();
   const [selectedReports, setSelectedReports] = useState([] as Report[]);
   const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(moment().add(2, 'weeks').toDate());
+  const [endDate, setEndDate] = useState(
+    moment()
+      .add(2, 'weeks')
+      .toDate()
+  );
 
   return (
     <div className={classes.root}>
@@ -100,8 +115,13 @@ function InvoiceDelivery(props: Props) {
         />
       ))}
       <DeliverButton
+        disabled={selectedReports.length === 0}
         onClick={() => {
-          props.onDeliverInvoice(startDate, endDate, selectedReports.map(report => report.id));
+          props.onDeliverInvoice(
+            startDate,
+            endDate,
+            selectedReports.map(report => report.id)
+          );
         }}
       >
         Deliver
