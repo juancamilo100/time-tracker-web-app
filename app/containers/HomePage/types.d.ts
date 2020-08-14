@@ -5,10 +5,14 @@ import { ApplicationRootState } from 'types';
 export interface Customer {
     id: number,
     name: string,
+    emails: string[]
 }
 
 export interface Task {
-
+    id: number,
+    reportId: number,
+    hours: number,
+    description: string,
 }
 
 export interface Report {
@@ -16,7 +20,9 @@ export interface Report {
     startDate: string,
     endDate: string,
     submitted: boolean,
-    tasks: Task[]
+    tasks: Task[],
+    customerId: number,
+    employeeId: number
 }
 /* --- STATE --- */
 

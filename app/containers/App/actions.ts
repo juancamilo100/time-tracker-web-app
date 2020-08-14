@@ -17,11 +17,20 @@ export const setLoadingAction = (loading: boolean) =>
 export const getEmployeeSuccessAction = (employee: Employee) =>
   action(ActionTypes.GET_EMPLOYEE_PROFILE_SUCCESS, { employee });
 
+export const getEmployeesSuccessAction = (employees: Employee[]) =>
+  action(ActionTypes.GET_EMPLOYEES_SUCCESS, employees);
+
 export const getEmployeeReportsSuccessAction = (reports: Report[]) =>
   action(ActionTypes.GET_EMPLOYEE_REPORTS_SUCCESS, { reports });
 
+export const getAdminReportsSuccessAction = (reports: Report[]) =>
+  action(ActionTypes.GET_ADMIN_REPORTS_SUCCESS, { reports });
+
 export const getEmployeeCustomerSuccessAction = (customer: Customer) =>
   action(ActionTypes.GET_EMPLOYEE_CUSTOMER_SUCCESS, { customer });
+
+export const getAllCustomersSuccessAction = (customers: Customer[]) =>
+  action(ActionTypes.GET_ALL_CUSTOMER_SUCCESS, customers);
 
 export const createReportSuccess = (report: Report) =>
   action(ActionTypes.CREATE_REPORT_SUCCESS, { report });
@@ -39,5 +48,8 @@ export const submitReportSuccess = (reportId: number) =>
   action(ActionTypes.SUBMIT_REPORT_SUCCESS, {
     reportId
   });
+
+export const deliverInvoiceSuccess = () =>
+  action(ActionTypes.DELIVER_INVOICE_SUCCESS);
 
 export const logout = () => action(ActionTypes.LOGOUT);

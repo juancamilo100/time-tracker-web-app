@@ -10,8 +10,10 @@ export const initialState: ContainerState = {
   authFailed: false,
   token: '',
   employee: {} as Employee,
+  employees: [],
   reports: [],
   customer: {} as Customer,
+  customers: [],
   reload: false
 };
 
@@ -47,6 +49,18 @@ function appReducer(
         employee: action.payload.employee
       };
 
+    case ActionTypes.GET_EMPLOYEES_SUCCESS:
+      return {
+        ...state,
+        employees: action.payload
+      };
+
+    case ActionTypes.GET_ADMIN_REPORTS_SUCCESS:
+      return {
+        ...state,
+        reports: action.payload.reports
+      };
+
     case ActionTypes.GET_EMPLOYEE_REPORTS_SUCCESS:
       return {
         ...state,
@@ -57,6 +71,12 @@ function appReducer(
       return {
         ...state,
         customer: action.payload.customer
+      };
+
+    case ActionTypes.GET_ALL_CUSTOMER_SUCCESS:
+      return {
+        ...state,
+        customers: action.payload
       };
 
     case ActionTypes.CREATE_REPORT_SUCCESS:
@@ -101,6 +121,9 @@ function appReducer(
         reports: [...updatedReports]
       };
 
+    case ActionTypes.DELIVER_INVOICE_SUCCESS:
+        return reload(state);
+
     case ActionTypes.LOGOUT:
       sessionStorage.removeItem(JWT_SESSION_STORAGE_NAME);
       return {
@@ -113,6 +136,14 @@ function appReducer(
     default:
       return state;
   }
+}
+
+const reload = (state) => {
+    const newReload = !state.reload;
+    return {
+        ...state,
+        reload: newReload
+    };
 }
 
 export default appReducer;

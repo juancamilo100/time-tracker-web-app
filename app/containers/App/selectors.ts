@@ -14,31 +14,73 @@ export const selectRoute = (state: ApplicationRootState) => {
 };
 
 export const makeSelectLoading = () =>
-  createSelector(selectGlobal, globalState => globalState.loading);
+  createSelector(
+    selectGlobal,
+    globalState => globalState.loading
+  );
 
 export const makeSelectError = () =>
-  createSelector(selectGlobal, globalState => globalState.error);
+  createSelector(
+    selectGlobal,
+    globalState => globalState.error
+  );
 
 export const makeSelectAuthenticated = () =>
-  createSelector(selectGlobal, globalState => globalState.authenticated);
+  createSelector(
+    selectGlobal,
+    globalState => globalState.authenticated
+  );
 
 export const makeSelectToken = () =>
-  createSelector(selectGlobal, globalState => globalState.token);
+  createSelector(
+    selectGlobal,
+    globalState => globalState.token
+  );
 
 export const makeSelectEmployee = () =>
-  createSelector(selectGlobal, globalState => globalState.employee);
+  createSelector(
+    selectGlobal,
+    globalState => globalState.employee
+  );
+
+export const makeSelectEmployees = () =>
+  createSelector(
+    selectGlobal,
+    globalState => globalState.employees
+  );
 
 export const makeSelectReports = () =>
-  createSelector(selectGlobal, globalState => globalState.reports);
+  createSelector(
+    selectGlobal,
+    globalState => globalState.reports
+  );
 
 export const makeSelectCustomer = () =>
-  createSelector(selectGlobal, globalState => globalState.customer);
+  createSelector(
+    selectGlobal,
+    globalState => globalState.customer
+  );
+
+export const makeSelectCustomers = () =>
+  createSelector(
+    selectGlobal,
+    globalState => globalState.customers
+  );
 
 export const makeSelectAuthFailed = () =>
-  createSelector(selectGlobal, globalState => globalState.authFailed);
+  createSelector(
+    selectGlobal,
+    globalState => globalState.authFailed
+  );
 
 export const makeSelectReload = () =>
-  createSelector(selectGlobal, globalState => globalState.reload);
+  createSelector(
+    selectGlobal,
+    globalState => globalState.reload
+  );
 
 export const makeSelectLocation = () =>
-  createSelector(selectRoute, routeState => routeState.location);
+  createSelector(
+    selectRoute,
+    routeState => routeState.location
+  );

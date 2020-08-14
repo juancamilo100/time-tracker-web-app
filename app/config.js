@@ -4,6 +4,7 @@ export const routePath = {
   mainPath: `/main`,
   profilePath: `/main/profileInfo`,
   reportHistoryPath: `/main/reportHistory`,
+  invoiceDeliveryPath: `/main/invoiceDelivery`,
 };
 
 export const TIME_TRACKER_API_BASE_URL = process.env.TIME_TRACKER_API_BASE_URL;

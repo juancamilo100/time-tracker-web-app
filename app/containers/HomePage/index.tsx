@@ -11,8 +11,10 @@ import Drawer from '../../components/Drawer';
 import {
   makeSelectAuthenticated,
   makeSelectEmployee,
+  makeSelectEmployees,
   makeSelectReports,
-  makeSelectCustomer
+  makeSelectCustomer,
+  makeSelectCustomers
 } from 'containers/App/selectors';
 import { Redirect, Switch, Route, Link } from 'react-router-dom';
 import AppBar from '@material-ui/core/AppBar';
@@ -29,19 +31,24 @@ import { toggleDrawerState } from './actions';
 import CreateReportPage from 'containers/CreateReportPage';
 import { ReportHistoryPage } from '../ReportHistoryPage/index';
 import { ProfilePage } from 'containers/ProfilePage';
+import InvoiceDeliveryPage from 'containers/InvoiceDeliveryPage';
 import { logout } from 'containers/App/actions';
 import { Employee } from '../App/types.d';
 import { Customer } from './types.d';
 
 // tslint:disable-next-line:no-empty-interface
-interface OwnProps {}
+interface OwnProps {
+  isAdminUser: boolean;
+}
 
 interface StateProps {
   authenticated: boolean;
   drawerOpen: boolean;
   employee: Employee;
+  employees: Employee[];
   reports: Report[];
   customer: Customer;
+  customers: Customer[];
 }
 
 interface DispatchProps {
@@ -52,6 +59,42 @@ interface DispatchProps {
 type Props = StateProps & DispatchProps & OwnProps;
 
 const key = 'home';
+
+const devRoutes = props => (
+  <>
+    <Route
+      path={routePath.featuresPath}
+      render={() => (
+        <CreateReportPage
+          customer={props.customer}
+          employee={props.employee}
+          report={props.reports.find(report => report.submitted === false)}
+        />
+      )}
+    />
+    <Route
+      path={routePath.reportHistoryPath}
+      render={() => (
+        <ReportHistoryPage reports={props.reports} customer={props.customer} />
+      )}
+    />
+  </>
+);
+
+const adminRoutes = props => (
+  <>
+    <Route
+      path={routePath.invoiceDeliveryPath}
+      render={() => (
+        <InvoiceDeliveryPage
+          reports={props.reports}
+          customers={props.customers}
+          employees={props.employees}
+        />
+      )}
+    />
+  </>
+);
 
 export function HomePage(props: Props) {
   const classes = useStyles();
@@ -99,6 +142,7 @@ export function HomePage(props: Props) {
       <Drawer
         toggleDrawerState={props.onToggleDrawerState}
         open={props.drawerOpen}
+        isAdmin={props.isAdminUser}
       />
       <div
         className={clsx(classes.content, {
@@ -106,21 +150,8 @@ export function HomePage(props: Props) {
         })}
       >
         <Switch>
-          <Route path={routePath.featuresPath} render={() => 
-                <CreateReportPage
-                    customer={props.customer}
-                    employee={props.employee}
-                    report={props.reports.find(report => report.submitted === false)}
-                />} />
-          <Route
-            path={routePath.reportHistoryPath}
-            render={() => 
-                <ReportHistoryPage 
-                    reports={props.reports}
-                    customer={props.customer}
-                />}
-          />
           <Route path={routePath.profilePath} component={ProfilePage} />
+          {props.isAdminUser ? adminRoutes(props) : devRoutes(props)}
         </Switch>
       </div>
     </>
@@ -143,8 +174,10 @@ const mapStateToProps = createStructuredSelector<RootState, StateProps>({
   drawerOpen: makeSelectDrawerOpen(),
   authenticated: makeSelectAuthenticated(),
   employee: makeSelectEmployee(),
+  employees: makeSelectEmployees(),
   reports: makeSelectReports(),
-  customer: makeSelectCustomer()
+  customer: makeSelectCustomer(),
+  customers: makeSelectCustomers()
 });
 
 const withConnect = connect(

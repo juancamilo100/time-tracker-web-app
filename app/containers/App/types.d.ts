@@ -23,8 +23,10 @@ interface AppState {
   readonly authFailed: boolean;
   readonly token: string;
   readonly employee: Employee;
+  readonly employees: Employee[];
   readonly reports: Report[];
   readonly customer: Customer;
+  readonly customers: Customer[];
   readonly reload: boolean;
 }
 
