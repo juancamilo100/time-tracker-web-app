@@ -12,7 +12,6 @@ export const useStyles = makeStyles(theme => ({
     padding: '15px',
     marginTop: '15px',
     marginBottom: '25px',
-    backgroundColor: '#f7f7f7',
-    borderRadius: '10px'
+    borderTop: '1px solid #eeecec'
   }
 }));

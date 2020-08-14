@@ -6,6 +6,7 @@ export const useStyles = makeStyles(theme => ({
     paddingBottom: '15px'
   },
   column: {
+    flex: '30%',
     paddingRight: '15%',
     flexDirection: 'row'
   },
@@ -13,6 +14,6 @@ export const useStyles = makeStyles(theme => ({
     paddingRight: '10px'
   },
   icon: {
-      marginBottom: '4px'
+    marginBottom: '4px'
   }
 }));
