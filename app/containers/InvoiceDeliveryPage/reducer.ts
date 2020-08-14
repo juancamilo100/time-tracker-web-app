@@ -25,15 +25,12 @@ function invoiceDeliveryReducer(
         deliverInvoiceFailed: true
       };
     case ActionTypes.CLEAR_DELIVER_INVOICE_ERROR_ACTION:
-        console.log("Clearing invoice delivery error");
-        
       return {
         ...state,
-        deliverInvoiceFailed: false
+        deliverInvoiceFailed: false,
+        deliveringInvoice: false
       };
     case ActionTypes.DELIVERING_INVOICE_ACTION:
-        console.log("Delivering!");
-        
       return {
         ...state,
         deliveringInvoice: true

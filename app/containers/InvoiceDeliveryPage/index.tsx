@@ -28,7 +28,10 @@ import {
   deliverInvoiceAction,
   clearDeliverInvoiceErrorAction
 } from './actions';
-import { makeSelectInvoiceDeliveryFailed, makeSelectDeliveringInvoice } from './selectors';
+import {
+  makeSelectInvoiceDeliveryFailed,
+  makeSelectDeliveringInvoice
+} from './selectors';
 
 interface OwnProps {
   reports: Report[];
@@ -42,6 +45,7 @@ interface StateProps {
 }
 
 interface DispatchProps {
+  clearDeliverInvoiceError(): void;
   onDeliverInvoice(
     customerId: string,
     startDate: Date,
@@ -67,15 +71,15 @@ export function InvoiceDeliveryPage(props: Props) {
       type: 'error',
       transition: 'scale'
     });
-    clearDeliverInvoiceErrorAction();
+    props.clearDeliverInvoiceError();
   }
 
-  if(props.deliveringInvoice) {
-      return (
-          <div className={classes.spinner}>
-              <CircularProgress  />
-          </div>
-      )
+  if (props.deliveringInvoice) {
+    return (
+      <div className={classes.spinner}>
+        <CircularProgress />
+      </div>
+    );
   }
 
   const customersHash = {};
@@ -88,8 +92,7 @@ export function InvoiceDeliveryPage(props: Props) {
     ];
   });
 
-  return Object.keys(customersHash).length ? 
-  (
+  return Object.keys(customersHash).length ? (
     <div className={classes.root}>
       {Object.keys(customersHash).map(customerId => (
         <Accordion key={customerId}>
@@ -128,9 +131,8 @@ export function InvoiceDeliveryPage(props: Props) {
         </Accordion>
       ))}
     </div>
-  ) :
-  (
-      <h1 className={classes.noReports}>No reports have been submitted</h1>
+  ) : (
+    <h1 className={classes.noReports}>No reports have been submitted</h1>
   );
 }
 
@@ -146,6 +148,7 @@ function mapDispatchToProps(
   ownProps: OwnProps
 ): DispatchProps {
   return {
+    clearDeliverInvoiceError: () => dispatch(clearDeliverInvoiceErrorAction()),
     onDeliverInvoice: (
       customerId: string,
       startDate: Date,

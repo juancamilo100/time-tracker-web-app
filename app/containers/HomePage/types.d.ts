@@ -5,7 +5,7 @@ import { ApplicationRootState } from 'types';
 export interface Customer {
     id: number,
     name: string,
-    email: string
+    emails: string[]
 }
 
 export interface Task {

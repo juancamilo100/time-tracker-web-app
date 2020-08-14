@@ -33,7 +33,7 @@ function CustomerTitle(props: Props) {
           className={classes.customerEmailIcon}
           style={{ color: 'lightgray' }}
         />
-        <span>{props.customer.email}</span>
+        <span>{props.customer.emails.join(', \n')}</span>
       </div>
       <div>
         <Badge badgeContent={props.reportsNumber} color="primary">
