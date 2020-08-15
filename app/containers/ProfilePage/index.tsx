@@ -4,7 +4,7 @@
  *
  */
 
-import React, { memo } from 'react';
+import React, { memo, useState } from 'react';
 import { connect } from 'react-redux';
 import { compose, Dispatch } from 'redux';
 import { useInjectSaga } from 'utils/injectSaga';
@@ -15,37 +15,19 @@ import reducer from './reducer';
 import { RootState } from './types';
 import saga from './saga';
 import ProfileAvatar from '../../components/ProfileAvatar';
-import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
-
-const useStyles = makeStyles({
-  center: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  card: {
-    minWidth: 275,
-  },
-  bullet: {
-    display: 'inline-block',
-    margin: '0 2px',
-    transform: 'scale(0.8)',
-  },
-  title: {
-    fontSize: 14,
-  },
-  pos: {
-    marginBottom: 12,
-  },
-});
+import { useStyles } from './styles';
+import Modal from '@material-ui/core/Modal';
+import ChangePasswordModal from 'components/ChangePasswordModal';
 
 interface StateProps {}
-interface OwnProps {}
+interface OwnProps {
+  isDrawerOpen: boolean;
+}
 
 interface DispatchProps {
   dispatch: Dispatch;
@@ -59,52 +41,81 @@ export function ProfilePage(props: Props) {
   useInjectReducer({ key: key, reducer: reducer });
   useInjectSaga({ key: key, saga: saga });
 
+  console.log('Is drawer open? ');
+  console.log(props.isDrawerOpen);
+
+  const [open, setOpen] = useState(false);
+
   const classes = useStyles();
+
+  const modalBody = (
+    <div
+      className={props.isDrawerOpen ? classes.modalBody : classes.modalBodyWide}
+    >
+      <ChangePasswordModal />
+    </div>
+  );
 
   return (
     <div className={classes.center}>
-      {/* <FormattedMessage {...messages.header} /> */}
       <Card className={classes.card}>
-      <CardContent >
-        <ProfileAvatar/>
-        <Typography variant="h4" component="h5">
-          Laura Perea
-        </Typography>
-        <Typography component="p">Employee Since</Typography>
-        <Typography className={classes.title} color="textSecondary" gutterBottom>
-          April 2016
-        </Typography>
-        <Typography  component="p">Project</Typography>
-        <Typography className={classes.title} color="textSecondary" gutterBottom>
-          Spectrio
-        </Typography>
-      </CardContent>
-      <CardActions>
-        <Button color="primary" size="small">Change Password</Button>
-      </CardActions>
-    </Card>
+        <CardContent>
+          <ProfileAvatar />
+          <Typography variant="h4" component="h5">
+            Laura Perea
+          </Typography>
+          <Typography component="p">Employee Since</Typography>
+          <Typography component="p">Project</Typography>
+          <Typography
+            className={classes.title}
+            color="textSecondary"
+            gutterBottom
+          >
+            Spectrio
+          </Typography>
+        </CardContent>
+        <CardActions>
+          <Button onClick={() => setOpen(true)} color="primary" size="small">
+            Change Password
+          </Button>
+        </CardActions>
+      </Card>
+      <Modal
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center'
+        }}
+        open={open}
+        onClose={() => setOpen(false)}
+      >
+        {modalBody}
+      </Modal>
     </div>
   );
 }
 
 // Map RootState to your StateProps
 const mapStateToProps = createStructuredSelector<RootState, StateProps>({
-  profile: makeSelectProfile(),
+  profile: makeSelectProfile()
 });
 
 // Map Disptach to your DispatchProps
 function mapDispatchToProps(
   dispatch: Dispatch,
-  ownProps: OwnProps,
+  ownProps: OwnProps
 ): DispatchProps {
   return {
-    dispatch: dispatch,
+    dispatch: dispatch
   };
 }
 
 const withConnect = connect(
   mapStateToProps,
-  mapDispatchToProps,
+  mapDispatchToProps
 );
 
-export default  compose(withConnect, memo)(ProfilePage);
+export default compose(
+  withConnect,
+  memo
+)(ProfilePage);
