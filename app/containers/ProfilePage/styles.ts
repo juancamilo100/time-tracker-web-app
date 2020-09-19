@@ -39,5 +39,10 @@ export const useStyles = makeStyles({
     margin: 'auto',
     top: '50%',
     outline: 'none'
-  }
+  },
+  spinner: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center'
+}
 });

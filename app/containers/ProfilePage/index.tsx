@@ -38,13 +38,16 @@ import {
 import { Employee } from '../App/types.d';
 import { changePasswordAction, clearChangePasswordErrorAction } from './actions';
 import { useAlert } from 'react-alert';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import { Customer } from '../HomePage/types.d';
 
 interface StateProps {
     changePasswordFailed: boolean;
     changingPassword: boolean;
 }
 interface OwnProps {
-    employee: Employee
+    employee: Employee,
+    customer: Customer
 }
 
 interface DispatchProps {
@@ -119,6 +122,7 @@ export function ProfilePage(props: Props) {
   useInjectReducer({ key: key, reducer: reducer });
   useInjectSaga({ key: key, saga: saga });
   const alert = useAlert();
+  const classes = useStyles();
 
   const [open, setOpen] = useState(false);
   const [isValidInput, setIsValidInput] = useState(false);
@@ -136,6 +140,14 @@ export function ProfilePage(props: Props) {
     props.clearChangePasswordError();
   }
 
+  if (props.changingPassword) {
+    return (
+      <div className={classes.spinner}>
+        <CircularProgress />
+      </div>
+    );
+  }
+
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -148,16 +160,14 @@ export function ProfilePage(props: Props) {
     setOpen(false);
   };
 
-  const classes = useStyles();
-
   return (
     <div className={classes.center}>
       <Card className={classes.card}>
         <CardContent>
           <ProfileAvatar />
           <Typography variant="h4" component="h5">
-            Laura Perea
-          </Typography>
+            {`${props.employee.firstName} ${props.employee.lastName}`}
+          </Typography>         
           <br />
           <Typography component="p">Customer</Typography>
           <Typography
@@ -165,7 +175,7 @@ export function ProfilePage(props: Props) {
             color="textSecondary"
             gutterBottom
           >
-            Spectrio
+            {props.customer.name}
           </Typography>
         </CardContent>
         <br/>
@@ -210,7 +220,7 @@ export function ProfilePage(props: Props) {
           <Button
             autoFocus
             disabled={!isValidInput}
-            onClick={() => changePassword(props, passwords.new, passwords.old)}
+            onClick={() => changePassword(props, passwords.old, passwords.new)}
             color="primary"
           >
             Save

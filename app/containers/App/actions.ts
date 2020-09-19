@@ -53,6 +53,6 @@ export const deliverInvoiceSuccess = () =>
   action(ActionTypes.DELIVER_INVOICE_SUCCESS);
 
 export const changePasswordSuccess = () =>
-  action(ActionTypes.DELIVER_INVOICE_SUCCESS);
+  action(ActionTypes.CHANGE_PASSWORD_SUCCESS);
 
 export const logout = () => action(ActionTypes.LOGOUT);

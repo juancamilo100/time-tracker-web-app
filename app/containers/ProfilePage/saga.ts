@@ -4,27 +4,32 @@ import { ContainerActions } from './types';
 import moment from 'moment';
 import { JWT_SESSION_STORAGE_NAME } from '../App/constants';
 import { TIME_TRACKER_API_BASE_URL } from 'config';
-import { postRequest } from 'utils/request';
+import { patchRequest } from 'utils/request';
 import { changePasswordSuccess } from '../App/actions';
 import { changePasswordFailedAction, changingPasswordAction, changedPasswordAction } from './actions';
 
 export function* changePassword(action: ContainerActions) {
     yield put(changingPasswordAction());
-    const requestURL = `http://${TIME_TRACKER_API_BASE_URL}/api/employees/${action['payload'].customerId}/invoice`;
+    const requestURL = `http://${TIME_TRACKER_API_BASE_URL}/api/employees/${action['payload'].employeeId}/password`;
     const requestBody = {
-      invoiceStartDate: moment(action['payload'].startDate).format('MM/DD/YYYY'),
-      invoiceEndDate: moment(action['payload'].endDate).format('MM/DD/YYYY'),
-      reportIds: action['payload'].reportIds,
+        oldPassword: Buffer.from(action['payload'].oldPassword).toString('base64'),
+        newPassword: Buffer.from(action['payload'].newPassword).toString('base64'),
     };
   
     const requestHeaders = {
       'content-type': 'application/json',
       Authorization: sessionStorage.getItem(JWT_SESSION_STORAGE_NAME)
     };
+
+    console.log(requestURL);
+    console.log(requestBody);
+    console.log(requestHeaders);
+    
   
     try {
+
       yield call(
-        postRequest,
+        patchRequest,
         requestURL,
         requestBody,
         requestHeaders
@@ -33,6 +38,9 @@ export function* changePassword(action: ContainerActions) {
       yield put(changePasswordSuccess());
       yield put(changedPasswordAction());
     } catch (err) {
+        console.log("Failed to change password!!");
+        console.log(err);
+        
       yield put(changePasswordFailedAction());
     }
   }

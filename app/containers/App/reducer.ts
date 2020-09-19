@@ -124,6 +124,9 @@ function appReducer(
     case ActionTypes.DELIVER_INVOICE_SUCCESS:
         return reload(state);
 
+    case ActionTypes.CHANGE_PASSWORD_SUCCESS:
+        return reload(state);
+
     case ActionTypes.LOGOUT:
       sessionStorage.removeItem(JWT_SESSION_STORAGE_NAME);
       return {
