@@ -150,7 +150,10 @@ export function HomePage(props: Props) {
         })}
       >
         <Switch>
-          <Route path={routePath.profilePath} render={() => <ProfilePage isDrawerOpen={props.drawerOpen} />}/>
+          <Route
+            path={routePath.profilePath}
+            render={() => <ProfilePage employee={props.employee}/>}
+          />
           {props.isAdminUser ? adminRoutes(props) : devRoutes(props)}
         </Switch>
       </div>

@@ -5,7 +5,7 @@ export const useStyles = makeStyles((theme: Theme) =>
     root: {
       display: 'flex',
       justifyContent: 'center',
-      flexDirection: 'column'
+      flexDirection: 'column',
     },
     margin: {
       margin: theme.spacing(1),
@@ -15,7 +15,7 @@ export const useStyles = makeStyles((theme: Theme) =>
       marginTop: theme.spacing(3),
     },
     textField: {
-      width: '25ch',
+      width: '40ch',
     },
   }),
 );
