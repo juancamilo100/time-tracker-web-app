@@ -2,7 +2,7 @@ export const routePath = {
   featuresPath: `/main/report`,
   loginPath: `/login`,
   mainPath: `/main`,
-  profilePath: `/main/profileInfo`,
+  profilePath: `/main/profile`,
   reportHistoryPath: `/main/reportHistory`,
   invoiceDeliveryPath: `/main/invoiceDelivery`,
 };

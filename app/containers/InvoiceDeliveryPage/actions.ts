@@ -29,6 +29,5 @@ export const deliveringInvoiceAction = () =>
   action(ActionTypes.DELIVERING_INVOICE_ACTION);
 export const deliveredInvoiceAction = () =>
   action(ActionTypes.DELIVERED_INVOICE_ACTION);
-
 export const clearDeliverInvoiceErrorAction = () =>
   action(ActionTypes.CLEAR_DELIVER_INVOICE_ERROR_ACTION);

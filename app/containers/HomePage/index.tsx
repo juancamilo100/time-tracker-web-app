@@ -30,7 +30,7 @@ import { makeSelectDrawerOpen } from './selectors';
 import { toggleDrawerState } from './actions';
 import CreateReportPage from 'containers/CreateReportPage';
 import { ReportHistoryPage } from '../ReportHistoryPage/index';
-import { ProfilePage } from 'containers/ProfilePage';
+import ProfilePage from 'containers/ProfilePage';
 import InvoiceDeliveryPage from 'containers/InvoiceDeliveryPage';
 import { logout } from 'containers/App/actions';
 import { Employee } from '../App/types.d';
@@ -150,7 +150,19 @@ export function HomePage(props: Props) {
         })}
       >
         <Switch>
-          <Route path={routePath.profilePath} component={ProfilePage} />
+          <Route
+            path={routePath.profilePath}
+            render={() => (
+              <ProfilePage
+                customer={
+                  props.customers.find(
+                    customer => customer.id === props.employee.customerId
+                  )!
+                }
+                employee={props.employee}
+              />
+            )}
+          />
           {props.isAdminUser ? adminRoutes(props) : devRoutes(props)}
         </Switch>
       </div>

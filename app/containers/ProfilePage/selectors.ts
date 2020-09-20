@@ -26,5 +26,24 @@ const selectProfile = () =>
     },
   );
 
+const selectProfilePageDomain = (state: ApplicationRootState) => {
+    return state.profilePage || initialState;
+};
+
+export const makeSelectChangePasswordFailed = () =>
+  createSelector(
+    selectProfilePageDomain,
+    profile => {
+      return profile.changePasswordFailed;
+    }
+  );
+export const makeSelectChangingPassword = () =>
+  createSelector(
+    selectProfilePageDomain,
+    profile => {
+      return profile.changingPassword;
+    }
+  );
+
 export default selectProfile;
 export { selectProfileDomain };

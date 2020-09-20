@@ -5,6 +5,8 @@ import { ApplicationRootState } from 'types';
 /* --- STATE --- */
 interface ProfilePageState {
   readonly default: any;
+  readonly changePasswordFailed: boolean;
+  readonly changingPassword: boolean;
 }
 
 /* --- ACTIONS --- */
