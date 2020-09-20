@@ -1,7 +1,6 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
 import ActionTypes from './constants';
 import { ContainerActions } from './types';
-import moment from 'moment';
 import { JWT_SESSION_STORAGE_NAME } from '../App/constants';
 import { TIME_TRACKER_API_BASE_URL } from 'config';
 import { patchRequest } from 'utils/request';
@@ -20,14 +19,8 @@ export function* changePassword(action: ContainerActions) {
       'content-type': 'application/json',
       Authorization: sessionStorage.getItem(JWT_SESSION_STORAGE_NAME)
     };
-
-    console.log(requestURL);
-    console.log(requestBody);
-    console.log(requestHeaders);
-    
   
     try {
-
       yield call(
         patchRequest,
         requestURL,
@@ -38,14 +31,11 @@ export function* changePassword(action: ContainerActions) {
       yield put(changePasswordSuccess());
       yield put(changedPasswordAction());
     } catch (err) {
-        console.log("Failed to change password!!");
-        console.log(err);
-        
       yield put(changePasswordFailedAction());
     }
   }
 
 // Individual exports for testing
-export default function* invoiceDeliverySaga() {
+export default function* profileSaga() {
     yield takeLatest(ActionTypes.CHANGE_PASSWORD_ACTION, changePassword);
 }
